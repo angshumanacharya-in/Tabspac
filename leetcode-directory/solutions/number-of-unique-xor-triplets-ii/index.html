@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Primary SEO Meta Tags -->
+  <title>Number of Unique XOR Triplets II (LeetCode 3514) - C++ & Python Solution</title>
+  <meta name="title" content="Number of Unique XOR Triplets II (LeetCode 3514) - C++ & Python Solution">
+  <meta name="description" content="Detailed guide and optimal code solution for LeetCode 3514: Number of Unique XOR Triplets II using state-based dynamic programming over XOR states in C++ and Python.">
+  <meta name="keywords" content="Number of Unique XOR Triplets II, LeetCode 3514, Dynamic Programming, XOR Properties, Bitwise Operations, Data Structures, Algorithms, C++, Python, Coding Interview">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Canonical Link -->
+  <link rel="canonical" href="https://tabspacepresentations.com/number-of-unique-xor-triplets-ii">
+
+  <!-- Open Graph / Facebook / LinkedIn / Discord -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://tabspacepresentations.com/number-of-unique-xor-triplets-ii">
+  <meta property="og:title" content="Number of Unique XOR Triplets II (LeetCode 3514) - C++ & Python Solution">
+  <meta property="og:description" content="Master the Number of Unique XOR Triplets II (LeetCode 3514) problem with state-based dynamic programming optimization and full C++ and Python implementations.">
+  <meta property="og:image" content="https://tabspacepresentations.com/assets/number-of-unique-xor-triplets-ii-preview.jpg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://tabspacepresentations.com/number-of-unique-xor-triplets-ii">
+  <meta name="twitter:title" content="Number of Unique XOR Triplets II (LeetCode 3514) - C++ & Python Solution">
+  <meta name="twitter:description" content="Master the Number of Unique XOR Triplets II (LeetCode 3514) problem with state-based dynamic programming optimization and full C++ and Python implementations.">
+  <meta name="twitter:image" content="https://tabspacepresentations.com/assets/number-of-unique-xor-triplets-ii-preview.jpg">
+
+  <!-- JSON-LD Structured Data (TechArticle Schema) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Number of Unique XOR Triplets II (LeetCode 3514) Solution & Explanation",
+    "description": "Complete breakdown of LeetCode 3514 (Number of Unique XOR Triplets II) using state-based Dynamic Programming in C++ and Python.",
+    "articleSection": "Data Structures & Algorithms",
+    "keywords": ["Number of Unique XOR Triplets II", "LeetCode 3514", "Dynamic Programming", "C++", "Python", "Algorithms"],
+    "author": {
+      "@type": "Organization",
+      "name": "Tabspace Presentations",
+      "url": "https://tabspacepresentations.com"
+    }
+  }
+  </script>
+
+  <style>
+    /* Global Reset & Base Setup */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Calisto MT', Georgia, 'Times New Roman', serif !important;
+      font-weight: bold !important;
+    }
+
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* Header Styling */
+    .top-header {
+      background-color: #000000;
+      border-bottom: 1px solid #18181b;
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      width: 100%;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .logo-img {
+      height: 3rem; 
+      width: auto;
+      object-fit: contain;
+      display: block;
+      transition: transform 0.2s ease;
+    }
+
+    .logo-container:hover .logo-img {
+      transform: scale(1.05);
+    }
+
+    /* Main Container */
+    .dark-wrapper {
+      flex: 1;
+      background-color: #121212;
+      color: #e0e0e0;
+      padding: 2rem;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Article Content Styles */
+    .topic-content-wrapper {
+      width: 100%;
+    }
+
+    .topic-content-wrapper h1 {
+      font-size: 2rem;
+      color: #f3f4f6;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid #2d3748;
+      text-align: center;
+      width: 100%;
+    }
+
+    .topic-content-wrapper h2 {
+      font-size: 1.3rem;
+      color: #22c55e;
+      margin: 0 0 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .topic-content-wrapper h3 {
+      font-size: 1.05rem;
+      color: #ff6d00;
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .topic-content-wrapper p {
+      color: #d1d5db;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper ul, .topic-content-wrapper ol {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper li {
+      color: #d1d5db;
+      margin-bottom: 0.4rem;
+      line-height: 1.6;
+    }
+
+    /* Section Cards */
+    .section-card {
+      width: 100%;
+      background-color: #1e1e1e;
+      border: 1px solid #2d3748;
+      border-radius: 10px;
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .section-card:hover {
+      border-color: rgba(255, 109, 0, 0.4);
+      box-shadow: 0 0 12px -2px rgba(255, 109, 0, 0.15);
+    }
+
+    /* Highlight Card */
+    .highlight-card {
+      width: 100%;
+      background-color: rgba(34, 197, 94, 0.08);
+      border: 1px solid #22c55e;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .highlight-card h2 {
+      color: #22c55e;
+    }
+
+    .highlight-card ul {
+      margin-bottom: 0;
+    }
+
+    /* Table Design */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0 0.5rem 0;
+      background-color: #121212;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #2d3748;
+    }
+
+    .custom-table th {
+      background-color: #282828;
+      color: #9ca3af;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #2d3748;
+    }
+
+    .custom-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #2d3748;
+      color: #d1d5db;
+    }
+
+    .custom-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Pure CSS Tabs Styling */
+    .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 20px 0;
+    }
+
+    .tabs label {
+        padding: 10px 20px;
+        cursor: pointer;
+        background: rgba(7, 10, 18, 0.4);
+        border: 1px solid #22314d;
+        border-bottom: none;
+        color: #94a3b8;
+        font-weight: 600;
+        border-radius: 6px 6px 0 0;
+        margin-right: 4px;
+        transition: all 0.2s ease;
+    }
+
+    .tabs input[type="radio"] {
+        display: none;
+    }
+
+    .tabs .tab-content {
+        width: 100%;
+        background: #070a12;
+        border: 1px solid #22314d;
+        border-radius: 0 6px 6px 6px;
+        display: none;
+        position: relative;
+    }
+
+    .tabs .tab-content pre {
+        margin: 0;
+        border: none;
+        border-radius: 0 6px 6px 6px;
+    }
+
+    #tab-cpp:checked ~ label[for="tab-cpp"],
+    #tab-python:checked ~ label[for="tab-python"] {
+        background: #070a12;
+        color: #ff6d00;
+        border-top: 2px solid #ff6d00;
+        border-bottom: 1px solid #070a12;
+    }
+
+    #tab-cpp:checked ~ #content-cpp,
+    #tab-python:checked ~ #content-python {
+        display: block;
+    }
+
+    /* Copy Button Styling */
+    .copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 12px;
+        background-color: rgba(34, 49, 77, 0.6);
+        color: #94a3b8;
+        border: 1px solid #22314d;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 0.78rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        z-index: 10;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+        font-weight: 600 !important;
+    }
+
+    .copy-btn:hover {
+        background-color: #ff6d00;
+        color: #ffffff;
+        border-color: #ff6d00;
+    }
+
+    .copy-btn.copied {
+        background-color: #22c55e !important;
+        color: #ffffff !important;
+        border-color: #22c55e !important;
+    }
+
+    pre {
+        background-color: #070a12;
+        color: #cbd5e1;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        line-height: 1.5;
+        border: 1px solid #22314d;
+    }
+
+    pre code, pre code * {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace !important;
+        font-size: 0.9rem !important;
+        font-weight: normal !important;
+    }
+
+    /* Syntax Highlighting Tokens */
+    .keyword  { color: #ff7b72 !important; }
+    .type     { color: #79c0ff !important; }
+    .function { color: #d2a8ff !important; }
+    .comment  { color: #94a3b8 !important; }
+    .number   { color: #79c0ff !important; }
+    .string   { color: #a5d6ff !important; }
+    .code-text { color: #cbd5e1 !important; }
+
+    /* Inline Code Tags */
+    code {
+      background: #282828;
+      color: #ff6d00;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: monospace !important;
+      font-weight: normal !important;
+    }
+
+    /* Summary Card */
+    .summary-card {
+      width: 100%;
+      background-color: rgba(255, 109, 0, 0.08);
+      border: 1px solid #ff6d00;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 0;
+    }
+
+    .summary-card h2 {
+      color: #ff6d00;
+    }
+
+    .summary-card ul {
+      margin-bottom: 0;
+    }
+
+    /* Back Navigation Button */
+    .back-nav-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin: 2.5rem 0 1rem 0;
+    }
+
+    .see-problems-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #1e1e1e;
+      color: #22c55e;
+      border: 1px solid #22c55e;
+      padding: 0.85rem 1.75rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    }
+
+    .see-problems-btn:hover {
+      background-color: rgba(34, 197, 94, 0.1);
+      border-color: #ff6d00;
+      color: #ff6d00;
+      transform: translateY(-2px);
+      box-shadow: 0 0 12px -2px rgba(255, 109, 0, 0.3);
+    }
+
+    /* Footer Styling */
+    .main-footer {
+      width: 100%;
+      max-width: 1200px;
+      margin: 2rem auto 0 auto;
+      padding: 2rem 0;
+      border-top: 1px solid #18181b;
+      text-align: center;
+    }
+
+    .footer-text {
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: #71717a;
+    }
+
+    .footer-brand-orange {
+      color: #ff6d00;
+    }
+
+    .footer-brand-green {
+      color: #22c55e;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="top-header">
+    <div class="logo-container" id="logoToggle" role="button" tabindex="0" title="Toggle Sidebar">
+      <img src="../../../logo.png" alt="Tabspace Presentations Logo" class="logo-img" onerror="this.style.border='1px dashed #333'; this.style.padding='4px';">
+    </div>
+  </header>
+
+  <!-- Article Container -->
+  <main class="dark-wrapper">
+    <article class="topic-content-wrapper" id="articleBody">
+      <h1>Number of Unique XOR Triplets II (LeetCode 3514)</h1>
+
+      <!-- Introduction -->
+      <div class="highlight-card">
+        <h2>Introduction</h2>
+        <p>Bitwise XOR is one of the most interesting operations in computer science. Unlike addition or multiplication, XOR has several unique mathematical properties that make many seemingly difficult problems surprisingly elegant[cite: 1].</p>
+        <p>In this problem, we are asked to determine how many distinct XOR values can be produced by selecting three elements from an array while respecting the index ordering[cite: 1].</p>
+        <p>Although the brute-force approach appears straightforward, it quickly becomes infeasible because of the large input size. The key observation is that the XOR values themselves have a very small range, allowing us to use dynamic programming over XOR states[cite: 1].</p>
+      </div>
+
+      <!-- Problem Statement -->
+      <div class="section-card">
+        <h2>Problem Statement</h2>
+        <p>You are given an integer array <code>nums</code>[cite: 1].</p>
+        <p>A XOR triplet is defined as[cite: 1]:</p>
+        <p><code>nums[i] XOR nums[j] XOR nums[k]</code>[cite: 1]</p>
+        <p>where[cite: 1]</p>
+        <p><code>i &le; j &le; k</code>[cite: 1]</p>
+        <p>Return the number of unique XOR values that can be formed from every possible triplet[cite: 1].</p>
+        
+        <h3>Example 1</h3>
+        <p><strong>Input:</strong> <code>nums = [1, 3]</code><br>
+        <strong>Output:</strong> <code>2</code><br>
+        <strong>Explanation:</strong> Possible triplets yield values <code>{1, 3}</code>[cite: 1].</p>
+
+        <h3>Example 2</h3>
+        <p><strong>Input:</strong> <code>nums = [6, 7, 8, 9]</code><br>
+        <strong>Output:</strong> <code>4</code><br>
+        <strong>Explanation:</strong> Unique XOR values are <code>{6, 7, 8, 9}</code>[cite: 1].</p>
+      </div>
+
+      <!-- Understanding XOR & Observations -->
+      <div class="section-card">
+        <h2>Understanding XOR & Important Observations</h2>
+        <p>The XOR operation has several important properties[cite: 1]:</p>
+        <ul>
+          <li><code>a ^ a = 0</code>[cite: 1]</li>
+          <li><code>a ^ 0 = a</code>[cite: 1]</li>
+          <li><code>a ^ b = b ^ a</code>[cite: 1]</li>
+          <li><code>(a ^ b) ^ c = a ^ (b ^ c)</code>[cite: 1]</li>
+        </ul>
+
+        <h3>Index Conditions & Cases</h3>
+        <p>Since indices satisfy <code>i &le; j &le; k</code>, indices may repeat[cite: 1]. There are three different situations[cite: 1]:</p>
+        <ul>
+          <li><strong>Case 1 (All three indices identical):</strong> <code>x ^ x ^ x = x</code>. Produces an existing array value[cite: 1].</li>
+          <li><strong>Case 2 (Exactly two indices identical):</strong> <code>x ^ x ^ y = y</code> or <code>x ^ y ^ y = x</code>. Also produces values already present in the array[cite: 1].</li>
+          <li><strong>Case 3 (Three distinct indices):</strong> <code>a ^ b ^ c</code>. These are the only triplets capable of generating completely new XOR values[cite: 1].</li>
+        </ul>
+        <p>Therefore, we only need every original array value and every XOR obtainable using three distinct elements[cite: 1].</p>
+      </div>
+
+      <!-- Why Brute Force Doesn't Work -->
+      <div class="section-card">
+        <h2>Why Brute Force Doesn't Work</h2>
+        <p>A direct solution checks every triplet using three nested loops, giving an <code>O(n³)</code> complexity[cite: 1]. For <code>n = 1500</code>, this means <code>1500³ = 3.375 billion</code> triplets, which is far beyond acceptable limits[cite: 1].</p>
+
+        <h3>The Key Insight</h3>
+        <p>Notice that <code>nums[i] &le; 1500</code>. Since <code>1500 &lt; 2¹¹</code>, every value fits inside 11 bits[cite: 1]. Therefore, the maximum XOR value is <code>2047</code>, meaning there are only <code>2048</code> possible XOR results[cite: 1]. Instead of tracking millions of triplets, we only track these possible XOR values[cite: 1].</p>
+      </div>
+
+      <!-- Dynamic Programming Approach -->
+      <div class="section-card">
+        <h2>Dynamic Programming Approach</h2>
+        <p>We define three DP arrays[cite: 1]:</p>
+        <ul>
+          <li><code>dp1[x]</code>: True if XOR value <code>x</code> can be formed using one distinct element[cite: 1].</li>
+          <li><code>dp2[x]</code>: True if XOR value <code>x</code> can be formed using two distinct elements[cite: 1].</li>
+          <li><code>dp3[x]</code>: True if XOR value <code>x</code> can be formed using three distinct elements[cite: 1].</li>
+        </ul>
+        
+        <h3>DP Transition & Backward Updates</h3>
+        <p>For each number <code>v</code> in <code>nums</code>[cite: 1]:</p>
+        <ul>
+          <li>Build triples: If <code>dp2[x]</code> is true, then <code>x ^ v</code> forms a triple (`dp3[x ^ v] = true`)[cite: 1].</li>
+          <li>Build pairs: If <code>dp1[x]</code> is true, then <code>x ^ v</code> forms a pair (`dp2[x ^ v] = true`)[cite: 1].</li>
+          <li>Build singles: Simply mark <code>dp1[v] = true</code>[cite: 1].</li>
+        </ul>
+        <p><strong>Why We Update Backwards:</strong> Updating from triples down to singles ensures that the current element is not reused multiple times in the same iteration[cite: 1].</p>
+      </div>
+
+      <!-- Code Implementations -->
+      <div class="section-card">
+        <h2>Code Implementations</h2>
+        
+        <div class="tabs">
+            <input type="radio" id="tab-cpp" name="code-tabs" checked>
+            <label for="tab-cpp">C++</label>
+            
+            <input type="radio" id="tab-python" name="code-tabs">
+            <label for="tab-python">Python</label>
+            
+            <div class="tab-content" id="content-cpp">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code><span class="keyword">class</span> <span class="type">Solution</span> {
+<span class="keyword">public</span>:
+    <span class="type">int</span> <span class="function">uniqueXorTriplets</span>(<span class="type">vector</span>&lt;<span class="type">int</span>&gt;&amp; <span class="code-text">nums</span>) {
+        <span class="keyword">const</span> <span class="type">int</span> <span class="code-text">MAXX</span> = <span class="number">2048</span>;
+
+        <span class="type">vector</span>&lt;<span class="type">bool</span>&gt; <span class="code-text">dp1</span>(<span class="code-text">MAXX</span>, <span class="keyword">false</span>);
+        <span class="type">vector</span>&lt;<span class="type">bool</span>&gt; <span class="code-text">dp2</span>(<span class="code-text">MAXX</span>, <span class="keyword">false</span>);
+        <span class="type">vector</span>&lt;<span class="type">bool</span>&gt; <span class="code-text">dp3</span>(<span class="code-text">MAXX</span>, <span class="keyword">false</span>);
+
+        <span class="keyword">for</span> (<span class="type">int</span> <span class="code-text">v</span> : <span class="code-text">nums</span>) {
+            <span class="comment">// Build triples</span>
+            <span class="keyword">for</span> (<span class="type">int</span> <span class="code-text">x</span> = <span class="number">0</span>; <span class="code-text">x</span> &lt; <span class="code-text">MAXX</span>; <span class="code-text">x</span>++) {
+                <span class="keyword">if</span> (<span class="code-text">dp2</span>[<span class="code-text">x</span>])
+                    <span class="code-text">dp3</span>[<span class="code-text">x</span> ^ <span class="code-text">v</span>] = <span class="keyword">true</span>;
+            }
+
+            <span class="comment">// Build pairs</span>
+            <span class="keyword">for</span> (<span class="type">int</span> <span class="code-text">x</span> = <span class="number">0</span>; <span class="code-text">x</span> &lt; <span class="code-text">MAXX</span>; <span class="code-text">x</span>++) {
+                <span class="keyword">if</span> (<span class="code-text">dp1</span>[<span class="code-text">x</span>])
+                    <span class="code-text">dp2</span>[<span class="code-text">x</span> ^ <span class="code-text">v</span>] = <span class="keyword">true</span>;
+            }
+
+            <span class="comment">// Single element</span>
+            <span class="code-text">dp1</span>[<span class="code-text">v</span>] = <span class="keyword">true</span>;
+        }
+
+        <span class="type">int</span> <span class="code-text">ans</span> = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="type">int</span> <span class="code-text">x</span> = <span class="number">0</span>; <span class="code-text">x</span> &lt; <span class="code-text">MAXX</span>; <span class="code-text">x</span>++) {
+            <span class="keyword">if</span> (<span class="code-text">dp1</span>[<span class="code-text">x</span>] || <span class="code-text">dp3</span>[<span class="code-text">x</span>])
+                <span class="code-text">ans</span>++;
+        }
+
+        <span class="keyword">return</span> <span class="code-text">ans</span>;
+    }
+};</code></pre>
+            </div>
+            
+            <div class="tab-content" id="content-python">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code><span class="keyword">class</span> <span class="type">Solution</span>:
+    <span class="keyword">def</span> <span class="function">uniqueXorTriplets</span>(<span class="code-text">self</span>, <span class="code-text">nums</span>):
+        <span class="code-text">MAXX</span> = <span class="number">2048</span>
+
+        <span class="code-text">dp1</span> = [<span class="keyword">False</span>] * <span class="code-text">MAXX</span>
+        <span class="code-text">dp2</span> = [<span class="keyword">False</span>] * <span class="code-text">MAXX</span>
+        <span class="code-text">dp3</span> = [<span class="keyword">False</span>] * <span class="code-text">MAXX</span>
+
+        <span class="keyword">for</span> <span class="code-text">v</span> <span class="keyword">in</span> <span class="code-text">nums</span>:
+            <span class="comment"># Build triples</span>
+            <span class="keyword">for</span> <span class="code-text">x</span> <span class="keyword">in</span> <span class="function">range</span>(<span class="code-text">MAXX</span>):
+                <span class="keyword">if</span> <span class="code-text">dp2</span>[<span class="code-text">x</span>]:
+                    <span class="code-text">dp3</span>[<span class="code-text">x</span> ^ <span class="code-text">v</span>] = <span class="keyword">True</span>
+
+            <span class="comment"># Build pairs</span>
+            <span class="keyword">for</span> <span class="code-text">x</span> <span class="keyword">in</span> <span class="function">range</span>(<span class="code-text">MAXX</span>):
+                <span class="keyword">if</span> <span class="code-text">dp1</span>[<span class="code-text">x</span>]:
+                    <span class="code-text">dp2</span>[<span class="code-text">x</span> ^ <span class="code-text">v</span>] = <span class="keyword">True</span>
+
+            <span class="comment"># Single element</span>
+            <span class="code-text">dp1</span>[<span class="code-text">v</span>] = <span class="keyword">True</span>
+
+        <span class="code-text">ans</span> = <span class="number">0</span>
+        <span class="keyword">for</span> <span class="code-text">x</span> <span class="keyword">in</span> <span class="function">range</span>(<span class="code-text">MAXX</span>):
+            <span class="keyword">if</span> <span class="code-text">dp1</span>[<span class="code-text">x</span>] <span class="keyword">or</span> <span class="code-text">dp3</span>[<span class="code-text">x</span>]:
+                <span class="code-text">ans</span> += <span class="number">1</span>
+
+        <span class="keyword">return</span> <span class="code-text">ans</span></code></pre>
+            </div>
+        </div>
+      </div>
+
+      <!-- Complexity Analysis -->
+      <div class="section-card">
+        <h2>Complexity Analysis</h2>
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Resource</th>
+              <th>Complexity</th>
+              <th>Explanation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Time Complexity</strong></td>
+              <td><code>O(n &times; 2048)</code></td>
+              <td>For each element, we iterate through all 2048 XOR states. Since 2048 is a constant, it runs in <code>O(n)</code> practical time[cite: 1].</td>
+            </tr>
+            <tr>
+              <td><strong>Space Complexity</strong></td>
+              <td><code>O(2048)</code></td>
+              <td>Constant space required for the fixed-size DP arrays[cite: 1].</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Key Takeaways -->
+      <div class="summary-card">
+        <h2>Key Takeaways</h2>
+        <ul>
+          <li>Repeated indices never create new XOR values because of the cancellation property of XOR[cite: 1].</li>
+          <li>Only triplets consisting of three distinct elements need to be explored for new results[cite: 1].</li>
+          <li>The small XOR range (0–2047) makes dynamic programming over XOR states highly efficient[cite: 1].</li>
+          <li>This elegant solution reduces the problem from an impractical <code>O(n³)</code> brute force to an efficient <code>O(n &times; 2048)</code> algorithm[cite: 1].</li>
+        </ul>
+      </div>
+
+    </article>
+
+    <!-- Navigation Button to Previous Folder -->
+    <div class="back-nav-container">
+      <a href="../" class="see-problems-btn">
+        &larr; See All Problems
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+      <p class="footer-text">
+        Presented by <span class="footer-brand-orange">Tabspace</span> <span class="footer-brand-green">Presentations</span> &copy; 2026. All rights reserved.
+      </p>
+    </footer>
+  </main>
+
+  <!-- Clipboard Script -->
+  <script>
+    function copyCode(btn) {
+      const codeBlock = btn.parentElement.querySelector('code');
+      if (!codeBlock) return;
+
+      const codeText = codeBlock.textContent;
+
+      navigator.clipboard.writeText(codeText).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+    }
+  </script>
+</body>
+</html>

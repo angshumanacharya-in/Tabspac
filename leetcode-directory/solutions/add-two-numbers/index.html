@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Primary SEO Meta Tags -->
+  <title>Add Two Numbers (LeetCode 2) - C++ & Python Solution</title>
+  <meta name="title" content="Add Two Numbers (LeetCode 2) - C++ & Python Solution">
+  <meta name="description" content="Detailed guide and code solution for LeetCode 2: Add Two Numbers in C++ and Python. Includes visual walkthroughs, carry handling, and time complexity analysis.">
+  <meta name="keywords" content="LeetCode 2, Add Two Numbers, Linked List, Data Structures, Algorithms, C++, Python, Coding Interview">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Canonical Link -->
+  <link rel="canonical" href="https://tabspacepresentations.com/problems/leetcode-2-add-two-numbers/">
+
+  <!-- Open Graph / Facebook / LinkedIn / Discord -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://tabspacepresentations.com/problems/leetcode-2-add-two-numbers/">
+  <meta property="og:title" content="Add Two Numbers (LeetCode 2) - C++ & Python Solution">
+  <meta property="og:description" content="Master the Add Two Numbers linked list problem with step-by-step algorithms, dummy node techniques, and full C++ and Python code implementations.">
+  <meta property="og:image" content="https://tabspacepresentations.com/assets/leetcode-2-preview.jpg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://tabspacepresentations.com/problems/leetcode-2-add-two-numbers/">
+  <meta name="twitter:title" content="Add Two Numbers (LeetCode 2) - C++ & Python Solution">
+  <meta name="twitter:description" content="Master the Add Two Numbers linked list problem with step-by-step algorithms, dummy node techniques, and full C++ and Python code implementations.">
+  <meta name="twitter:image" content="https://tabspacepresentations.com/assets/leetcode-2-preview.jpg">
+
+  <!-- JSON-LD Structured Data (TechArticle Schema) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Add Two Numbers (LeetCode 2) Solution & Explanation",
+    "description": "Complete breakdown of LeetCode 2 (Add Two Numbers) using Linked Lists in C++ and Python.",
+    "articleSection": "Data Structures & Algorithms",
+    "keywords": ["LeetCode 2", "Add Two Numbers", "Linked List", "C++", "Python", "Algorithms"],
+    "author": {
+      "@type": "Organization",
+      "name": "Tabspace Presentations",
+      "url": "https://tabspacepresentations.com"
+    }
+  }
+  </script>
+
+  <style>
+    /* Global Reset & Base Setup */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Calisto MT', Georgia, 'Times New Roman', serif !important;
+      font-weight: bold !important;
+    }
+
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* Header Styling */
+    .top-header {
+      background-color: #000000;
+      border-bottom: 1px solid #18181b;
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      width: 100%;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .logo-img {
+      height: 3rem; 
+      width: auto;
+      object-fit: contain;
+      display: block;
+      transition: transform 0.2s ease;
+    }
+
+    .logo-container:hover .logo-img {
+      transform: scale(1.05);
+    }
+
+    /* Main Container */
+    .dark-wrapper {
+      flex: 1;
+      background-color: #121212;
+      color: #e0e0e0;
+      padding: 2rem;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Article Content Styles */
+    .topic-content-wrapper {
+      width: 100%;
+    }
+
+    .topic-content-wrapper h1 {
+      font-size: 2rem;
+      color: #f3f4f6;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid #2d3748;
+      text-align: center;
+      width: 100%;
+    }
+
+    .topic-content-wrapper h2 {
+      font-size: 1.3rem;
+      color: #22c55e;
+      margin: 0 0 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .topic-content-wrapper h3 {
+      font-size: 1.05rem;
+      color: #ff6d00;
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .topic-content-wrapper p {
+      color: #d1d5db;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper ul, .topic-content-wrapper ol {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper li {
+      color: #d1d5db;
+      margin-bottom: 0.4rem;
+      line-height: 1.6;
+    }
+
+    /* Section Cards */
+    .section-card {
+      width: 100%;
+      background-color: #1e1e1e;
+      border: 1px solid #2d3748;
+      border-radius: 10px;
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .section-card:hover {
+      border-color: rgba(255, 109, 0, 0.4);
+      box-shadow: 0 0 12px -2px rgba(255, 109, 0, 0.15);
+    }
+
+    /* Highlight Card */
+    .highlight-card {
+      width: 100%;
+      background-color: rgba(34, 197, 94, 0.08);
+      border: 1px solid #22c55e;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .highlight-card h2 {
+      color: #22c55e;
+    }
+
+    .highlight-card ul {
+      margin-bottom: 0;
+    }
+
+    /* Table Design */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0 0.5rem 0;
+      background-color: #121212;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #2d3748;
+    }
+
+    .custom-table th {
+      background-color: #282828;
+      color: #9ca3af;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #2d3748;
+    }
+
+    .custom-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #2d3748;
+      color: #d1d5db;
+    }
+
+    .custom-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Pure CSS Tabs Styling */
+    .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 20px 0;
+    }
+
+    .tabs label {
+        padding: 10px 20px;
+        cursor: pointer;
+        background: rgba(7, 10, 18, 0.4);
+        border: 1px solid #22314d;
+        border-bottom: none;
+        color: #94a3b8;
+        font-weight: 600;
+        border-radius: 6px 6px 0 0;
+        margin-right: 4px;
+        transition: all 0.2s ease;
+    }
+
+    .tabs input[type="radio"] {
+        display: none;
+    }
+
+    .tabs .tab-content {
+        width: 100%;
+        background: #070a12;
+        border: 1px solid #22314d;
+        border-radius: 0 6px 6px 6px;
+        display: none;
+        position: relative;
+    }
+
+    .tabs .tab-content pre {
+        margin: 0;
+        border: none;
+        border-radius: 0 6px 6px 6px;
+    }
+
+    #tab-cpp:checked ~ label[for="tab-cpp"],
+    #tab-python:checked ~ label[for="tab-python"] {
+        background: #070a12;
+        color: #ff6d00;
+        border-top: 2px solid #ff6d00;
+        border-bottom: 1px solid #070a12;
+    }
+
+    #tab-cpp:checked ~ #content-cpp,
+    #tab-python:checked ~ #content-python {
+        display: block;
+    }
+
+    /* Copy Button Styling */
+    .copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 12px;
+        background-color: rgba(34, 49, 77, 0.6);
+        color: #94a3b8;
+        border: 1px solid #22314d;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 0.78rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        z-index: 10;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+        font-weight: 600 !important;
+    }
+
+    .copy-btn:hover {
+        background-color: #ff6d00;
+        color: #ffffff;
+        border-color: #ff6d00;
+    }
+
+    .copy-btn.copied {
+        background-color: #22c55e !important;
+        color: #ffffff !important;
+        border-color: #22c55e !important;
+    }
+
+    pre {
+        background-color: #070a12;
+        color: #cbd5e1;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        line-height: 1.5;
+        border: 1px solid #22314d;
+    }
+
+    pre code, pre code * {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace !important;
+        font-size: 0.9rem !important;
+        font-weight: normal !important;
+    }
+
+    /* Syntax Highlighting Tokens */
+    .keyword  { color: #ff7b72 !important; }
+    .type     { color: #79c0ff !important; }
+    .function { color: #d2a8ff !important; }
+    .comment  { color: #94a3b8 !important; }
+    .number   { color: #79c0ff !important; }
+    .string   { color: #a5d6ff !important; }
+    .code-text { color: #cbd5e1 !important; }
+
+    /* Inline Code Tags */
+    code {
+      background: #282828;
+      color: #ff6d00;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: monospace !important;
+      font-weight: normal !important;
+    }
+
+    /* Summary Card */
+    .summary-card {
+      width: 100%;
+      background-color: rgba(255, 109, 0, 0.08);
+      border: 1px solid #ff6d00;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 0;
+    }
+
+    .summary-card h2 {
+      color: #ff6d00;
+    }
+
+    .summary-card ul {
+      margin-bottom: 0;
+    }
+
+    /* Back Navigation Button */
+    .back-nav-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin: 2.5rem 0 1rem 0;
+    }
+
+    .see-problems-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #1e1e1e;
+      color: #22c55e;
+      border: 1px solid #22c55e;
+      padding: 0.85rem 1.75rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    }
+
+    .see-problems-btn:hover {
+      background-color: rgba(34, 197, 94, 0.1);
+      border-color: #ff6d00;
+      color: #ff6d00;
+      transform: translateY(-2px);
+      box-shadow: 0 0 12px -2px rgba(255, 109, 0, 0.3);
+    }
+
+    /* Footer Styling */
+    .main-footer {
+      width: 100%;
+      max-width: 1200px;
+      margin: 2rem auto 0 auto;
+      padding: 2rem 0;
+      border-top: 1px solid #18181b;
+      text-align: center;
+    }
+
+    .footer-text {
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: #71717a;
+    }
+
+    .footer-brand-orange {
+      color: #ff6d00;
+    }
+
+    .footer-brand-green {
+      color: #22c55e;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="top-header">
+    <div class="logo-container" id="logoToggle" role="button" tabindex="0" title="Toggle Sidebar">
+      <img src="../../../logo.png" alt="Tabspace Presentations Logo" class="logo-img" onerror="this.style.border='1px dashed #333'; this.style.padding='4px';">
+    </div>
+  </header>
+
+  <!-- Article Container -->
+  <main class="dark-wrapper">
+    <article class="topic-content-wrapper" id="articleBody">
+      <h1>Add Two Numbers (LeetCode 2)</h1>
+
+      <!-- Introduction -->
+      <div class="highlight-card">
+        <h2>Introduction</h2>
+        <p><strong>Add Two Numbers</strong> is one of the most famous linked list problems on LeetCode. It is considered a classic interview question because it combines several fundamental programming concepts:</p>
+        <ul>
+          <li>Linked Lists</li>
+          <li>Digit-by-digit arithmetic</li>
+          <li>Carry handling</li>
+          <li>Iterative traversal</li>
+          <li>Pointer manipulation</li>
+        </ul>
+        <p>Although the problem statement is simple, it teaches an important technique that appears in many linked list interview problems.</p>
+      </div>
+
+      <!-- Problem Statement -->
+      <div class="section-card">
+        <h2>Problem Statement</h2>
+        <p>You are given two non-empty linked lists representing two non-negative integers. Each node contains exactly one digit. The digits are stored in reverse order.</p>
+        
+        <h3>Example Overview</h3>
+        <p>The number <code>342</code> is stored as <code>2 → 4 → 3</code>.<br>
+        Similarly, <code>465</code> is stored as <code>5 → 6 → 4</code>.</p>
+        <p>Your task is to add these two numbers and return the result as a linked list in the same reverse-order format.</p>
+        
+        <h3>Constraints</h3>
+        <ul>
+          <li>Both numbers do not contain leading zeros.</li>
+          <li>Each node stores a single digit (0–9).</li>
+          <li>The lists can have different lengths.</li>
+        </ul>
+      </div>
+
+      <!-- Understanding the Reverse Order -->
+      <div class="section-card">
+        <h2>Understanding the Reverse Order</h2>
+        <p>This is the most important observation. Normally, the number <code>342</code> is read left-to-right (Hundreds: 3, Tens: 4, Ones: 2). But the linked list stores it as <code>2 → 4 → 3</code>.</p>
+        <p><strong>Why?</strong> Because addition always starts from the least significant digit (the ones place). Instead of moving to the end of the linked list first, we can simply traverse directly from the head. This makes the problem much easier!</p>
+      </div>
+
+      <!-- Examples & Visual Walkthrough -->
+      <div class="section-card">
+        <h2>Examples & Visual Walkthrough</h2>
+        
+        <h3>Example 1</h3>
+        <p><code>l1 = 2 → 4 → 3</code> (Represents 342)<br>
+        <code>l2 = 5 → 6 → 4</code> (Represents 465)</p>
+        <p><strong>Addition:</strong> 342 + 465 = 807</p>
+        <p><strong>Output:</strong> <code>7 → 0 → 8</code> (Because 807 stored in reverse becomes 7 → 0 → 8).</p>
+
+        <h3>Step-by-Step Breakdown</h3>
+        <ul>
+          <li><strong>Step 1:</strong> 2 + 5 = 7. <code>Carry = 0</code>. Result so far: <code>7</code></li>
+          <li><strong>Step 2:</strong> 4 + 6 = 10. <code>Digit = 0, Carry = 1</code>. Result so far: <code>7 → 0</code></li>
+          <li><strong>Step 3:</strong> 3 + 4 + Carry(1) = 8. <code>Carry = 0</code>. Result: <code>7 → 0 → 8</code></li>
+        </ul>
+
+        <h3>Another Example (Handling End Carry)</h3>
+        <p><strong>Input:</strong> <code>9 → 9 → 9</code> and <code>1</code> (Represents 999 + 1 = 1000)</p>
+        <ul>
+          <li><strong>Step 1:</strong> 9 + 1 = 10. Store <code>0</code>, <code>Carry = 1</code></li>
+          <li><strong>Step 2:</strong> 9 + Carry = 10. Store <code>0</code>, <code>Carry = 1</code></li>
+          <li><strong>Step 3:</strong> 9 + Carry = 10. Store <code>0</code>, <code>Carry = 1</code></li>
+        </ul>
+        <p>The lists are finished, but a carry remains. Create one final node for the carry. <strong>Output:</strong> <code>0 → 0 → 0 → 1</code></p>
+      </div>
+
+      <!-- Key Observation & Algorithm -->
+      <div class="section-card">
+        <h2>Key Observation & Algorithm</h2>
+        <p>The addition process is exactly the same as elementary school addition. For every digit:</p>
+        <ul>
+          <li><code>Current Sum = Digit from List1 + Digit from List2 + Carry</code></li>
+          <li><code>Current Digit = Sum % 10</code></li>
+          <li><code>New Carry = Sum / 10</code></li>
+        </ul>
+        <p>Repeat this process until both lists finish AND the carry becomes zero.</p>
+
+        <h3>Algorithm Steps</h3>
+        <ol>
+          <li>Create a dummy node.</li>
+          <li>Keep a pointer pointing to the current result node.</li>
+          <li>Initialize <code>carry</code> as zero.</li>
+          <li>Traverse both linked lists simultaneously.</li>
+          <li>Read current digits and compute their sum with the carry.</li>
+          <li>Store the last digit (<code>sum % 10</code>) and update carry (<code>sum / 10</code>).</li>
+          <li>Move pointers forward.</li>
+          <li>If a carry remains after traversal, create one final node.</li>
+          <li>Return the node after the dummy node.</li>
+        </ol>
+      </div>
+
+      <!-- Dummy Node Technique -->
+      <div class="section-card">
+        <h2>The Dummy Node Technique</h2>
+        <p>Instead of treating the first node separately, create a <strong>dummy node</strong>: <code>0 → NULL</code>. Every new digit is attached after it.</p>
+        <p>For example, <code>Dummy(0) → 7 → 0 → 8</code>. Finally, you just return <code>Dummy->next</code>.</p>
+        <h3>Advantages:</h3>
+        <ul>
+          <li>Cleaner code</li>
+          <li>No special conditional checks for the first node</li>
+          <li>It is a standard, highly common linked list pattern</li>
+        </ul>
+      </div>
+
+      <!-- Code Implementations -->
+      <div class="section-card">
+        <h2>Code Implementations</h2>
+        
+        <div class="tabs">
+            <input type="radio" id="tab-cpp" name="code-tabs" checked>
+            <label for="tab-cpp">C++</label>
+            
+            <input type="radio" id="tab-python" name="code-tabs">
+            <label for="tab-python">Python</label>
+            
+            <div class="tab-content" id="content-cpp">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code><span class="keyword">class</span> <span class="type">Solution</span> {
+<span class="keyword">public</span>:
+    <span class="type">ListNode</span>* <span class="function">addTwoNumbers</span>(<span class="type">ListNode</span>* <span class="code-text">l1</span>, <span class="type">ListNode</span>* <span class="code-text">l2</span>) {
+        <span class="type">ListNode</span> <span class="code-text">dummy</span>(<span class="number">0</span>);
+        <span class="type">ListNode</span>* <span class="code-text">current</span> = &<span class="code-text">dummy</span>;
+        <span class="type">int</span> <span class="code-text">carry</span> = <span class="number">0</span>;
+
+        <span class="keyword">while</span> (<span class="code-text">l1</span> || <span class="code-text">l2</span> || <span class="code-text">carry</span>) {
+            <span class="type">int</span> <span class="code-text">sum</span> = <span class="code-text">carry</span>;
+
+            <span class="keyword">if</span> (<span class="code-text">l1</span>) {
+                <span class="code-text">sum</span> += <span class="code-text">l1</span>-&gt;<span class="code-text">val</span>;
+                <span class="code-text">l1</span> = <span class="code-text">l1</span>-&gt;<span class="code-text">next</span>;
+            }
+
+            <span class="keyword">if</span> (<span class="code-text">l2</span>) {
+                <span class="code-text">sum</span> += <span class="code-text">l2</span>-&gt;<span class="code-text">val</span>;
+                <span class="code-text">l2</span> = <span class="code-text">l2</span>-&gt;<span class="code-text">next</span>;
+            }
+
+            <span class="code-text">carry</span> = <span class="code-text">sum</span> / <span class="number">10</span>;
+            <span class="code-text">current</span>-&gt;<span class="code-text">next</span> = <span class="keyword">new</span> <span class="type">ListNode</span>(<span class="code-text">sum</span> % <span class="number">10</span>);
+            <span class="code-text">current</span> = <span class="code-text">current</span>-&gt;<span class="code-text">next</span>;
+        }
+
+        <span class="keyword">return</span> <span class="code-text">dummy</span>.<span class="code-text">next</span>;
+    }
+};</code></pre>
+            </div>
+            
+            <div class="tab-content" id="content-python">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code><span class="comment"># Definition for singly-linked list.</span>
+<span class="comment"># class ListNode:</span>
+<span class="comment">#     def __init__(self, val=0, next=None):</span>
+<span class="comment">#         self.val = val</span>
+<span class="comment">#         self.next = next</span>
+
+<span class="keyword">class</span> <span class="type">Solution</span>:
+    <span class="keyword">def</span> <span class="function">addTwoNumbers</span>(self, <span class="code-text">l1</span>: <span class="type">Optional</span>[<span class="type">ListNode</span>], <span class="code-text">l2</span>: <span class="type">Optional</span>[<span class="type">ListNode</span>]) -&gt; <span class="type">Optional</span>[<span class="type">ListNode</span>]:
+        <span class="code-text">dummy</span> = <span class="type">ListNode</span>(<span class="number">0</span>)
+        <span class="code-text">current</span> = <span class="code-text">dummy</span>
+        <span class="code-text">carry</span> = <span class="number">0</span>
+        
+        <span class="keyword">while</span> <span class="code-text">l1</span> <span class="keyword">or</span> <span class="code-text">l2</span> <span class="keyword">or</span> <span class="code-text">carry</span>:
+            <span class="code-text">val1</span> = <span class="code-text">l1</span>.<span class="code-text">val</span> <span class="keyword">if</span> <span class="code-text">l1</span> <span class="keyword">else</span> <span class="number">0</span>
+            <span class="code-text">val2</span> = <span class="code-text">l2</span>.<span class="code-text">val</span> <span class="keyword">if</span> <span class="code-text">l2</span> <span class="keyword">else</span> <span class="number">0</span>
+            
+            <span class="code-text">total</span> = <span class="code-text">val1</span> + <span class="code-text">val2</span> + <span class="code-text">carry</span>
+            <span class="code-text">carry</span> = <span class="code-text">total</span> // <span class="number">10</span>
+            
+            <span class="code-text">current</span>.<span class="code-text">next</span> = <span class="type">ListNode</span>(<span class="code-text">total</span> % <span class="number">10</span>)
+            <span class="code-text">current</span> = <span class="code-text">current</span>.<span class="code-text">next</span>
+            
+            <span class="keyword">if</span> <span class="code-text">l1</span>: <span class="code-text">l1</span> = <span class="code-text">l1</span>.<span class="code-text">next</span>
+            <span class="keyword">if</span> <span class="code-text">l2</span>: <span class="code-text">l2</span> = <span class="code-text">l2</span>.<span class="code-text">next</span>
+            
+        <span class="keyword">return</span> <span class="code-text">dummy</span>.<span class="code-text">next</span></code></pre>
+            </div>
+        </div>
+      </div>
+
+      <!-- Complexity Analysis -->
+      <div class="section-card">
+        <h2>Complexity Analysis</h2>
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Resource</th>
+              <th>Complexity</th>
+              <th>Explanation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Time Complexity</strong></td>
+              <td><code>O(max(m, n))</code></td>
+              <td>Where <code>m</code> and <code>n</code> are the lengths of the two lists. Each node is visited exactly once.</td>
+            </tr>
+            <tr>
+              <td><strong>Space Complexity</strong></td>
+              <td><code>O(1)</code></td>
+              <td>Auxiliary space is constant (excluding the output linked list).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Common Mistakes & Alternative Approaches -->
+      <div class="section-card">
+        <h2>Common Mistakes</h2>
+        <ul>
+          <li><strong>Forgetting the Final Carry:</strong> <code>999 + 1</code> requires <code>0 → 0 → 0 → 1</code>. Many beginners forget to create the last node.</li>
+          <li><strong>Ignoring Different Lengths:</strong> <code>123 + 99999</code>. The algorithm must continue processing the longer list after the shorter one ends.</li>
+          <li><strong>Not Using a Dummy Node:</strong> Without a dummy node, special handling is needed for the first node, making the implementation more error-prone.</li>
+        </ul>
+
+        <h3>Alternative Approaches</h3>
+        <ul>
+          <li><strong>Recursive Solution:</strong> The addition can also be implemented recursively by passing the carry to each recursive call. It is elegant and concise, but uses additional recursion stack space.</li>
+          <li><strong>Convert to Integer (Not Recommended):</strong> One might think of converting the linked lists into integers, adding them, and converting back. This approach fails because the numbers can be extremely large and may exceed the capacity of built-in integer types.</li>
+        </ul>
+      </div>
+
+      <!-- Interview Tips -->
+      <div class="section-card">
+        <h2>Interview Tips</h2>
+        <p>During an interview, explicitly explain to your interviewer that:</p>
+        <ul>
+          <li>Digits are stored in reverse order, allowing addition strictly from the head.</li>
+          <li>A <code>carry</code> variable tracks mathematical overflow accurately.</li>
+          <li>A dummy node simplifies linked list construction and edge cases.</li>
+          <li>The loop continues while either list has nodes <em>or</em> a carry remains.</li>
+          <li>The algorithm handles lists of unequal lengths naturally.</li>
+        </ul>
+        <p>These observations demonstrate a clear understanding of both linked list data structures and arithmetic simulation.</p>
+      </div>
+
+      <!-- Key Takeaways -->
+      <div class="summary-card">
+        <h2>Key Takeaways</h2>
+        <ul>
+          <li>Reverse-order storage eliminates the need to reverse the linked lists before processing.</li>
+          <li>Process one digit at a time, exactly like manual elementary addition.</li>
+          <li>Maintain a carry throughout the entire traversal.</li>
+          <li>A dummy node makes constructing the result list straightforward and safe from null pointer errors.</li>
+          <li>The solution runs in <code>O(max(m, n))</code> time with <code>O(1)</code> auxiliary space.</li>
+        </ul>
+      </div>
+
+    </article>
+
+    <!-- Navigation Button to Previous Folder -->
+    <div class="back-nav-container">
+      <a href="../../" class="see-problems-btn">
+        ← See All Problems
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+      <p class="footer-text">
+        Presented by <span class="footer-brand-orange">Tabspace</span> <span class="footer-brand-green">Presentations</span> &copy; 2026. All rights reserved.
+      </p>
+    </footer>
+  </main>
+
+  <!-- Clipboard Script -->
+  <script>
+    // Copy Code Block Functionality
+    function copyCode(btn) {
+      const codeBlock = btn.parentElement.querySelector('code');
+      if (!codeBlock) return;
+
+      const codeText = codeBlock.textContent;
+
+      navigator.clipboard.writeText(codeText).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+    }
+  </script>
+</body>
+</html>

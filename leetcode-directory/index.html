@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetCode Solutions Directory & Algorithm Guide | Tabspace</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Explore optimized, step-by-step LeetCode algorithmic solutions categorized by difficulty and computer science topics like Dynamic Programming, Graphs, and Trees.">
+    <link rel="canonical" href="https://tabspacepresentations.com/leetcode-directory/" />
+
+    <!-- Open Graph (Social Sharing) -->
+    <meta property="og:title" content="LeetCode Solutions Directory | Tabspace" />
+    <meta property="og:description" content="An exhaustive directory of LeetCode algorithmic solutions categorized by difficulty and topic." />
+    <meta property="og:url" content="https://tabspacepresentations.com/leetcode-directory/" />
+    <meta property="og:type" content="website" />
+
+    <!-- Schema.org Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "LeetCode Solutions Directory & Algorithm Guide",
+      "url": "https://tabspacepresentations.com/leetcode-directory/",
+      "description": "Explore optimized, step-by-step LeetCode algorithmic solutions categorized by difficulty and computer science topics."
+    }
+    </script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#ff6D00',
+                            green: '#22c55e'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .font-calisto {
+            font-family: 'Calisto MT', 'Bookman Old Style', Georgia, serif;
+        }
+        .solution-card-glow:hover {
+            box-shadow: 0 0 16px -2px rgba(255, 109, 0, 0.4);
+            border-color: #ff6D00;
+            background-color: #0c0a09;
+        }
+    </style>
+
+    <!-- Global problem array initialization -->
+    <script>
+        window.rawProblems = [];
+    </script>
+
+    <!-- Problem Batches -->
+    <script src="./problems/problems1to250.js"></script>
+    <script src="./problems/problems251to500.js"></script>
+    <script src="./problems/problems501to750.js"></script>
+    <script src="./problems/problems751to1000.js"></script>
+    <script src="./problems/problems1001to1250.js"></script>
+    <script src="./problems/problems1251to1500.js"></script>
+    <script src="./problems/problems1501to1750.js"></script>
+    <script src="./problems/problems1751to2000.js"></script>
+    <script src="./problems/problems2001to2250.js"></script>
+    <script src="./problems/problems2251to2500.js"></script>
+    <script src="./problems/problems2501to2750.js"></script>
+    <script src="./problems/problems2751to3000.js"></script>
+    <script src="./problems/problems3001to3250.js"></script>
+    <script src="./problems/problems3251to3500.js"></script>
+    <script src="./problems/problems3501to3750.js"></script>
+</head>
+<body class="bg-zinc-950 text-zinc-100 font-calisto antialiased min-h-screen selection:bg-brand-orange selection:text-black flex flex-col justify-between">
+
+    <!-- Header -->
+    <!-- Header (Logo link enabled) -->
+    <header class="sticky top-0 z-50 bg-black border-b border-zinc-900 px-6 py-4 transition-all">
+        <div class="w-full flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3 select-none">
+                <a href="./" class="flex items-center shrink-0 py-1 group cursor-pointer">
+                    <img src="./logo.png" alt="Tabspace Logo" class="h-16 md:h-20 w-auto object-contain block opacity-90 group-hover:opacity-100 transition-opacity" />
+                </a>
+                <span class="text-zinc-500 text-lg md:text-2xl font-light">/ LeetCode Directory</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="w-full max-w-6xl mx-auto px-6 py-12 space-y-8 flex-grow">
+
+        <!-- Title & Intro Section -->
+        <div class="max-w-3xl mx-auto text-center space-y-4 border-b border-zinc-900 pb-8">
+            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white">
+                LeetCode <span class="text-[#ff6D00]">Directory</span>
+            </h1>
+            <p class="text-zinc-400 text-sm md:text-base leading-relaxed">
+                An index of algorithmic solutions categorized by difficulty and core computer science topics. Filter by problem ID, title, or topic to inspect implementations.
+            </p>
+        </div>
+
+        <!-- Search Controls -->
+        <div class="max-w-xl mx-auto space-y-2">
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Search by ID, title, or topic (e.g. Backtracking, 25, Binary Search)..." 
+                onkeyup="handleSearch()"
+                class="w-full px-4 py-3 bg-zinc-900/60 border border-zinc-800 rounded-xl text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-brand-orange transition-all font-sans"
+            >
+            <div id="statsText" class="text-right text-xs text-zinc-500 font-sans">Loading solutions...</div>
+        </div>
+
+        <!-- Problem Cards Grid (Includes noscript fallback crawl links) -->
+        <noscript>
+            <div class="p-4 mb-6 bg-yellow-500/10 border border-yellow-500/20 text-yellow-200 text-sm rounded-xl font-sans text-center">
+                JavaScript is disabled. Please use your XML sitemap or browse individual pages directly via search engines.
+            </div>
+        </noscript>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="problemGrid"></div>
+
+        <!-- Load More Button -->
+        <div class="text-center pt-4">
+            <button 
+                id="loadMoreBtn" 
+                onclick="loadNextBatch()" 
+                class="hidden px-6 py-3 bg-zinc-900 border border-zinc-800 text-zinc-300 font-bold rounded-xl hover:border-brand-orange hover:text-brand-orange transition-all duration-200 font-sans"
+            >
+                Load More Solutions
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-zinc-900 text-center mt-12">
+        <p class="text-xs tracking-wider text-zinc-500">
+            Presented by <span class="font-bold text-[#ff6D00]">Tabspace</span> <span class="font-bold text-brand-green">Presentations</span> &copy; 2026. All rights reserved.
+        </p>
+    </footer>
+
+    <!-- Rendering Script -->
+    <script>
+        let filteredProblems = Array.isArray(window.rawProblems) ? [...window.rawProblems] : [];
+        let currentIndex = 0;
+        const BATCH_SIZE = 150;
+
+        function getDiffBadgeClass(diff) {
+            if (diff === 'Easy') return 'text-brand-green bg-green-500/10 border-green-500/20';
+            if (diff === 'Medium') return 'text-yellow-500 bg-yellow-500/10 border-yellow-500/20';
+            return 'text-red-500 bg-red-500/10 border-red-500/20';
+        }
+
+        function renderNextBatch(reset = false) {
+            const grid = document.getElementById('problemGrid');
+            const btn = document.getElementById('loadMoreBtn');
+            const stats = document.getElementById('statsText');
+
+            if (reset) {
+                grid.innerHTML = '';
+                currentIndex = 0;
+            }
+
+            const nextBatch = filteredProblems.slice(currentIndex, currentIndex + BATCH_SIZE);
+            
+            const html = nextBatch.map(p => `
+                <a href="./solutions/${p.slug}/" class="solution-card-glow flex flex-col justify-between gap-3 bg-zinc-900/40 border border-zinc-800/80 p-4 rounded-xl transition-all duration-200 text-zinc-300 w-full text-left group">
+                    <div class="flex items-start justify-between gap-2">
+                        <span class="text-sm md:text-base font-semibold line-clamp-2">
+                            <span class="text-zinc-300">${p.id}. </span><span class="group-hover:text-brand-green transition-colors">${p.title}</span>
+                        </span>
+                        <span class="text-xs font-semibold px-2.5 py-0.5 rounded-md border shrink-0 font-sans ${getDiffBadgeClass(p.diff)}">
+                            ${p.diff}
+                        </span>
+                    </div>
+                    <div class="text-xs text-zinc-500 font-sans border-t border-zinc-900 pt-2 truncate">
+                        <span class="text-zinc-600 font-medium">Topics:</span> ${p.topics}
+                    </div>
+                </a>
+            `).join('');
+
+            grid.insertAdjacentHTML('beforeend', html);
+            currentIndex += BATCH_SIZE;
+
+            stats.innerText = `Showing ${Math.min(currentIndex, filteredProblems.length)} of ${filteredProblems.length} solutions`;
+            btn.style.display = currentIndex >= filteredProblems.length ? 'none' : 'inline-block';
+        }
+
+        function loadNextBatch() {
+            renderNextBatch(false);
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            if (Array.isArray(window.rawProblems)) {
+                filteredProblems = window.rawProblems.filter(p => {
+                    const fullText = `${p.id}. ${p.title} ${p.topics}`.toLowerCase();
+                    return fullText.includes(query);
+                });
+            }
+
+            renderNextBatch(true);
+        }
+
+        // Initial render on page load
+        renderNextBatch(true);
+    </script>
+</body>
+</html>

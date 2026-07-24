@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Primary SEO Meta Tags -->
+  <title>Longest Substring Without Repeating Characters (LeetCode 3) - C++ & Python Solution</title>
+  <meta name="title" content="Longest Substring Without Repeating Characters (LeetCode 3) - C++ & Python Solution">
+  <meta name="description" content="Detailed guide and optimal code solution for LeetCode 3: Longest Substring Without Repeating Characters using the Sliding Window technique in C++ and Python.">
+  <meta name="keywords" content="Longest Substring Without Repeating Characters, LeetCode 3, Sliding Window, Hash Map, Data Structures, Algorithms, C++, Python, Coding Interview">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Canonical Link -->
+  <link rel="canonical" href="https://tabspacepresentations.com/longest-substring-without-repeating-characters">
+
+  <!-- Open Graph / Facebook / LinkedIn / Discord -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://tabspacepresentations.com/longest-substring-without-repeating-characters">
+  <meta property="og:title" content="Longest Substring Without Repeating Characters (LeetCode 3) - C++ & Python Solution">
+  <meta property="og:description" content="Master the Longest Substring Without Repeating Characters (LeetCode 3) problem with sliding window optimization, two pointers, and full C++ and Python implementations.">
+  <meta property="og:image" content="https://tabspacepresentations.com/assets/longest-substring-without-repeating-characters-preview.jpg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://tabspacepresentations.com/longest-substring-without-repeating-characters">
+  <meta name="twitter:title" content="Longest Substring Without Repeating Characters (LeetCode 3) - C++ & Python Solution">
+  <meta name="twitter:description" content="Master the Longest Substring Without Repeating Characters (LeetCode 3) problem with sliding window optimization, two pointers, and full C++ and Python implementations.">
+  <meta name="twitter:image" content="https://tabspacepresentations.com/assets/longest-substring-without-repeating-characters-preview.jpg">
+
+  <!-- JSON-LD Structured Data (TechArticle Schema) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Longest Substring Without Repeating Characters (LeetCode 3) Solution & Explanation",
+    "description": "Complete breakdown of LeetCode 3 (Longest Substring Without Repeating Characters) using Sliding Window optimization in C++ and Python.",
+    "articleSection": "Data Structures & Algorithms",
+    "keywords": ["Longest Substring Without Repeating Characters", "LeetCode 3", "Sliding Window", "C++", "Python", "Algorithms"],
+    "author": {
+      "@type": "Organization",
+      "name": "Tabspace Presentations",
+      "url": "https://tabspacepresentations.com"
+    }
+  }
+  </script>
+
+  <style>
+    /* Global Reset & Base Setup */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Calisto MT', Georgia, 'Times New Roman', serif !important;
+      font-weight: bold !important;
+    }
+
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* Header Styling */
+    .top-header {
+      background-color: #000000;
+      border-bottom: 1px solid #18181b;
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      width: 100%;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .logo-img {
+      height: 3rem; 
+      width: auto;
+      object-fit: contain;
+      display: block;
+      transition: transform 0.2s ease;
+    }
+
+    .logo-container:hover .logo-img {
+      transform: scale(1.05);
+    }
+
+    /* Main Container */
+    .dark-wrapper {
+      flex: 1;
+      background-color: #121212;
+      color: #e0e0e0;
+      padding: 2rem;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Article Content Styles */
+    .topic-content-wrapper {
+      width: 100%;
+    }
+
+    .topic-content-wrapper h1 {
+      font-size: 2rem;
+      color: #f3f4f6;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid #2d3748;
+      text-align: center;
+      width: 100%;
+    }
+
+    .topic-content-wrapper h2 {
+      font-size: 1.3rem;
+      color: #22c55e;
+      margin: 0 0 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .topic-content-wrapper h3 {
+      font-size: 1.05rem;
+      color: #ff6d00;
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .topic-content-wrapper p {
+      color: #d1d5db;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper ul, .topic-content-wrapper ol {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper li {
+      color: #d1d5db;
+      margin-bottom: 0.4rem;
+      line-height: 1.6;
+    }
+
+    /* Section Cards */
+    .section-card {
+      width: 100%;
+      background-color: #1e1e1e;
+      border: 1px solid #2d3748;
+      border-radius: 10px;
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .section-card:hover {
+      border-color: rgba(255, 109, 0, 0.4);
+      box-shadow: 0 0 12px -2px rgba(255, 109, 0, 0.15);
+    }
+
+    /* Highlight Card */
+    .highlight-card {
+      width: 100%;
+      background-color: rgba(34, 197, 94, 0.08);
+      border: 1px solid #22c55e;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .highlight-card h2 {
+      color: #22c55e;
+    }
+
+    .highlight-card ul {
+      margin-bottom: 0;
+    }
+
+    /* Table Design */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0 0.5rem 0;
+      background-color: #121212;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #2d3748;
+    }
+
+    .custom-table th {
+      background-color: #282828;
+      color: #9ca3af;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #2d3748;
+    }
+
+    .custom-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #2d3748;
+      color: #d1d5db;
+    }
+
+    .custom-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Pure CSS Tabs Styling */
+    .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 20px 0;
+    }
+
+    .tabs label {
+        padding: 10px 20px;
+        cursor: pointer;
+        background: rgba(7, 10, 18, 0.4);
+        border: 1px solid #22314d;
+        border-bottom: none;
+        color: #94a3b8;
+        font-weight: 600;
+        border-radius: 6px 6px 0 0;
+        margin-right: 4px;
+        transition: all 0.2s ease;
+    }
+
+    .tabs input[type="radio"] {
+        display: none;
+    }
+
+    .tabs .tab-content {
+        width: 100%;
+        background: #070a12;
+        border: 1px solid #22314d;
+        border-radius: 0 6px 6px 6px;
+        display: none;
+        position: relative;
+    }
+
+    .tabs .tab-content pre {
+        margin: 0;
+        border: none;
+        border-radius: 0 6px 6px 6px;
+    }
+
+    #tab-cpp:checked ~ label[for="tab-cpp"],
+    #tab-python:checked ~ label[for="tab-python"] {
+        background: #070a12;
+        color: #ff6d00;
+        border-top: 2px solid #ff6d00;
+        border-bottom: 1px solid #070a12;
+    }
+
+    #tab-cpp:checked ~ #content-cpp,
+    #tab-python:checked ~ #content-python {
+        display: block;
+    }
+
+    /* Copy Button Styling */
+    .copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 12px;
+        background-color: rgba(34, 49, 77, 0.6);
+        color: #94a3b8;
+        border: 1px solid #22314d;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 0.78rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        z-index: 10;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+        font-weight: 600 !important;
+    }
+
+    .copy-btn:hover {
+        background-color: #ff6d00;
+        color: #ffffff;
+        border-color: #ff6d00;
+    }
+
+    .copy-btn.copied {
+        background-color: #22c55e !important;
+        color: #ffffff !important;
+        border-color: #22c55e !important;
+    }
+
+    pre {
+        background-color: #070a12;
+        color: #cbd5e1;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        line-height: 1.5;
+        border: 1px solid #22314d;
+    }
+
+    pre code, pre code * {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace !important;
+        font-size: 0.9rem !important;
+        font-weight: normal !important;
+    }
+
+    /* Syntax Highlighting Tokens */
+    .keyword  { color: #ff7b72 !important; }
+    .type     { color: #79c0ff !important; }
+    .function { color: #d2a8ff !important; }
+    .comment  { color: #94a3b8 !important; }
+    .number   { color: #79c0ff !important; }
+    .string   { color: #a5d6ff !important; }
+    .code-text { color: #cbd5e1 !important; }
+
+    /* Inline Code Tags */
+    code {
+      background: #282828;
+      color: #ff6d00;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: monospace !important;
+      font-weight: normal !important;
+    }
+
+    /* Summary Card */
+    .summary-card {
+      width: 100%;
+      background-color: rgba(255, 109, 0, 0.08);
+      border: 1px solid #ff6d00;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 0;
+    }
+
+    .summary-card h2 {
+      color: #ff6d00;
+    }
+
+    .summary-card ul {
+      margin-bottom: 0;
+    }
+
+    /* Back Navigation Button */
+    .back-nav-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin: 2.5rem 0 1rem 0;
+    }
+
+    .see-problems-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #1e1e1e;
+      color: #22c55e;
+      border: 1px solid #22c55e;
+      padding: 0.85rem 1.75rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    }
+
+    .see-problems-btn:hover {
+      background-color: rgba(34, 197, 94, 0.1);
+      border-color: #ff6d00;
+      color: #ff6d00;
+      transform: translateY(-2px);
+      box-shadow: 0 0 12px -2px rgba(255, 109, 0, 0.3);
+    }
+
+    /* Footer Styling */
+    .main-footer {
+      width: 100%;
+      max-width: 1200px;
+      margin: 2rem auto 0 auto;
+      padding: 2rem 0;
+      border-top: 1px solid #18181b;
+      text-align: center;
+    }
+
+    .footer-text {
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: #71717a;
+    }
+
+    .footer-brand-orange {
+      color: #ff6d00;
+    }
+
+    .footer-brand-green {
+      color: #22c55e;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="top-header">
+    <div class="logo-container" id="logoToggle" role="button" tabindex="0" title="Toggle Sidebar">
+      <img src="../../../logo.png" alt="Tabspace Presentations Logo" class="logo-img" onerror="this.style.border='1px dashed #333'; this.style.padding='4px';">
+    </div>
+  </header>
+
+  <!-- Article Container -->
+  <main class="dark-wrapper">
+    <article class="topic-content-wrapper" id="articleBody">
+      <h1>Longest Substring Without Repeating Characters (LeetCode 3)</h1>
+
+      <!-- Introduction -->
+      <div class="highlight-card">
+        <h2>Introduction</h2>
+        <p>Strings are among the most frequently tested topics in coding interviews. One of the most famous string problems is <strong>Longest Substring Without Repeating Characters</strong>.</p>
+        <p>At first glance, the problem appears simple—you only need to find the longest substring containing unique characters. However, solving it efficiently requires understanding one of the most important algorithmic techniques: the <strong>Sliding Window</strong>.</p>
+        <p>This problem is asked by companies like Google, Amazon, Microsoft, Meta, Apple, Adobe, Uber, and many others because it tests:</p>
+        <ul>
+          <li>String manipulation</li>
+          <li>Hash maps</li>
+          <li>Two pointers</li>
+          <li>Sliding window optimization</li>
+          <li>Time complexity analysis</li>
+        </ul>
+      </div>
+
+      <!-- Problem Statement -->
+      <div class="section-card">
+        <h2>Problem Statement</h2>
+        <p>Given a string <code>s</code>, return the length of the longest substring without repeating characters.</p>
+        <p>A substring is a contiguous sequence of characters.</p>
+        
+        <h3>Example 1</h3>
+        <p><strong>Input:</strong> <code>s = "abcabcbb"</code><br>
+        <strong>Output:</strong> <code>3</code><br>
+        <strong>Explanation:</strong> The answer is <code>"abc"</code>, with the length of 3.</p>
+
+        <h3>Example 2</h3>
+        <p><strong>Input:</strong> <code>s = "bbbbb"</code><br>
+        <strong>Output:</strong> <code>1</code><br>
+        <strong>Explanation:</strong> The answer is <code>"b"</code>, with the length of 1.</p>
+
+        <h3>Example 3</h3>
+        <p><strong>Input:</strong> <code>s = "pwwkew"</code><br>
+        <strong>Output:</strong> <code>3</code><br>
+        <strong>Explanation:</strong> The answer is <code>"wke"</code>, with the length of 3.<br>
+        Notice that <code>"pwke"</code> is a subsequence and not a substring, as the characters are not contiguous.</p>
+      </div>
+
+      <!-- Understanding the Problem & Brute Force -->
+      <div class="section-card">
+        <h2>Understanding the Problem & Brute Force</h2>
+        <p>Suppose we have <code>"abcabcbb"</code>. Possible substrings starting at index 0 are:</p>
+        <ul>
+          <li><code>"a"</code></li>
+          <li><code>"ab"</code></li>
+          <li><code>"abc"</code></li>
+          <li><code>"abca"</code> [Duplicate found]</li>
+        </ul>
+        <p>After reaching the second <code>'a'</code>, we cannot continue expanding. Instead of restarting from scratch, we should move our starting position forward. This observation naturally leads to the <strong>Sliding Window</strong> technique.</p>
+
+        <h3>Brute Force Approach</h3>
+        <p>The simplest idea is to generate every possible substring, check if it contains all unique characters, and track the maximum length.</p>
+        <ul>
+          <li>Outer loop for starting index <code>i</code></li>
+          <li>Inner loop for ending index <code>j</code></li>
+          <li>Check if <code>substring(i, j)</code> consists of unique characters</li>
+        </ul>
+        <p><strong>Complexity:</strong> Generating all substrings takes <code>O(n²)</code> time, and checking uniqueness takes <code>O(n)</code>. The overall time complexity is <code>O(n³)</code>, which is far too slow for large inputs.</p>
+      </div>
+
+      <!-- Sliding Window Concept & Visual Walkthrough -->
+      <div class="section-card">
+        <h2>Sliding Window Concept</h2>
+        <p>Instead of checking every substring independently, maintain one valid dynamic window using two pointers (<code>left</code> and <code>right</code>). Whenever a duplicate appears, shift the <code>left</code> pointer forward until the duplicate is removed.</p>
+
+        <h3>Visual Walkthrough</h3>
+        <p>Input: <code>"abcabcbb"</code></p>
+        <ul>
+          <li><strong>Read 'a':</strong> Window = <code>"a"</code>, Length = 1, Max Answer = 1</li>
+          <li><strong>Read 'b':</strong> Window = <code>"ab"</code>, Length = 2, Max Answer = 2</li>
+          <li><strong>Read 'c':</strong> Window = <code>"abc"</code>, Length = 3, Max Answer = 3</li>
+          <li><strong>Read 'a':</strong> Duplicate <code>'a'</code> found. Slide left pointer past the first <code>'a'</code>. Window = <code>"bca"</code>, Length = 3.</li>
+          <li><strong>Continue:</strong> Windows become <code>"cab"</code>, <code>"abc"</code>, <code>"cb"</code>, <code>"b"</code>. Maximum length never exceeds 3.</li>
+        </ul>
+
+        <h3>Data Structure Used</h3>
+        <p>We need to know whether a character already exists inside the current window and where it was last seen. We can use an <code>unordered_map</code>, a <code>dictionary</code>, or a fixed-size array of size 256 for ASCII characters.</p>
+      </div>
+
+      <!-- Optimal Algorithm -->
+      <div class="section-card">
+        <h2>Optimal Algorithm</h2>
+        <ol>
+          <li>Initialize <code>left = 0</code>, <code>ans = 0</code>, and a hash map to store the last seen index of each character.</li>
+          <li>Traverse the string with a <code>right</code> pointer.</li>
+          <li>If the current character was seen before and its last recorded index is <code>>= left</code>, update <code>left = lastSeen[ch] + 1</code>.</li>
+          <li>Update the character's last seen index in the hash map.</li>
+          <li>Update maximum length: <code>ans = max(ans, right - left + 1)</code>.</li>
+        </ol>
+      </div>
+
+      <!-- Code Implementations -->
+      <div class="section-card">
+        <h2>Code Implementations</h2>
+        
+        <div class="tabs">
+            <input type="radio" id="tab-cpp" name="code-tabs" checked>
+            <label for="tab-cpp">C++</label>
+            
+            <input type="radio" id="tab-python" name="code-tabs">
+            <label for="tab-python">Python</label>
+            
+            <div class="tab-content" id="content-cpp">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code><span class="keyword">class</span> <span class="type">Solution</span> {
+<span class="keyword">public</span>:
+    <span class="type">int</span> <span class="function">lengthOfLongestSubstring</span>(<span class="type">string</span> <span class="code-text">s</span>) {
+        <span class="type">unordered_map</span>&lt;<span class="type">char</span>, <span class="type">int</span>&gt; <span class="code-text">lastSeen</span>;
+
+        <span class="type">int</span> <span class="code-text">left</span> = <span class="number">0</span>;
+        <span class="type">int</span> <span class="code-text">ans</span> = <span class="number">0</span>;
+
+        <span class="keyword">for</span> (<span class="type">int</span> <span class="code-text">right</span> = <span class="number">0</span>; <span class="code-text">right</span> &lt; <span class="code-text">s</span>.<span class="function">size</span>(); <span class="code-text">right</span>++) {
+
+            <span class="keyword">if</span> (<span class="code-text">lastSeen</span>.<span class="function">count</span>(<span class="code-text">s</span>[<span class="code-text">right</span>]) &amp;&amp;
+                <span class="code-text">lastSeen</span>[<span class="code-text">s</span>[<span class="code-text">right</span>]] &gt;= <span class="code-text">left</span>) {
+
+                <span class="code-text">left</span> = <span class="code-text">lastSeen</span>[<span class="code-text">s</span>[<span class="code-text">right</span>]] + <span class="number">1</span>;
+            }
+
+            <span class="code-text">lastSeen</span>[<span class="code-text">s</span>[<span class="code-text">right</span>]] = <span class="code-text">right</span>;
+
+            <span class="code-text">ans</span> = <span class="function">max</span>(<span class="code-text">ans</span>, <span class="code-text">right</span> - <span class="code-text">left</span> + <span class="number">1</span>);
+        }
+
+        <span class="keyword">return</span> <span class="code-text">ans</span>;
+    }
+};</code></pre>
+            </div>
+            
+            <div class="tab-content" id="content-python">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code><span class="keyword">class</span> <span class="type">Solution</span>:
+    <span class="keyword">def</span> <span class="function">lengthOfLongestSubstring</span>(<span class="code-text">self</span>, <span class="code-text">s</span>: <span class="type">str</span>) -&gt; <span class="type">int</span>:
+        <span class="code-text">last_seen</span> = {}
+
+        <span class="code-text">left</span> = <span class="number">0</span>
+        <span class="code-text">answer</span> = <span class="number">0</span>
+
+        <span class="keyword">for</span> <span class="code-text">right</span>, <span class="code-text">ch</span> <span class="keyword">in</span> <span class="function">enumerate</span>(<span class="code-text">s</span>):
+
+            <span class="keyword">if</span> <span class="code-text">ch</span> <span class="keyword">in</span> <span class="code-text">last_seen</span> <span class="keyword">and</span> <span class="code-text">last_seen</span>[<span class="code-text">ch</span>] &gt;= <span class="code-text">left</span>:
+                <span class="code-text">left</span> = <span class="code-text">last_seen</span>[<span class="code-text">ch</span>] + <span class="number">1</span>
+
+            <span class="code-text">last_seen</span>[<span class="code-text">ch</span>] = <span class="code-text">right</span>
+
+            <span class="code-text">answer</span> = <span class="function">max</span>(<span class="code-text">answer</span>, <span class="code-text">right</span> - <span class="code-text">left</span> + <span class="number">1</span>)
+
+        <span class="keyword">return</span> <span class="code-text">answer</span></code></pre>
+            </div>
+        </div>
+      </div>
+
+      <!-- Complexity Analysis -->
+      <div class="section-card">
+        <h2>Complexity Analysis</h2>
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Resource</th>
+              <th>Complexity</th>
+              <th>Explanation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Time Complexity</strong></td>
+              <td><code>O(n)</code></td>
+              <td>Each character is visited at most twice (once by <code>right</code> and once when shifting <code>left</code>).</td>
+            </tr>
+            <tr>
+              <td><strong>Space Complexity</strong></td>
+              <td><code>O(min(n, m))</code></td>
+              <td>Where <code>m</code> is the character set size. For standard ASCII characters, space is bounded by <code>O(1)</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Edge Cases & Common Mistakes -->
+      <div class="section-card">
+        <h2>Edge Cases & Common Mistakes</h2>
+        
+        <h3>Edge Cases</h3>
+        <ul>
+          <li><strong>Empty String:</strong> <code>""</code> -> Output: <code>0</code></li>
+          <li><strong>Single Character:</strong> <code>"a"</code> -> Output: <code>1</code></li>
+          <li><strong>All Same Characters:</strong> <code>"aaaaaa"</code> -> Output: <code>1</code></li>
+          <li><strong>All Unique Characters:</strong> <code>"abcdef"</code> -> Output: <code>6</code></li>
+          <li><strong>Repeated Characters (e.g., "abba"):</strong> Output: <code>2</code></li>
+        </ul>
+
+        <h3>Common Mistakes</h3>
+        <ul>
+          <li><strong>Resetting the window completely:</strong> Restarting traversal from scratch after finding a duplicate degrades performance back to <code>O(n²)</code>.</li>
+          <li><strong>Moving the left pointer backwards:</strong> Always ensure <code>left = max(left, lastSeen[ch] + 1)</code> or check <code>lastSeen[ch] >= left</code> before updating.</li>
+          <li><strong>Confusing Substring with Subsequence:</strong> A substring must be strictly contiguous.</li>
+        </ul>
+      </div>
+
+      <!-- Interview Tips & Similar Problems -->
+      <div class="section-card">
+        <h2>Interview Tips & Similar Problems</h2>
+        <p>During an interview, make sure to explicitly explain:</p>
+        <ul>
+          <li>Why sliding window optimizes <code>O(n³)</code> down to <code>O(n)</code>.</li>
+          <li>Why the <code>left</code> pointer never moves backward.</li>
+          <li>The distinction between substrings and subsequences.</li>
+        </ul>
+
+        <h3>Similar Problems</h3>
+        <ul>
+          <li>Longest Repeating Character Replacement</li>
+          <li>Minimum Window Substring</li>
+          <li>Longest Substring with At Most K Distinct Characters</li>
+          <li>Fruit Into Baskets</li>
+          <li>Maximum Erasure Value</li>
+          <li>Longest Nice Substring</li>
+        </ul>
+      </div>
+
+      <!-- Key Takeaways -->
+      <div class="summary-card">
+        <h2>Key Takeaways</h2>
+        <ul>
+          <li>Brute force takes <code>O(n³)</code> time; Sliding Window reduces complexity to <code>O(n)</code>.</li>
+          <li>A hash map efficiently tracks the last occurrence of each character.</li>
+          <li>Checking <code>lastSeen[ch] >= left</code> avoids moving the left pointer backward incorrectly.</li>
+          <li>This problem is a classic foundation for all sliding window interview questions.</li>
+        </ul>
+      </div>
+
+    </article>
+
+    <!-- Navigation Button to Previous Folder -->
+    <div class="back-nav-container">
+      <a href="../../" class="see-problems-btn">
+        &larr; See All Problems
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+      <p class="footer-text">
+        Presented by <span class="footer-brand-orange">Tabspace</span> <span class="footer-brand-green">Presentations</span> &copy; 2026. All rights reserved.
+      </p>
+    </footer>
+  </main>
+
+  <!-- Clipboard Script -->
+  <script>
+    // Copy Code Block Functionality
+    function copyCode(btn) {
+      const codeBlock = btn.parentElement.querySelector('code');
+      if (!codeBlock) return;
+
+      const codeText = codeBlock.textContent;
+
+      navigator.clipboard.writeText(codeText).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+    }
+  </script>
+</body>
+</html>

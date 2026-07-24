@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabspace Presentations</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Explore high-performance computer science concepts, optimized LeetCode algorithmic solutions, architectural articles, and interactive HTML5 physics sandboxes at Tabspace Presentations.">
+    <meta name="keywords" content="Tabspace Presentations, Computer Science Dictionary, LeetCode Solutions, CS Articles, HTML5 Physics Engine Sandbox, Algorithms, Software Development">
+    <meta name="author" content="Tabspace Presentations">
+    <link rel="canonical" href="https://www.tabspacepresentations.com/">
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Tabspace Presentations - Computer Science Repository">
+    <meta property="og:description" content="Your high-performance repository for computer science concepts, algorithmic solutions, architectural articles, and interactive sandbox environments.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.tabspacepresentations.com/">
+    <meta property="og:image" content="https://www.tabspacepresentations.com/images/logo.png">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Tabspace Presentations">
+    <meta name="twitter:description" content="High-performance repository for computer science concepts, LeetCode solutions, and interactive sandboxes.">
+    <meta name="twitter:image" content="https://www.tabspacepresentations.com/images/logo.png">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#ff6D00',
+                            green: '#22c55e'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --bg-main: #1a1a1a;
+            --bg-card: #2a2a2a;
+            --border-color: #333333;
+            --text-main: #eff1f5;
+            --text-muted: #9ca3af;
+            --accent-green: #22c55e;
+            --glow-orange: #ff6D00;
+        }
+
+        /* Global Font Override */
+        * {
+            font-family: 'Calisto MT', 'Bookman Old Style', Georgia, serif !important;
+            font-weight: 700 !important;
+            font-style: normal !important;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            letter-spacing: 0.025em;
+        }
+
+        /* Fixed offset for section anchor scrolling */
+        section[id] {
+            scroll-margin-top: 140px;
+        }
+
+        /* Base Card & Nav Button Styles */
+        .card-section, .btn-card {
+            background-color: rgba(39, 39, 42, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* STANDARD HOVER: Text turns GREEN (#22c55e), Glow & Border turn ORANGE (#ff6d00) */
+        .std-hover {
+            transition: all 0.25s ease-in-out;
+        }
+        .std-hover:hover h2, 
+        .std-hover:hover h3, 
+        .std-hover:hover span:not(.no-hover-override):not(.arrow):not(.preserve-white):not(.preserve-orange):not(.preserve-green) {
+            color: var(--accent-green) !important;
+        }
+        
+        /* EXCEPTION: Hard lock specific spans inside std-hover sections */
+        .std-hover:hover .preserve-white {
+            color: #ffffff !important;
+        }
+        .std-hover:hover .preserve-orange {
+            color: #ff6D00 !important;
+        }
+        .std-hover:hover .preserve-green {
+            color: #22c55e !important;
+        }
+
+        .std-hover:hover {
+            border-color: var(--glow-orange) !important;
+            box-shadow: 0 0 16px 2px rgba(255, 109, 0, 0.45) !important;
+        }
+
+        /* PLAYABLES HOVER (INVERTED): Border and glow turn GREEN (#22c55e), but text colors inside do not change on card hover */
+        .playables-hover {
+            transition: all 0.25s ease-in-out;
+        }
+        .playables-hover:hover {
+            border-color: var(--accent-green) !important;
+            box-shadow: 0 0 16px 2px rgba(34, 197, 94, 0.45) !important;
+        }
+
+        /* High-Conversion CTA Buttons */
+        .cta-btn-primary {
+            background: linear-gradient(135deg, #ff6D00 0%, #ff8500 100%);
+            color: #000000 !important;
+            border: 1px solid #ff6D00;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(255, 109, 0, 0.35);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-btn-primary:hover {
+            background: #121212 !important;
+            color: var(--accent-green) !important;
+            border-color: var(--glow-orange) !important;
+            box-shadow: 0 0 22px 4px rgba(255, 109, 0, 0.6) !important;
+            transform: translateY(-2px) scale(1.03);
+        }
+
+        .cta-btn-green {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: #000000 !important;
+            border: 1px solid #22c55e;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.35);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-btn-green:hover {
+            background: #121212 !important;
+            color: var(--glow-orange) !important;
+            border-color: var(--accent-green) !important;
+            box-shadow: 0 0 22px 4px rgba(34, 197, 94, 0.6) !important;
+            transform: translateY(-2px) scale(1.03);
+        }
+
+        .arrow {
+            display: inline-block;
+            transition: transform 0.2s ease, color 0.25s ease;
+            color: #000000 !important;
+        }
+
+        .cta-btn-primary:hover .arrow {
+            color: var(--accent-green) !important;
+            transform: translateX(4px);
+        }
+
+        .cta-btn-green:hover .arrow {
+            color: var(--glow-orange) !important;
+            transform: translateX(4px);
+        }
+
+        /* Typing Cursor Effect */
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            background-color: #22c55e;
+            animation: blink 0.7s infinite;
+            margin-left: 2px;
+            vertical-align: middle;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--glow-orange);
+        }
+    </style>
+</head>
+<body class="bg-[#1a1a1a] text-zinc-100 antialiased min-h-screen selection:bg-brand-orange selection:text-black">
+
+    <!-- DEEP BLACK STICKY HEADER -->
+    <header class="sticky top-0 z-50 bg-black border-b border-[#18181b] px-6 py-4 transition-all">
+        <div class="w-full flex items-center justify-between gap-4">
+            
+            <!-- Logo Container -->
+            <a href="#" class="flex items-center shrink-0 select-none py-1" aria-label="Tabspace Presentations Home">
+                <img src="images/logo.png" alt="Tabspace Presentations Logo" class="h-16 md:h-20 w-auto object-contain block transition-transform duration-200 hover:scale-105" />
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center gap-3 text-base" aria-label="Main Navigation">
+                <a href="#dictionary" class="btn-card std-hover text-white px-5 py-2.5 text-sm">
+                    CS Dictionary
+                </a>
+                <a href="#leetcode" class="btn-card std-hover text-white px-5 py-2.5 text-sm">
+                    Leetcode Solutions
+                </a>
+                <a href="#articles" class="btn-card std-hover text-white px-5 py-2.5 text-sm">
+                    Articles
+                </a>
+                <a href="#playables" class="btn-card playables-hover text-white px-5 py-2.5 text-sm">
+                    Playables
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- EXPANDED MAIN CONTAINER -->
+    <main class="w-full px-6 py-8 space-y-12 max-w-[1400px] mx-auto">
+
+        <!-- HERO SECTION WITH TYPING ANIMATION -->
+        <section class="card-section std-hover p-8 md:p-14 text-center flex flex-col items-center justify-center space-y-6">
+            <h1 class="text-3xl md:text-5xl lg:text-6xl tracking-tight leading-tight">
+                <span class="preserve-white" style="color: #ffffff;">Welcome to</span> <span class="preserve-orange" style="color: #ff6d00;">Tabspace</span> <span class="preserve-green" style="color: #22c55e;">Presentations</span>
+            </h1>
+            <div class="text-xl md:text-3xl text-zinc-300 font-medium h-12 flex items-center justify-center">
+                <span id="typed-text"></span><span class="typing-cursor" id="typed-cursor">&nbsp;</span>
+            </div>
+            <p class="text-zinc-400 text-sm md:text-base max-w-2xl">
+                Your high-performance repository for computer science concepts, algorithmic solutions, architectural articles, and interactive sandbox environments.
+            </p>
+        </section>
+
+        <!-- CS DICTIONARY SECTION -->
+        <section id="dictionary" class="card-section std-hover p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 scroll-mt-36 search-section">
+            <div class="searchable-item space-y-2 w-full">
+                <h2 class="text-2xl text-white tracking-wide">
+                    CS Dictionary
+                </h2>
+                <p class="text-zinc-400 text-sm md:text-base max-w-4xl">
+                    Explore defined terms, core algorithms, design patterns, and fundamental computer science jargon.
+                </p>
+            </div>
+            <a href="cs-dictionary/" class="cta-btn-primary w-full md:w-auto text-center shrink-0 px-8 py-3.5 text-base active:scale-95 whitespace-nowrap">
+                Open Dictionary <span class="arrow">→</span>
+            </a>
+        </section>
+
+        <!-- LEETCODE SOLUTIONS SECTION -->
+        <section id="leetcode" class="card-section std-hover p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 scroll-mt-36 search-section">
+            <div class="searchable-item space-y-2 w-full">
+                <h2 class="text-2xl text-white tracking-wide">
+                    Leetcode Solutions
+                </h2>
+                <p class="text-zinc-400 text-sm md:text-base max-w-4xl">
+                    Optimized code solutions, time & space complexity breakdowns, and pattern-based problem-solving techniques.
+                </p>
+            </div>
+            <a href="leetcode-directory/" class="cta-btn-primary w-full md:w-auto text-center shrink-0 px-8 py-3.5 text-base active:scale-95 whitespace-nowrap">
+                View Solutions <span class="arrow">→</span>
+            </a>
+        </section>
+
+        <!-- ARTICLES SECTION -->
+        <section id="articles" class="space-y-6 scroll-mt-36 search-section">
+            <div class="flex items-center justify-between border-b border-[#333333] pb-3">
+                <h2 class="text-2xl text-white tracking-wide">
+                    Articles
+                </h2>
+                <a href="topics/" class="text-sm text-brand-green hover:underline">View All Articles →</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Git Card -->
+                <div class="searchable-item card-section playables-hover overflow-hidden flex flex-col group">
+                    <div class="aspect-video w-full bg-gradient-to-br from-green-950/30 via-[#1a1a1a] to-black relative flex items-center justify-center overflow-hidden border-b border-[#333333]">
+                        <img src="images/git.png" alt="Git" class="absolute inset-0 w-full h-full object-cover opacity-80" />
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow justify-between">
+                        <div class="flex items-center justify-between gap-4">
+                            <h3 class="text-xl text-white tracking-wide">Git</h3>
+                            <a href="topics/git/" class="cta-btn-green inline-flex items-center gap-2 px-4 py-2 text-sm shrink-0">
+                                Read <span class="arrow">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Linux Card -->
+                <div class="searchable-item card-section playables-hover overflow-hidden flex flex-col group">
+                    <div class="aspect-video w-full bg-gradient-to-br from-green-950/30 via-[#1a1a1a] to-black relative flex items-center justify-center overflow-hidden border-b border-[#333333]">
+                        <img src="images/linux.png" alt="Linux" class="absolute inset-0 w-full h-full object-cover opacity-80" />
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow justify-between">
+                        <div class="flex items-center justify-between gap-4">
+                            <h3 class="text-xl text-white tracking-wide">Linux</h3>
+                            <a href="topics/linux/" class="cta-btn-green inline-flex items-center gap-2 px-4 py-2 text-sm shrink-0">
+                                Read <span class="arrow">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pointers Card -->
+                <div class="searchable-item card-section playables-hover overflow-hidden flex flex-col group">
+                    <div class="aspect-video w-full bg-gradient-to-br from-green-950/30 via-[#1a1a1a] to-black relative flex items-center justify-center overflow-hidden border-b border-[#333333]">
+                        <img src="images/pointers.png" alt="Pointers" class="absolute inset-0 w-full h-full object-cover opacity-80" />
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow justify-between">
+                        <div class="flex items-center justify-between gap-4">
+                            <h3 class="text-xl text-white tracking-wide">Pointers</h3>
+                            <a href="topics/pointers/" class="cta-btn-green inline-flex items-center gap-2 px-4 py-2 text-sm shrink-0">
+                                Read <span class="arrow">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE PLAYABLES SECTION -->
+        <section id="playables" class="space-y-6 scroll-mt-36 search-section">
+            <div class="flex items-center justify-between border-b border-[#333333] pb-3">
+                <h2 class="text-2xl text-white tracking-wide">
+                    Playables
+                </h2>
+                <a href="playables/" class="text-sm text-brand-green hover:underline">View All Playables →</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Tic Tac Toe Card -->
+                <div class="searchable-item card-section playables-hover overflow-hidden flex flex-col group">
+                    <div class="aspect-video w-full bg-gradient-to-br from-green-950/30 via-[#1a1a1a] to-black relative flex items-center justify-center overflow-hidden border-b border-[#333333]">
+                        <img src="images/tic-tac-toe.png" alt="Tic Tac Toe" class="absolute inset-0 w-full h-full object-cover opacity-80" />
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow justify-between">
+                        <div class="flex items-center justify-between gap-4">
+                            <h3 class="text-xl text-white tracking-wide">Tic Tac Toe</h3>
+                            <a href="playables/play/tic-tac-toe/" class="cta-btn-green inline-flex items-center gap-2 px-4 py-2 text-sm shrink-0">
+                                Play <span class="arrow">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sudoku Card -->
+                <div class="searchable-item card-section playables-hover overflow-hidden flex flex-col group">
+                    <div class="aspect-video w-full bg-gradient-to-br from-green-950/30 via-[#1a1a1a] to-black relative flex items-center justify-center overflow-hidden border-b border-[#333333]">
+                        <img src="images/sudoku.png" alt="Sudoku" class="absolute inset-0 w-full h-full object-cover opacity-80" />
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow justify-between">
+                        <div class="flex items-center justify-between gap-4">
+                            <h3 class="text-xl text-white tracking-wide">Sudoku</h3>
+                            <a href="playables/play/sudoku/" class="cta-btn-green inline-flex items-center gap-2 px-4 py-2 text-sm shrink-0">
+                                Play <span class="arrow">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gomoku Card -->
+                <div class="searchable-item card-section playables-hover overflow-hidden flex flex-col group">
+                    <div class="aspect-video w-full bg-gradient-to-br from-green-950/30 via-[#1a1a1a] to-black relative flex items-center justify-center overflow-hidden border-b border-[#333333]">
+                        <img src="images/gomoku.png" alt="Gomoku" class="absolute inset-0 w-full h-full object-cover opacity-80" />
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow justify-between">
+                        <div class="flex items-center justify-between gap-4">
+                            <h3 class="text-xl text-white tracking-wide">Gomoku</h3>
+                            <a href="playables/play/gomoku/" class="cta-btn-green inline-flex items-center gap-2 px-4 py-2 text-sm shrink-0">
+                                Play <span class="arrow">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER SECTION -->
+        <footer class="pt-8 border-t border-[#333333] text-center space-y-4">
+            <p class="text-xs tracking-wider text-zinc-500">
+                Presented by <span class="footer-tabspace italic text-brand-orange">Tabspace</span> <span class="footer-presentations italic text-brand-green">Presentations</span> &copy; 2026. All rights reserved.
+            </p>
+        </footer>
+
+    </main>
+
+    <!-- SCRIPTS: TYPING ANIMATION & NAVIGATION LOGIC -->
+    <script>
+        // Typing Animation Logic (Erases and re-types phrases)
+        const words = ["CS Dictionary", "Leetcode Solutions", "Articles", "Playables"];
+        let i = 0;
+        let timer;
+
+        function typingEffect() {
+            const word = words[i].split("");
+            const typedTextSpan = document.getElementById("typed-text");
+            
+            function addLetter() {
+                if (word.length > 0) {
+                    typedTextSpan.textContent += word.shift();
+                } else {
+                    setTimeout(eraseEffect, 2000);
+                    return;
+                }
+                timer = setTimeout(addLetter, 100);
+            }
+            addLetter();
+        }
+
+        function eraseEffect() {
+            const word = words[i].split("");
+            const typedTextSpan = document.getElementById("typed-text");
+            
+            function removeLetter() {
+                if (word.length > 0) {
+                    word.pop();
+                    typedTextSpan.textContent = word.join("");
+                } else {
+                    i = (i + 1) % words.length;
+                    setTimeout(typingEffect, 500);
+                    return;
+                }
+                timer = setTimeout(removeLetter, 50);
+            }
+            removeLetter();
+        }
+
+        // Start typing animation on load
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(typingEffect, 1000);
+        });
+    </script>
+</body>
+</html>

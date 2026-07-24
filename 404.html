@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | Tabspace Presentations</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#ff6D00',
+                            green: '#22c55e'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --bg-main: #1a1a1a;
+            --bg-card: #2a2a2a;
+            --border-color: #333333;
+            --text-main: #eff1f5;
+            --text-muted: #9ca3af;
+            --accent-green: #22c55e;
+            --glow-orange: #ff6D00;
+        }
+
+        /* Global Font Override */
+        * {
+            font-family: 'Calisto MT', 'Bookman Old Style', Georgia, serif !important;
+            font-weight: 700 !important;
+            font-style: normal !important;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            letter-spacing: 0.025em;
+        }
+
+        /* Base Card Styles */
+        .card-section, .btn-card {
+            background-color: rgba(39, 39, 42, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* STANDARD HOVER */
+        .std-hover {
+            transition: all 0.25s ease-in-out;
+        }
+        .std-hover:hover h2, 
+        .std-hover:hover h3, 
+        .std-hover:hover span:not(.no-hover-override):not(.arrow):not(.preserve-white):not(.preserve-orange):not(.preserve-green) {
+            color: var(--accent-green) !important;
+        }
+        
+        .std-hover:hover .preserve-white {
+            color: #ffffff !important;
+        }
+        .std-hover:hover .preserve-orange {
+            color: #ff6D00 !important;
+        }
+        .std-hover:hover .preserve-green {
+            color: #22c55e !important;
+        }
+
+        .std-hover:hover {
+            border-color: var(--glow-orange) !important;
+            box-shadow: 0 0 16px 2px rgba(255, 109, 0, 0.45) !important;
+        }
+
+        /* High-Conversion CTA Buttons */
+        .cta-btn-primary {
+            background: linear-gradient(135deg, #ff6D00 0%, #ff8500 100%);
+            color: #000000 !important;
+            border: 1px solid #ff6D00;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(255, 109, 0, 0.35);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-btn-primary:hover {
+            background: #121212 !important;
+            color: var(--accent-green) !important;
+            border-color: var(--glow-orange) !important;
+            box-shadow: 0 0 22px 4px rgba(255, 109, 0, 0.6) !important;
+            transform: translateY(-2px) scale(1.03);
+        }
+
+        .arrow {
+            display: inline-block;
+            transition: transform 0.2s ease, color 0.25s ease;
+            color: #000000 !important;
+        }
+
+        .cta-btn-primary:hover .arrow {
+            color: var(--accent-green) !important;
+            transform: translateX(4px);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--glow-orange);
+        }
+    </style>
+</head>
+<body class="bg-[#1a1a1a] text-zinc-100 antialiased min-h-screen selection:bg-brand-orange selection:text-black flex flex-col justify-between">
+
+    <!-- DEEP BLACK STICKY HEADER -->
+    <header class="sticky top-0 z-50 bg-black border-b border-[#18181b] px-6 py-4 transition-all">
+        <div class="w-full flex items-center justify-between gap-4">
+            
+            <!-- Logo Container -->
+            <a href="./" class="flex items-center shrink-0 select-none py-1">
+                <img src="logo.png" alt="Tabspace Logo" class="h-16 md:h-20 w-auto object-contain block transition-transform duration-200 hover:scale-105" />
+            </a>
+
+            <!-- Actions Slot -->
+            <div class="flex items-center gap-4">
+                <a href="./" class="btn-card std-hover text-zinc-200 text-sm px-5 py-2.5 active:scale-95 inline-block text-center">
+                    Return Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- EXPANDED MAIN CONTAINER -->
+    <main class="w-full px-6 py-16 space-y-12 max-w-[900px] mx-auto my-auto text-center">
+
+        <!-- 404 HERO SECTION -->
+        <section class="card-section std-hover p-8 md:p-16 flex flex-col items-center justify-center space-y-6">
+            <h1 class="text-5xl md:text-7xl tracking-tight leading-tight">
+                <span class="preserve-white" style="color: #ffffff;">Error</span> <span class="preserve-orange" style="color: #ff6d00;">404</span>
+            </h1>
+            
+            <div class="text-xl md:text-2xl font-medium text-zinc-300">
+                Page Not Found in <span class="preserve-orange" style="color: #ff6d00;">Tabspace</span> <span class="preserve-green" style="color: #22c55e;">Presentations</span>
+            </div>
+
+            <p class="text-zinc-400 text-sm md:text-base max-w-xl mx-auto">
+                The resource, article, or sandbox environment you are looking for might have been moved, deleted, or never existed in this repository scope.
+            </p>
+
+            <div class="pt-4">
+                <a href="./" class="cta-btn-primary inline-block px-8 py-3.5 text-base active:scale-95 whitespace-nowrap">
+                    Back to Dashboard <span class="arrow">→</span>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER SECTION -->
+    <footer class="pt-8 pb-8 border-t border-[#333333] text-center space-y-4">
+        <p class="text-xs tracking-wider text-zinc-500">
+            Presented by <span class="footer-tabspace italic text-brand-orange">Tabspace</span> <span class="footer-presentations italic text-brand-green">Presentations</span> &copy; 2026. All rights reserved.
+        </p>
+    </footer>
+
+</body>
+</html>

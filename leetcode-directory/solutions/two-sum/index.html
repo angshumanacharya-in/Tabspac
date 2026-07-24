@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Two Sum – A Complete Guide</title>
+  <style>
+    /* Global Reset & Base Setup */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Calisto MT', Georgia, 'Times New Roman', serif !important;
+      font-weight: bold !important;
+    }
+
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Header Styling */
+    .top-header {
+      background-color: #000000;
+      border-bottom: 1px solid #18181b;
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      width: 100%;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .logo-img {
+      height: 3rem; 
+      width: auto;
+      object-fit: contain;
+      display: block;
+      transition: transform 0.2s ease;
+    }
+
+    .logo-container:hover .logo-img {
+      transform: scale(1.05);
+    }
+
+    /* Main Container */
+    .dark-wrapper {
+      flex: 1;
+      background-color: #121212;
+      color: #e0e0e0;
+      padding: 2rem;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Article Content Styles */
+    .topic-content-wrapper {
+      width: 100%;
+    }
+
+    .topic-content-wrapper h1 {
+      font-size: 2rem;
+      color: #f3f4f6;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid #2d3748;
+      text-align: center;
+      width: 100%;
+    }
+
+    .topic-content-wrapper h2 {
+      font-size: 1.3rem;
+      color: #22c55e;
+      margin: 0 0 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .topic-content-wrapper h3 {
+      font-size: 1.05rem;
+      color: #ff6d00;
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .topic-content-wrapper p {
+      color: #d1d5db;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper li {
+      color: #d1d5db;
+      margin-bottom: 0.4rem;
+      line-height: 1.6;
+    }
+
+    /* Section Cards */
+    .section-card {
+      width: 100%;
+      background-color: #1e1e1e;
+      border: 1px solid #2d3748;
+      border-radius: 10px;
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .section-card:hover {
+      border-color: rgba(255, 109, 0, 0.4);
+      box-shadow: 0 0 12px -2px rgba(255, 109, 0, 0.15);
+    }
+
+    /* Highlight Card */
+    .highlight-card {
+      width: 100%;
+      background-color: rgba(34, 197, 94, 0.08);
+      border: 1px solid #22c55e;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .highlight-card h2 {
+      color: #22c55e;
+    }
+
+    .highlight-card ul {
+      margin-bottom: 0;
+    }
+
+    /* Table Design */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0 0.5rem 0;
+      background-color: #121212;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #2d3748;
+    }
+
+    .custom-table th {
+      background-color: #282828;
+      color: #9ca3af;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #2d3748;
+    }
+
+    .custom-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #2d3748;
+      color: #d1d5db;
+    }
+
+    .custom-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Pure CSS Tabs Styling */
+    .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 20px 0;
+    }
+
+    .tabs label {
+        padding: 10px 20px;
+        cursor: pointer;
+        background: rgba(7, 10, 18, 0.4);
+        border: 1px solid #22314d;
+        border-bottom: none;
+        color: #94a3b8;
+        font-weight: 600;
+        border-radius: 6px 6px 0 0;
+        margin-right: 4px;
+        transition: all 0.2s ease;
+    }
+
+    .tabs input[type="radio"] {
+        display: none;
+    }
+
+    .tabs .tab-content {
+        width: 100%;
+        background: #070a12;
+        border: 1px solid #22314d;
+        border-radius: 0 6px 6px 6px;
+        display: none;
+        position: relative;
+    }
+
+    .tabs .tab-content pre {
+        margin: 0;
+        border: none;
+        border-radius: 0 6px 6px 6px;
+    }
+
+    #tab-cpp:checked ~ label[for="tab-cpp"],
+    #tab-python:checked ~ label[for="tab-python"] {
+        background: #070a12;
+        color: #ff6d00;
+        border-top: 2px solid #ff6d00;
+        border-bottom: 1px solid #070a12;
+    }
+
+    #tab-cpp:checked ~ #content-cpp,
+    #tab-python:checked ~ #content-python {
+        display: block;
+    }
+
+    /* Copy Button Styling */
+    .copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 12px;
+        background-color: rgba(34, 49, 77, 0.6);
+        color: #94a3b8;
+        border: 1px solid #22314d;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 0.78rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        z-index: 10;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+        font-weight: 600 !important;
+    }
+
+    .copy-btn:hover {
+        background-color: #ff6d00;
+        color: #ffffff;
+        border-color: #ff6d00;
+    }
+
+    .copy-btn.copied {
+        background-color: #22c55e !important;
+        color: #ffffff !important;
+        border-color: #22c55e !important;
+    }
+
+    pre {
+        background-color: #070a12;
+        color: #cbd5e1;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        line-height: 1.5;
+        border: 1px solid #22314d;
+    }
+
+    pre code, pre code * {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace !important;
+        font-size: 0.9rem !important;
+        font-weight: normal !important;
+    }
+
+    /* Syntax Highlighting Tokens */
+    .keyword  { color: #ff7b72 !important; }
+    .type     { color: #79c0ff !important; }
+    .function { color: #d2a8ff !important; }
+    .comment  { color: #94a3b8 !important; }
+    .number   { color: #79c0ff !important; }
+    .string   { color: #a5d6ff !important; }
+    .code-text { color: #cbd5e1 !important; }
+
+    /* Inline Code Tags */
+    code {
+      background: #282828;
+      color: #ff6d00;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: monospace !important;
+    }
+
+    /* Summary Card */
+    .summary-card {
+      width: 100%;
+      background-color: rgba(255, 109, 0, 0.08);
+      border: 1px solid #ff6d00;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 0;
+    }
+
+    .summary-card h2 {
+      color: #ff6d00;
+    }
+
+    .summary-card ul {
+      margin-bottom: 0;
+    }
+
+    /* Back Navigation Button */
+    .back-nav-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin: 2.5rem 0 1rem 0;
+    }
+
+    .see-problems-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #1e1e1e;
+      color: #22c55e;
+      border: 1px solid #22c55e;
+      padding: 0.85rem 1.75rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    }
+
+    .see-problems-btn:hover {
+      background-color: rgba(34, 197, 94, 0.1);
+      border-color: #ff6d00;
+      color: #ff6d00;
+      transform: translateY(-2px);
+      box-shadow: 0 0 12px -2px rgba(255, 109, 0, 0.3);
+    }
+
+    /* Footer Styling */
+    .main-footer {
+      width: 100%;
+      max-width: 1200px;
+      margin: 2rem auto 0 auto;
+      padding: 2rem 0;
+      border-top: 1px solid #18181b;
+      text-align: center;
+    }
+
+    .footer-text {
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: #71717a;
+    }
+
+    .footer-brand-orange {
+      color: #ff6d00;
+    }
+
+    .footer-brand-green {
+      color: #22c55e;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="top-header">
+    <div class="logo-container" id="logoToggle" role="button" tabindex="0" title="Toggle Sidebar">
+      <img src="../../../logo.png" alt="Logo" class="logo-img" onerror="this.style.border='1px dashed #333'; this.style.padding='4px';">
+    </div>
+  </header>
+
+  <!-- Article Container -->
+  <div class="dark-wrapper">
+    <div class="topic-content-wrapper">
+      <h1>Two Sum – A Complete Guide</h1>
+
+      <!-- Introduction -->
+      <div class="highlight-card">
+        <h2>Introduction</h2>
+        <p>Two Sum is the very first problem on LeetCode (Problem #1) and one of the most famous coding interview questions. Although it is categorized as an Easy problem, it introduces a fundamental technique used in many advanced algorithms: using a hash table to trade space for time.</p>
+        <p>The problem tests your understanding of arrays, searching, and efficient data structures. It is commonly asked in technical interviews by companies such as Google, Amazon, Microsoft, Meta, and Apple.</p>
+      </div>
+
+      <!-- Problem Statement -->
+      <div class="section-card">
+        <h2>Problem Statement</h2>
+        <p>Given an array of integers <code>nums</code> and an integer <code>target</code>, return the indices of the two numbers such that they add up to the target.</p>
+        <p><strong>You may assume that:</strong></p>
+        <ul>
+          <li>Exactly one valid solution exists.</li>
+          <li>You may not use the same element twice.</li>
+          <li>The answer can be returned in any order.</li>
+        </ul>
+
+        <h3>Example 1</h3>
+        <p><strong>Input:</strong> <code>nums = [2,7,11,15]</code>, <code>target = 9</code><br>
+        <strong>Output:</strong> <code>[0,1]</code><br>
+        <strong>Explanation:</strong> <code>nums[0] + nums[1] = 2 + 7 = 9</code></p>
+
+        <h3>Example 2</h3>
+        <p><strong>Input:</strong> <code>nums = [3,2,4]</code>, <code>target = 6</code><br>
+        <strong>Output:</strong> <code>[1,2]</code></p>
+
+        <h3>Example 3</h3>
+        <p><strong>Input:</strong> <code>nums = [3,3]</code>, <code>target = 6</code><br>
+        <strong>Output:</strong> <code>[0,1]</code></p>
+      </div>
+
+      <!-- Understanding the Problem -->
+      <div class="section-card">
+        <h2>Understanding the Problem</h2>
+        <p>Suppose we have <code>nums = [2,7,11,15]</code> and <code>target = 9</code>. We need to find two numbers whose sum equals 9.</p>
+        <p>Instead of trying every possible pair, we can ask: <em>"For the current number, what number do I need to complete the target?"</em></p>
+        <p>For example, if Current Number = 2, then Needed Number = <code>9 − 2 = 7</code>. If 7 already exists in the array (and we've seen it while scanning), then we've found the answer.</p>
+      </div>
+
+      <!-- Approach 1: Brute Force -->
+      <div class="section-card">
+        <h2>Approach 1: Brute Force</h2>
+        <p>The simplest solution is to compare every pair (e.g., 2+7, 2+11, 2+15, 7+11, etc.). If any pair equals the target, return their indices.</p>
+        
+        <h3>Algorithm</h3>
+        <ul>
+          <li>Choose the first element.</li>
+          <li>Compare it with every remaining element.</li>
+          <li>If their sum equals the target, return the indices.</li>
+          <li>Otherwise continue.</li>
+        </ul>
+
+        <h3>Complexity</h3>
+        <ul>
+          <li><strong>Time Complexity:</strong> O(n²)</li>
+          <li><strong>Space Complexity:</strong> O(1)</li>
+        </ul>
+
+        <h3>Why Brute Force Is Slow</h3>
+        <p>Imagine 1000 numbers. The algorithm compares nearly every pair, leading to approximately <code>1000 × 1000 ≈ 1,000,000</code> comparisons. This quickly becomes inefficient.</p>
+      </div>
+
+      <!-- Approach 2: Hash Map -->
+      <div class="section-card">
+        <h2>Approach 2: Hash Map (Optimal)</h2>
+        <p>Instead of repeatedly searching the array, we store numbers we have already seen in a hash map (Value → Index). Searching in a hash map takes roughly <code>O(1)</code> time, which is much faster than searching an array.</p>
+
+        <h3>Key Idea</h3>
+        <p>For every number <code>Current = nums[i]</code>, compute <code>Needed = Target − Current</code>. If <code>Needed</code> already exists in the hash map, return <code>[Stored Index, Current Index]</code>. Otherwise, store <code>Current Number → Current Index</code> inside the map.</p>
+
+        <!-- Code Tabs with Copy Buttons -->
+        <div class="tabs">
+            <input type="radio" id="tab-cpp" name="code-tabs" checked>
+            <label for="tab-cpp">C++</label>
+            
+            <input type="radio" id="tab-python" name="code-tabs">
+            <label for="tab-python">Python</label>
+            
+            <div class="tab-content" id="content-cpp">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code><span class="keyword">class</span> <span class="type">Solution</span> {
+<span class="keyword">public</span>:
+    <span class="type">vector</span>&lt;<span class="type">int</span>&gt; <span class="function">twoSum</span>(<span class="type">vector</span>&lt;<span class="type">int</span>&gt;&amp; <span class="code-text">nums</span>, <span class="type">int</span> <span class="code-text">target</span>) {
+        <span class="type">unordered_map</span>&lt;<span class="type">int</span>, <span class="type">int</span>&gt; <span class="code-text">mp</span>;
+
+        <span class="keyword">for</span> (<span class="type">int</span> <span class="code-text">i</span> = <span class="number">0</span>; <span class="code-text">i</span> &lt; <span class="code-text">nums</span>.<span class="function">size</span>(); <span class="code-text">i</span>++) {
+            <span class="type">int</span> <span class="code-text">need</span> = <span class="code-text">target</span> - <span class="code-text">nums</span>[<span class="code-text">i</span>];
+
+            <span class="keyword">if</span> (<span class="code-text">mp</span>.<span class="function">count</span>(<span class="code-text">need</span>))
+                <span class="keyword">return</span> {<span class="code-text">mp</span>[<span class="code-text">need</span>], <span class="code-text">i</span>};
+
+            <span class="code-text">mp</span>[<span class="code-text">nums</span>[<span class="code-text">i</span>]] = <span class="code-text">i</span>;
+        }
+
+        <span class="keyword">return</span> {};
+    }
+};</code></pre>
+            </div>
+            
+            <div class="tab-content" id="content-python">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code><span class="keyword">class</span> <span class="type">Solution</span>:
+    <span class="keyword">def</span> <span class="function">twoSum</span>(self, <span class="code-text">nums</span>: <span class="type">list</span>[<span class="type">int</span>], <span class="code-text">target</span>: <span class="type">int</span>) -&gt; <span class="type">list</span>[<span class="type">int</span>]:
+        <span class="code-text">mp</span> = {}
+        
+        <span class="keyword">for</span> <span class="code-text">i</span>, <span class="code-text">num</span> <span class="keyword">in</span> <span class="function">enumerate</span>(<span class="code-text">nums</span>):
+            <span class="code-text">need</span> = <span class="code-text">target</span> - <span class="code-text">num</span>
+            
+            <span class="keyword">if</span> <span class="code-text">need</span> <span class="keyword">in</span> <span class="code-text">mp</span>:
+                <span class="keyword">return</span> [<span class="code-text">mp</span>[<span class="code-text">need</span>], <span class="code-text">i</span>]
+                
+            <span class="code-text">mp</span>[<span class="code-text">num</span>] = <span class="code-text">i</span>
+            
+        <span class="keyword">return</span> []</code></pre>
+            </div>
+        </div>
+      </div>
+
+      <!-- Complexity Analysis -->
+      <div class="section-card">
+        <h2>Complexity Analysis</h2>
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Approach</th>
+              <th>Time Complexity</th>
+              <th>Space Complexity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Brute Force</strong></td>
+              <td>O(n²)</td>
+              <td>O(1)</td>
+            </tr>
+            <tr>
+              <td><strong>Hash Map (Optimal)</strong></td>
+              <td>O(n)</td>
+              <td>O(n)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Common Mistakes -->
+      <div class="section-card">
+        <h2>Common Mistakes</h2>
+        <ul>
+          <li><strong>Using the Same Element Twice:</strong> You cannot use the same index twice (e.g., target = 6, nums = [3]).</li>
+          <li><strong>Storing Before Checking:</strong> If you insert the current element before checking for its complement, you may accidentally match the same element.</li>
+          <li><strong>Returning Values Instead of Indices:</strong> The problem asks for array indices, not the actual values.</li>
+        </ul>
+      </div>
+
+      <!-- Real-World Applications -->
+      <div class="section-card">
+        <h2>Real-World Applications</h2>
+        <ul>
+          <li>Finding two transactions that total a specific amount.</li>
+          <li>Matching complementary inventory values.</li>
+          <li>Detecting pairs that satisfy financial constraints.</li>
+          <li>Searching for complementary values in large datasets.</li>
+        </ul>
+      </div>
+
+      <!-- Related Problems -->
+      <div class="section-card">
+        <h2>Related Problems</h2>
+        <ul>
+          <li>Two Sum II – Input Array Is Sorted</li>
+          <li>3Sum & 3Sum Closest</li>
+          <li>4Sum</li>
+          <li>Two Sum IV – Input is a BST</li>
+          <li>Subarray Sum Equals K</li>
+          <li>Contains Duplicate</li>
+          <li>Intersection of Two Arrays</li>
+        </ul>
+      </div>
+
+      <!-- Key Takeaways -->
+      <div class="summary-card">
+        <h2>Key Takeaways</h2>
+        <ul>
+          <li>The brute-force solution compares every possible pair and runs in O(n²) time.</li>
+          <li>The optimal solution uses a hash map to remember previously seen numbers in O(n) time.</li>
+          <li>The central idea is to search for the complement (<code>target − current</code>) instead of searching directly for another number.</li>
+          <li>Two Sum demonstrates how choosing the right data structure can dramatically improve performance.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Navigation Button to Previous Folder -->
+    <div class="back-nav-container">
+      <a href="../../" class="see-problems-btn">
+        ← See All Problems
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+      <p class="footer-text">
+        Presented by <span class="footer-brand-orange">Tabspace</span> <span class="footer-brand-green">Presentations</span> &copy; 2026. All rights reserved.
+      </p>
+    </footer>
+  </div>
+
+  <!-- Clipboard Copy Script -->
+  <script>
+    function copyCode(btn) {
+      const codeBlock = btn.parentElement.querySelector('code');
+      if (!codeBlock) return;
+
+      const codeText = codeBlock.textContent;
+
+      navigator.clipboard.writeText(codeText).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+    }
+  </script>
+</body>
+</html>

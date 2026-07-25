@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Primary SEO Meta Tags -->
+  <title>Maximum Product of Two Digits (LeetCode 3536) - C++ & Python Solutions</title>
+  <meta name="title" content="Maximum Product of Two Digits (LeetCode 3536) - C++ & Python Solutions">
+  <meta name="description" content="Detailed guide, explanations, constraints, and code solutions for LeetCode 3536: Maximum Product of Two Digits featuring both optimal single-pass and sorting approaches in C++ and Python.">
+  <meta name="keywords" content="Maximum Product of Two Digits, LeetCode 3536, Digit Manipulation, Sorting, Greedy, Algorithms, C++, Python, Coding Interview">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Canonical Link -->
+  <link rel="canonical" href="https://tabspacepresentations.com/maximum-product-of-two-digits">
+
+  <!-- Open Graph / Facebook / LinkedIn / Discord -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://tabspacepresentations.com/leetcode-directory/solutions/maximum-product-of-two-digits">
+  <meta property="og:title" content="Maximum Product of Two Digits (LeetCode 3536) - C++ & Python Solutions">
+  <meta property="og:description" content="Master the Maximum Product of Two Digits (LeetCode 3536) problem with full explanations, constraints, and code implementations in C++ and Python.">
+  <meta property="og:image" content="https://tabspacepresentations.com/assets/maximum-product-of-two-digits-preview.jpg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://tabspacepresentations.com/maximum-product-of-two-digits">
+  <meta name="twitter:title" content="Maximum Product of Two Digits (LeetCode 3536) - C++ & Python Solutions">
+  <meta name="twitter:description" content="Master the Maximum Product of Two Digits (LeetCode 3536) problem with full explanations, constraints, and code implementations in C++ and Python.">
+  <meta name="twitter:image" content="https://tabspacepresentations.com/assets/maximum-product-of-two-digits-preview.jpg">
+
+  <!-- JSON-LD Structured Data (TechArticle Schema) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Maximum Product of Two Digits (LeetCode 3536) Solutions & Explanations",
+    "description": "Complete breakdown and explanation including constraints of LeetCode 3536 (Maximum Product of Two Digits) using both optimal tracking and sorting approaches in C++ and Python.",
+    "articleSection": "Data Structures & Algorithms",
+    "keywords": ["Maximum Product of Two Digits", "LeetCode 3536", "Digit Manipulation", "C++", "Python", "Algorithms"],
+    "author": {
+      "@type": "Organization",
+      "name": "Tabspace Presentations",
+      "url": "https://tabspacepresentations.com"
+    }
+  }
+  </script>
+
+  <style>
+    /* Global Reset & Base Setup */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Calisto MT', Georgia, 'Times New Roman', serif !important;
+      font-weight: bold !important;
+    }
+
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* Header Styling */
+    .top-header {
+      background-color: #000000;
+      border-bottom: 1px solid #18181b;
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      width: 100%;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .logo-img {
+      height: 3rem; 
+      width: auto;
+      object-fit: contain;
+      display: block;
+      transition: transform 0.2s ease;
+    }
+
+    .logo-container:hover .logo-img {
+      transform: scale(1.05);
+    }
+
+    /* Main Container */
+    .dark-wrapper {
+      flex: 1;
+      background-color: #121212;
+      color: #e0e0e0;
+      padding: 2rem;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Article Content Styles */
+    .topic-content-wrapper {
+      width: 100%;
+    }
+
+    .topic-content-wrapper h1 {
+      font-size: 2rem;
+      color: #f3f4f6;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid #2d3748;
+      text-align: center;
+      width: 100%;
+    }
+
+    .topic-content-wrapper h2 {
+      font-size: 1.3rem;
+      color: #22c55e;
+      margin: 0 0 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .topic-content-wrapper h3 {
+      font-size: 1.05rem;
+      color: #ff6d00;
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .topic-content-wrapper p {
+      color: #d1d5db;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper ul, .topic-content-wrapper ol {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper li {
+      color: #d1d5db;
+      margin-bottom: 0.4rem;
+      line-height: 1.6;
+    }
+
+    /* Section Cards */
+    .section-card {
+      width: 100%;
+      background-color: #1e1e1e;
+      border: 1px solid #2d3748;
+      border-radius: 10px;
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .section-card:hover {
+      border-color: rgba(255, 109, 0, 0.4);
+      box-shadow: 0 0 12px -2px rgba(255, 109, 0, 0.15);
+    }
+
+    /* Highlight Card */
+    .highlight-card {
+      width: 100%;
+      background-color: rgba(34, 197, 94, 0.08);
+      border: 1px solid #22c55e;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .highlight-card h2 {
+      color: #22c55e;
+    }
+
+    .highlight-card ul {
+      margin-bottom: 0;
+    }
+
+    /* Table Design */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0 0.5rem 0;
+      background-color: #121212;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #2d3748;
+    }
+
+    .custom-table th {
+      background-color: #282828;
+      color: #9ca3af;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #2d3748;
+    }
+
+    .custom-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #2d3748;
+      color: #d1d5db;
+    }
+
+    .custom-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Pure CSS Tabs Styling */
+    .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 20px 0;
+    }
+
+    .tabs label {
+        padding: 10px 20px;
+        cursor: pointer;
+        background: rgba(7, 10, 18, 0.4);
+        border: 1px solid #22314d;
+        border-bottom: none;
+        color: #94a3b8;
+        font-weight: 600;
+        border-radius: 6px 6px 0 0;
+        margin-right: 4px;
+        transition: all 0.2s ease;
+    }
+
+    .tabs input[type="radio"] {
+        display: none;
+    }
+
+    .tabs .tab-content {
+        width: 100%;
+        background: #070a12;
+        border: 1px solid #22314d;
+        border-radius: 0 6px 6px 6px;
+        display: none;
+        position: relative;
+    }
+
+    .tabs .tab-content pre {
+        margin: 0;
+        border: none;
+        border-radius: 0 6px 6px 6px;
+    }
+
+    #tab-opt-cpp:checked ~ label[for="tab-opt-cpp"],
+    #tab-opt-python:checked ~ label[for="tab-opt-python"],
+    #tab-sort-cpp:checked ~ label[for="tab-sort-cpp"],
+    #tab-sort-python:checked ~ label[for="tab-sort-python"] {
+        background: #070a12;
+        color: #ff6d00;
+        border-top: 2px solid #ff6d00;
+        border-bottom: 1px solid #070a12;
+    }
+
+    #tab-opt-cpp:checked ~ #content-opt-cpp,
+    #tab-opt-python:checked ~ #content-opt-python,
+    #tab-sort-cpp:checked ~ #content-sort-cpp,
+    #tab-sort-python:checked ~ #content-sort-python {
+        display: block;
+    }
+
+    /* Copy Button Styling */
+    .copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 12px;
+        background-color: rgba(34, 49, 77, 0.6);
+        color: #94a3b8;
+        border: 1px solid #22314d;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 0.78rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        z-index: 10;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+        font-weight: 600 !important;
+    }
+
+    .copy-btn:hover {
+        background-color: #ff6d00;
+        color: #ffffff;
+        border-color: #ff6d00;
+    }
+
+    .copy-btn.copied {
+        background-color: #22c55e !important;
+        color: #ffffff !important;
+        border-color: #22c55e !important;
+    }
+
+    pre {
+        background-color: #070a12;
+        color: #cbd5e1;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        line-height: 1.5;
+        border: 1px solid #22314d;
+    }
+
+    pre code, pre code * {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace !important;
+        font-size: 0.9rem !important;
+        font-weight: normal !important;
+    }
+
+    /* Syntax Highlighting Tokens */
+    .keyword  { color: #ff7b72 !important; }
+    .type     { color: #79c0ff !important; }
+    .function { color: #d2a8ff !important; }
+    .comment  { color: #94a3b8 !important; }
+    .number   { color: #79c0ff !important; }
+    .string   { color: #a5d6ff !important; }
+    .code-text { color: #cbd5e1 !important; }
+
+    /* Inline Code Tags */
+    code {
+      background: #282828;
+      color: #ff6d00;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: monospace !important;
+      font-weight: normal !important;
+    }
+
+    /* Summary Card */
+    .summary-card {
+      width: 100%;
+      background-color: rgba(255, 109, 0, 0.08);
+      border: 1px solid #ff6d00;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 0;
+    }
+
+    .summary-card h2 {
+      color: #ff6d00;
+    }
+
+    .summary-card ul {
+      margin-bottom: 0;
+    }
+
+    /* Back Navigation Button */
+    .back-nav-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin: 2.5rem 0 1rem 0;
+    }
+
+    .see-problems-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #1e1e1e;
+      color: #22c55e;
+      border: 1px solid #22c55e;
+      padding: 0.85rem 1.75rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    }
+
+    .see-problems-btn:hover {
+      background-color: rgba(34, 197, 94, 0.1);
+      border-color: #ff6d00;
+      color: #ff6d00;
+      transform: translateY(-2px);
+      box-shadow: 0 0 12px -2px rgba(255, 109, 0, 0.3);
+    }
+
+    /* Footer Styling */
+    .main-footer {
+      width: 100%;
+      max-width: 1200px;
+      margin: 2rem auto 0 auto;
+      padding: 2rem 0;
+      border-top: 1px solid #18181b;
+      text-align: center;
+    }
+
+    .footer-text {
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: #71717a;
+    }
+
+    .footer-brand-orange {
+      color: #ff6d00;
+    }
+
+    .footer-brand-green {
+      color: #22c55e;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="top-header">
+    <div class="logo-container" id="logoToggle" role="button" tabindex="0" title="Toggle Sidebar">
+      <img src="../../../logo.png" alt="Tabspace Presentations Logo" class="logo-img" onerror="this.style.border='1px dashed #333'; this.style.padding='4px';">
+    </div>
+  </header>
+
+  <!-- Article Container -->
+  <main class="dark-wrapper">
+    <article class="topic-content-wrapper" id="articleBody">
+      <h1>Maximum Product of Two Digits (LeetCode 3536)</h1>
+
+      <!-- Introduction -->
+      <div class="highlight-card">
+        <h2>Introduction</h2>
+        <p>The Maximum Product of Two Digits problem is a simple digit manipulation problem that tests your ability to extract digits from an integer and process them efficiently.</p>
+        <p>Instead of generating every possible pair of digits, we can solve the problem in a single traversal by keeping track of the two largest digits. This leads to an elegant <code>O(d)</code> solution, where <code>d</code> is the number of digits in the given integer.</p>
+      </div>
+
+      <!-- Problem Statement -->
+      <div class="section-card">
+        <h2>Problem Statement</h2>
+        <p>You are given a positive integer <code>n</code>.</p>
+        <p>Your task is to return the maximum product of any two digits present in the number.</p>
+        <p><em>Note: The same digit can be used twice only if it appears at least twice in the number.</em></p>
+        
+        <h3>Example 1</h3>
+        <p><strong>Input:</strong> <code>n = 31</code><br>
+        <strong>Digits:</strong> <code>[3, 1]</code><br>
+        <strong>Possible products:</strong> <code>3 × 1 = 3</code><br>
+        <strong>Output:</strong> <code>3</code></p>
+
+        <h3>Example 2</h3>
+        <p><strong>Input:</strong> <code>n = 22</code><br>
+        <strong>Digits:</strong> <code>[2, 2]</code><br>
+        <strong>Possible products:</strong> <code>2 × 2 = 4</code><br>
+        <strong>Output:</strong> <code>4</code></p>
+
+        <h3>Example 3</h3>
+        <p><strong>Input:</strong> <code>n = 124</code><br>
+        <strong>Digits:</strong> <code>[1, 2, 4]</code><br>
+        <strong>Possible products:</strong> <code>1 × 2 = 2</code>, <code>1 × 4 = 4</code>, <code>2 × 4 = 8</code><br>
+        <strong>Output:</strong> <code>8</code></p>
+
+        <h3>Constraints</h3>
+        <p><code>10 ≤ n ≤ 10^9</code></p>
+        <p>Since the largest possible number has only 10 digits, even straightforward approaches are fast enough.</p>
+      </div>
+
+      <!-- Optimal Approach -->
+      <div class="section-card">
+        <h2>Optimal Approach (Single Pass)</h2>
+        <p>Instead of comparing every pair, we can keep track of two variables during a single traversal:</p>
+        <ul>
+          <li><strong>largest:</strong> Stores the maximum digit found so far.</li>
+          <li><strong>secondLargest:</strong> Stores the second-largest digit found so far.</li>
+        </ul>
+        <p>As we extract each digit using modulo arithmetic (<code>n % 10</code>), we compare it against our current top two. If a digit is greater than or equal to <code>largest</code>, we shift the old <code>largest</code> down to <code>secondLargest</code> and update <code>largest</code>. Otherwise, if it is strictly greater than <code>secondLargest</code>, we update <code>secondLargest</code>. After processing all digits, the answer is simply <code>largest × secondLargest</code>.</p>
+
+        <h3>Code Implementations</h3>
+        <div class="tabs">
+            <input type="radio" id="tab-opt-cpp" name="opt-code-tabs" checked>
+            <label for="tab-opt-cpp">C++</label>
+            
+            <input type="radio" id="tab-opt-python" name="opt-code-tabs">
+            <label for="tab-opt-python">Python</label>
+            
+            <div class="tab-content" id="content-opt-cpp">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code><span class="keyword">class</span> <span class="type">Solution</span> {
+<span class="keyword">public</span>:
+    <span class="type">int</span> <span class="function">maxProduct</span>(<span class="type">int</span> <span class="code-text">n</span>) {
+        <span class="type">int</span> <span class="code-text">largest</span> = <span class="number">0</span>, <span class="code-text">secondLargest</span> = <span class="number">0</span>;
+
+        <span class="keyword">while</span> (<span class="code-text">n</span> &gt; <span class="number">0</span>) {
+            <span class="type">int</span> <span class="code-text">digit</span> = <span class="code-text">n</span> % <span class="number">10</span>;
+
+            <span class="keyword">if</span> (<span class="code-text">digit</span> &gt;= <span class="code-text">largest</span>) {
+                <span class="code-text">secondLargest</span> = <span class="code-text">largest</span>;
+                <span class="code-text">largest</span> = <span class="code-text">digit</span>;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="code-text">digit</span> &gt; <span class="code-text">secondLargest</span>) {
+                <span class="code-text">secondLargest</span> = <span class="code-text">digit</span>;
+            }
+
+            <span class="code-text">n</span> /= <span class="number">10</span>;
+        }
+
+        <span class="keyword">return</span> <span class="code-text">largest</span> * <span class="code-text">secondLargest</span>;
+    }
+};</code></pre>
+            </div>
+            
+            <div class="tab-content" id="content-opt-python">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code><span class="keyword">class</span> <span class="type">Solution</span>:
+    <span class="keyword">def</span> <span class="function">maxProduct</span>(<span class="code-text">self</span>, <span class="code-text">n</span>: <span class="type">int</span>) -&gt; <span class="type">int</span>:
+        <span class="code-text">largest</span> = <span class="number">0</span>
+        <span class="code-text">second_largest</span> = <span class="number">0</span>
+
+        <span class="keyword">while</span> <span class="code-text">n</span> &gt; <span class="number">0</span>:
+            <span class="code-text">digit</span> = <span class="code-text">n</span> % <span class="number">10</span>
+
+            <span class="keyword">if</span> <span class="code-text">digit</span> &gt;= <span class="code-text">largest</span>:
+                <span class="code-text">second_largest</span> = <span class="code-text">largest</span>
+                <span class="code-text">largest</span> = <span class="code-text">digit</span>
+            <span class="keyword">elif</span> <span class="code-text">digit</span> &gt; <span class="code-text">second_largest</span>:
+                <span class="code-text">second_largest</span> = <span class="code-text">digit</span>
+
+            <span class="code-text">n</span> //= <span class="number">10</span>
+
+        <span class="keyword">return</span> <span class="code-text">largest</span> * <span class="code-text">second_largest</span></code></pre>
+            </div>
+        </div>
+      </div>
+
+      <!-- Alternative Approach (Sorting) -->
+      <div class="section-card">
+        <h2>Alternative Approach (Sorting)</h2>
+        <p>An alternative, straightforward way to solve this problem is to extract every digit from the number, store them inside a dynamic array or list, and then sort the collection in ascending order. Once sorted, the two largest digits will naturally reside at the very end of the array. Multiplying the last two elements gives us the correct answer immediately.</p>
+
+        <h3>Code Implementations</h3>
+        <div class="tabs">
+            <input type="radio" id="tab-sort-cpp" name="sort-code-tabs" checked>
+            <label for="tab-sort-cpp">C++</label>
+            
+            <input type="radio" id="tab-sort-python" name="sort-code-tabs">
+            <label for="tab-sort-python">Python</label>
+            
+            <div class="tab-content" id="content-sort-cpp">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code><span class="keyword">class</span> <span class="type">Solution</span> {
+<span class="keyword">public</span>:
+    <span class="type">int</span> <span class="function">maxProduct</span>(<span class="type">int</span> <span class="code-text">n</span>) {
+        <span class="type">vector</span>&lt;<span class="type">int</span>&gt; <span class="code-text">digits</span>;
+
+        <span class="keyword">while</span> (<span class="code-text">n</span> &gt; <span class="number">0</span>) {
+            <span class="code-text">digits</span>.<span class="function">push_back</span>(<span class="code-text">n</span> % <span class="number">10</span>);
+            <span class="code-text">n</span> /= <span class="number">10</span>;
+        }
+
+        <span class="function">sort</span>(<span class="code-text">digits</span>.<span class="function">begin</span>(), <span class="code-text">digits</span>.<span class="function">end</span>());
+
+        <span class="type">int</span> <span class="code-text">m</span> = <span class="code-text">digits</span>.<span class="function">size</span>();
+        <span class="keyword">return</span> <span class="code-text">digits</span>[<span class="code-text">m</span> - <span class="number">1</span>] * <span class="code-text">digits</span>[<span class="code-text">m</span> - <span class="number">2</span>];
+    }
+};</code></pre>
+            </div>
+            
+            <div class="tab-content" id="content-sort-python">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code><span class="keyword">class</span> <span class="type">Solution</span>:
+    <span class="keyword">def</span> <span class="function">maxProduct</span>(<span class="code-text">self</span>, <span class="code-text">n</span>: <span class="type">int</span>) -&gt; <span class="type">int</span>:
+        <span class="code-text">digits</span> = []
+
+        <span class="keyword">while</span> <span class="code-text">n</span> &gt; <span class="number">0</span>:
+            <span class="code-text">digits</span>.<span class="function">append</span>(<span class="code-text">n</span> % <span class="number">10</span>)
+            <span class="code-text">n</span> //= <span class="number">10</span>
+
+        <span class="code-text">digits</span>.<span class="function">sort</span>()
+
+        <span class="keyword">return</span> <span class="code-text">digits</span>[-<span class="number">1</span>] * <span class="code-text">digits</span>[-<span class="number">2</span>]</code></pre>
+            </div>
+        </div>
+      </div>
+
+      <!-- Complexity Analysis -->
+      <div class="section-card">
+        <h2>Complexity Analysis</h2>
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Approach</th>
+              <th>Time Complexity</th>
+              <th>Space Complexity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Optimal Approach</strong></td>
+              <td><code>O(d)</code></td>
+              <td><code>O(1)</code></td>
+            </tr>
+            <tr>
+              <td><strong>Sorting Approach</strong></td>
+              <td><code>O(d log d)</code></td>
+              <td><code>O(d)</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Key Takeaways -->
+      <div class="summary-card">
+        <h2>Key Takeaways</h2>
+        <ul>
+          <li>The maximum product always comes from the two largest digits.</li>
+          <li>Tracking the two largest digits is more efficient than checking every pair.</li>
+          <li>The optimal solution runs in <code>O(d)</code> time and <code>O(1)</code> extra space.</li>
+          <li>This problem is an excellent introduction to digit extraction and one-pass optimization techniques.</li>
+        </ul>
+      </div>
+
+    </article>
+
+    <!-- Navigation Button to Previous Folder -->
+    <div class="back-nav-container">
+      <a href="../../" class="see-problems-btn">
+        &larr; See All Problems
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+      <p class="footer-text">
+        Presented by <span class="footer-brand-orange">Tabspace</span> <span class="footer-brand-green">Presentations</span> &copy; 2026. All rights reserved.
+      </p>
+    </footer>
+  </main>
+
+  <!-- Clipboard Script -->
+  <script>
+    function copyCode(btn) {
+      const codeBlock = btn.parentElement.querySelector('code');
+      if (!codeBlock) return;
+
+      const codeText = codeBlock.textContent;
+
+      navigator.clipboard.writeText(codeText).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+    }
+  </script>
+</body>
+</html>

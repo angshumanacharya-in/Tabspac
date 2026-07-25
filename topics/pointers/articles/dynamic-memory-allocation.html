@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Memory Allocation in C</title>
+  <style>
+    /* Ensure full width expansion */
+    .topic-content-wrapper {
+      width: 100%;
+    }
+
+    .topic-content-wrapper h1 {
+      font-size: 2rem;
+      color: var(--text-main);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border-color);
+      text-align: center;
+      width: 100%;
+    }
+
+    .topic-content-wrapper h2 {
+      font-size: 1.3rem;
+      color: var(--accent-color);
+      margin: 0 0 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .topic-content-wrapper h3 {
+      font-size: 1.05rem;
+      color: var(--glow-color);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .topic-content-wrapper p {
+      color: #d1d5db;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper li {
+      color: #d1d5db;
+      margin-bottom: 0.4rem;
+      line-height: 1.6;
+    }
+
+    /* Section Cards - Expanding Full Width */
+    .section-card {
+      width: 100%;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .section-card:hover {
+      border-color: rgba(255, 109, 0, 0.4);
+      box-shadow: 0 0 12px -2px rgba(255, 109, 0, 0.15);
+    }
+
+    /* Learning Objectives Box */
+    .learning-card {
+      width: 100%;
+      background-color: rgba(34, 197, 94, 0.05);
+      border: 1px solid var(--accent-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .learning-card h2 {
+      color: var(--accent-color);
+    }
+
+    .learning-card ul {
+      margin-bottom: 0;
+    }
+
+    /* Table Design */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0 0.5rem 0;
+      background-color: var(--bg-main);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .custom-table th {
+      background-color: #282828;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .custom-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      color: #d1d5db;
+    }
+
+    .custom-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Code Block */
+    .code-block {
+      width: 100%;
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+
+    .code-block pre {
+      margin: 0;
+    }
+
+    .code-block code {
+      font-family: 'Consolas', 'Fira Code', 'Courier New', monospace !important;
+      color: var(--accent-color);
+      font-size: 0.95rem;
+    }
+
+    /* Inline Code Tags */
+    code {
+      background: #282828;
+      color: var(--glow-color);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: monospace !important;
+    }
+
+    /* Vertical Execution Flow Diagram */
+    .flow-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 1rem;
+      background-color: var(--bg-main);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .flow-step {
+      background-color: var(--bg-card);
+      border: 1px solid var(--accent-color);
+      color: var(--text-main);
+      padding: 0.65rem 1.5rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .flow-step:hover {
+      transform: translateY(-2px);
+      border-color: var(--glow-color);
+    }
+
+    .flow-arrow {
+      color: var(--glow-color);
+      font-size: 1rem;
+      line-height: 1;
+      font-family: monospace !important;
+    }
+
+    /* Summary Card */
+    .summary-card {
+      width: 100%;
+      background-color: rgba(255, 109, 0, 0.05);
+      border: 1px solid var(--glow-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 0;
+    }
+
+    .summary-card h2 {
+      color: var(--glow-color);
+    }
+
+    .summary-card p {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="topic-content-wrapper">
+  <h1>Dynamic Memory Allocation in C</h1>
+
+  <!-- Learning Objectives -->
+  <div class="learning-card">
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Understand dynamic memory allocation.</li>
+      <li>Differentiate between stack and heap memory.</li>
+      <li>Allocate memory using <code>malloc()</code>.</li>
+      <li>Allocate initialized memory using <code>calloc()</code>.</li>
+      <li>Resize allocated memory using <code>realloc()</code>.</li>
+      <li>Release memory using <code>free()</code>.</li>
+      <li>Understand memory leaks and dangling pointers.</li>
+      <li>Use pointers to pointers (<code>int **</code>).</li>
+      <li>Create and resize dynamic arrays.</li>
+    </ul>
+  </div>
+
+  <!-- Section 1 -->
+  <div class="section-card">
+    <h2>1. Introduction & Why Dynamic Memory Allocation?</h2>
+    <p>One of the biggest strengths of the C programming language is its ability to allocate memory dynamically during program execution. Unlike static memory allocation, where the memory size is fixed at compile time, dynamic memory allocation allows programs to request, resize, and release memory as needed. This flexibility is essential for building scalable applications such as databases, text editors, operating systems, compilers, and data structures like linked lists, stacks, queues, and trees.</p>
+    <p>Using a fixed array like <code>int marks[100];</code> has severe drawbacks: if there are only 10 students, memory is wasted; if there are 500, it is insufficient. Dynamic allocation solves this by requesting exact sizes at runtime.</p>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="section-card">
+    <h2>2. Memory Organization: Stack vs. Heap</h2>
+    <p>A typical C program organizes memory into distinct regions, most notably the <strong>Stack</strong> and the <strong>Heap</strong>.</p>
+    
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Stack Memory</th>
+          <th>Heap Memory</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Stores local variables and function parameters</td>
+          <td>Stores dynamically allocated memory (<code>malloc</code>, <code>calloc</code>)</td>
+        </tr>
+        <tr>
+          <td>Automatically managed by the compiler</td>
+          <td>Explicitly managed by the programmer</td>
+        </tr>
+        <tr>
+          <td>Fast allocation and deallocation</td>
+          <td>Slightly slower allocation</td>
+        </tr>
+        <tr>
+          <td>Destroyed when function scope ends</td>
+          <td>Persists until explicitly freed or program exits</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Section 3 -->
+  <div class="section-card">
+    <h2>3. Allocation Functions: malloc() and calloc()</h2>
+    <p>The standard library <code>&lt;stdlib.h&gt;</code> provides core memory management functions:</p>
+    
+    <h3>malloc()</h3>
+    <p>Allocates a block of memory of requested bytes, leaving contents uninitialized (containing garbage values).</p>
+    <div class="code-block">
+      <pre><code>int *ptr = (int *)malloc(sizeof(int));
+if(ptr == NULL) {
+    // Handle allocation failure
+}</code></pre>
+    </div>
+
+    <h3>calloc()</h3>
+    <p>Allocates memory for multiple elements and automatically initializes all allocated bytes to zero.</p>
+    <div class="code-block">
+      <pre><code>int *arr = (int *)calloc(5, sizeof(int)); // Allocates 5 ints, all set to 0</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 4 -->
+  <div class="section-card">
+    <h2>4. Resizing and Releasing Memory: realloc() and free()</h2>
+    
+    <h3>realloc()</h3>
+    <p>Changes the size of an existing memory block. If contiguous space isn't available, it relocates the block entirely and copies existing data.</p>
+    <div class="code-block">
+      <pre><code>arr = (int *)realloc(arr, 10 * sizeof(int));</code></pre>
+    </div>
+
+    <h3>free()</h3>
+    <p>Releases dynamically allocated memory back to the system so it can be reused.</p>
+    <div class="code-block">
+      <pre><code>free(ptr);
+ptr = NULL; // Best practice to prevent dangling pointers</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 5 -->
+  <div class="section-card">
+    <h2>5. Common Pitfalls: Memory Leaks & Dangling Pointers</h2>
+    <ul>
+      <li><strong>Memory Leaks:</strong> Occur when dynamically allocated memory is abandoned without calling <code>free()</code>, exhausting system RAM over time.</li>
+      <li><strong>Dangling Pointers:</strong> Pointers that continue referencing memory locations after they have been freed. Setting pointers to <code>NULL</code> immediately after freeing avoids this.</li>
+      <li><strong>Forgetting NULL Checks:</strong> Always verify that allocation functions did not return <code>NULL</code> before attempting to dereference pointers.</li>
+    </ul>
+  </div>
+
+  <!-- Section 6 -->
+  <div class="section-card">
+    <h2>6. Pointers to Pointers (int **)</h2>
+    <p>A double pointer stores the memory address of another pointer variable. They are essential for creating dynamic 2D arrays, multi-level structures, or allowing functions to modify the address stored inside an external pointer.</p>
+    <div class="code-block">
+      <pre><code>void allocate(int **ptr) {
+    *ptr = (int *)malloc(sizeof(int));
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 7 -->
+  <div class="section-card">
+    <h2>7. Mini Project: Dynamic Integer Array with Resizing</h2>
+    <p>A complete program demonstrating dynamic allocation, user input, resizing with <code>realloc()</code>, and proper cleanup.</p>
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main()
+{
+    int n, extra;
+
+    printf("Enter initial size: ");
+    scanf("%d", &amp;n);
+
+    int *arr = (int *)malloc(n * sizeof(int));
+    if(arr == NULL) {
+        printf("Memory allocation failed\n");
+        return 1;
+    }
+
+    printf("Enter %d elements:\n", n);
+    for(int i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;arr[i]);
+    }
+
+    printf("Enter additional size: ");
+    scanf("%d", &amp;extra);
+
+    arr = (int *)realloc(arr, (n + extra) * sizeof(int));
+    if(arr == NULL) {
+        printf("Memory reallocation failed\n");
+        return 1;
+    }
+
+    printf("Enter %d additional elements:\n", extra);
+    for(int i = n; i &lt; n + extra; i++) {
+        scanf("%d", &amp;arr[i]);
+    }
+
+    printf("Complete Array:\n");
+    for(int i = 0; i &lt; n + extra; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    free(arr);
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Key Concepts Table -->
+  <div class="section-card">
+    <h2>8. Key Concepts Reference</h2>
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Function / Concept</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>malloc(size)</code></td>
+          <td>Allocates uninitialized memory block of given bytes</td>
+        </tr>
+        <tr>
+          <td><code>calloc(num, size)</code></td>
+          <td>Allocates and zero-initializes memory for an array of elements</td>
+        </tr>
+        <tr>
+          <td><code>realloc(ptr, new_size)</code></td>
+          <td>Resizes previously allocated memory block</td>
+        </tr>
+        <tr>
+          <td><code>free(ptr)</code></td>
+          <td>Releases heap memory block back to the system</td>
+        </tr>
+        <tr>
+          <td><code>int **dptr</code></td>
+          <td>Pointer to pointer; used for modifying pointers or 2D allocations</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-card">
+    <h2>Summary</h2>
+    <p>Dynamic memory allocation enables C programs to request and manage memory at runtime, making them flexible and efficient for handling data whose size is unknown until execution. In this lesson, you learned the differences between stack and heap memory, how to allocate memory using <code>malloc()</code> and <code>calloc()</code>, resize memory with <code>realloc()</code>, release memory with <code>free()</code>, and avoid common issues such as memory leaks and dangling pointers. You also explored pointers to pointers and built a dynamic array that can grow during program execution.</p>
+  </div>
+</div>
+
+</body>
+</html>

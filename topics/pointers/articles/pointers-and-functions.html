@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pointers and Functions in C</title>
+  <style>
+    /* Ensure full width expansion */
+    .topic-content-wrapper {
+      width: 100%;
+    }
+
+    .topic-content-wrapper h1 {
+      font-size: 2rem;
+      color: var(--text-main);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border-color);
+      text-align: center;
+      width: 100%;
+    }
+
+    .topic-content-wrapper h2 {
+      font-size: 1.3rem;
+      color: var(--accent-color);
+      margin: 0 0 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .topic-content-wrapper h3 {
+      font-size: 1.05rem;
+      color: var(--glow-color);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .topic-content-wrapper p {
+      color: #d1d5db;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper li {
+      color: #d1d5db;
+      margin-bottom: 0.4rem;
+      line-height: 1.6;
+    }
+
+    /* Section Cards - Expanding Full Width */
+    .section-card {
+      width: 100%;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .section-card:hover {
+      border-color: rgba(255, 109, 0, 0.4);
+      box-shadow: 0 0 12px -2px rgba(255, 109, 0, 0.15);
+    }
+
+    /* Learning Objectives Box */
+    .learning-card {
+      width: 100%;
+      background-color: rgba(34, 197, 94, 0.05);
+      border: 1px solid var(--accent-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .learning-card h2 {
+      color: var(--accent-color);
+    }
+
+    .learning-card ul {
+      margin-bottom: 0;
+    }
+
+    /* Table Design */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0 0.5rem 0;
+      background-color: var(--bg-main);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .custom-table th {
+      background-color: #282828;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .custom-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      color: #d1d5db;
+    }
+
+    .custom-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Code Block */
+    .code-block {
+      width: 100%;
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+
+    .code-block pre {
+      margin: 0;
+    }
+
+    .code-block code {
+      font-family: 'Consolas', 'Fira Code', 'Courier New', monospace !important;
+      color: var(--accent-color);
+      font-size: 0.95rem;
+    }
+
+    /* Inline Code Tags */
+    code {
+      background: #282828;
+      color: var(--glow-color);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: monospace !important;
+    }
+
+    /* Vertical Execution Flow Diagram */
+    .flow-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 1rem;
+      background-color: var(--bg-main);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .flow-step {
+      background-color: var(--bg-card);
+      border: 1px solid var(--accent-color);
+      color: var(--text-main);
+      padding: 0.65rem 1.5rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .flow-step:hover {
+      transform: translateY(-2px);
+      border-color: var(--glow-color);
+    }
+
+    .flow-arrow {
+      color: var(--glow-color);
+      font-size: 1rem;
+      line-height: 1;
+      font-family: monospace !important;
+    }
+
+    /* Summary Card */
+    .summary-card {
+      width: 100%;
+      background-color: rgba(255, 109, 0, 0.05);
+      border: 1px solid var(--glow-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 0;
+    }
+
+    .summary-card h2 {
+      color: var(--glow-color);
+    }
+
+    .summary-card p {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="topic-content-wrapper">
+  <h1>Pointers and Functions in C</h1>
+
+  <!-- Learning Objectives -->
+  <div class="learning-card">
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Understand how pointers are used with functions.</li>
+      <li>Differentiate between pass-by-value and pass-by-reference.</li>
+      <li>Modify variables using pointers.</li>
+      <li>Return pointers from functions safely.</li>
+      <li>Understand the dangers of returning local variable addresses.</li>
+      <li>Use const pointers and pointers to const.</li>
+      <li>Understand the basics of function pointers.</li>
+      <li>Write functions that manipulate data through pointers.</li>
+      <li>Reverse a string using pointers.</li>
+    </ul>
+  </div>
+
+  <!-- Section 1 -->
+  <div class="section-card">
+    <h2>1. Introduction</h2>
+    <p>Functions and pointers are a powerful combination in C. While functions help organize code into reusable blocks, pointers allow those functions to directly access and modify data stored in memory. Together, they enable efficient programming, avoid unnecessary data copying, and form the foundation for advanced concepts such as callbacks, dynamic memory management, and data structures.</p>
+    <p>In this lesson, you'll learn the difference between pass-by-value and pass-by-reference, how to use pointers as function parameters, how to safely return pointers from functions, the concepts of const pointers and pointers to const, and get an introduction to function pointers.</p>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="section-card">
+    <h2>2. Pass-by-Value vs Pass-by-Reference</h2>
+    <p>In C, function arguments are passed by value by default, meaning a copy of the variable is created, and any modifications affect only that local copy. Pointers allow pass-by-reference behavior so functions can work directly with the original memory location.</p>
+    
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Pass-by-Value</th>
+          <th>Pass-by-Reference</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Copy of data is passed</td>
+          <td>Address is passed</td>
+        </tr>
+        <tr>
+          <td>Original value unchanged</td>
+          <td>Original value can be modified</td>
+        </tr>
+        <tr>
+          <td>More memory for large data</td>
+          <td>More efficient</td>
+        </tr>
+        <tr>
+          <td>Safer for read-only operations</td>
+          <td>Useful when modifications are required</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Example: Pass-by-Reference</h3>
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+void increment(int *num)
+{
+    (*num)++;
+}
+
+int main()
+{
+    int x = 10;
+    increment(&x);
+    printf("%d\n", x); // Outputs 11
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 3 -->
+  <div class="section-card">
+    <h2>3. Returning Pointers from Functions</h2>
+    <p>Functions can return pointers, but doing so safely requires careful attention to memory scope (Stack vs. Heap).</p>
+
+    <h3>Returning Dynamically Allocated Memory (Safe)</h3>
+    <p>A safe way to return pointers is by returning memory allocated on the heap via <code>malloc()</code>, which persists until explicitly freed.</p>
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int* createNumber()
+{
+    int *ptr = (int *)malloc(sizeof(int));
+    *ptr = 100;
+    return ptr;
+}
+
+int main()
+{
+    int *num = createNumber();
+    printf("%d\n", *num);
+    free(num);
+
+    return 0;
+}</code></pre>
+    </div>
+
+    <h3>Returning the Address of a Local Variable (Danger)</h3>
+    <p>Returning local stack variables (e.g., <code>int* getValue() { int x = 50; return &x; }</code>) results in a <strong>dangling pointer</strong> because the stack memory is destroyed once the function finishes executing.</p>
+  </div>
+
+  <!-- Section 4 -->
+  <div class="section-card">
+    <h2>4. Advanced Pointer Parameters & Multiple Values</h2>
+    <p>Because arrays decay into pointers, functions easily accept array arguments. Furthermore, pointers allow functions to return multiple values through output parameters.</p>
+
+    <h3>Example: Returning Multiple Values (Min and Max)</h3>
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+void minMax(int a, int b, int *min, int *max)
+{
+    if(a &lt; b)
+    {
+        *min = a;
+        *max = b;
+    }
+    else
+    {
+        *min = b;
+        *max = a;
+    }
+}
+
+int main()
+{
+    int minimum, maximum;
+    minMax(15, 8, &minimum, &maximum);
+
+    printf("Min = %d\n", minimum);
+    printf("Max = %d\n", maximum);
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 5 -->
+  <div class="section-card">
+    <h2>5. Const Pointers vs Pointers to Const</h2>
+    <p>Qualifiers like <code>const</code> help enforce safety constraints on pointers:</p>
+    <ul>
+      <li><strong>Pointer to Const (<code>const int *ptr</code>):</strong> The data pointed to cannot be modified, but the pointer can point elsewhere.</li>
+      <li><strong>Const Pointer (<code>int *const ptr</code>):</strong> The pointer itself cannot change its destination, but the underlying data can be modified.</li>
+    </ul>
+
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Declaration</th>
+          <th>Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>const int *ptr</code></td>
+          <td>Data is constant (value cannot change through pointer)</td>
+        </tr>
+        <tr>
+          <td><code>int *const ptr</code></td>
+          <td>Pointer is constant (address cannot change)</td>
+        </tr>
+        <tr>
+          <td><code>const int *const ptr</code></td>
+          <td>Both data and pointer are constant</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Section 6 -->
+  <div class="section-card">
+    <h2>6. Introduction to Function Pointers</h2>
+    <p>Functions reside at specific locations in memory. A <strong>function pointer</strong> can store that address, enabling callbacks, event handling, and dynamic dispatch.</p>
+    
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+int add(int a, int b)
+{
+    return a + b;
+}
+
+int main()
+{
+    int (*func)(int, int) = add;
+    printf("%d\n", func(5, 3)); // Outputs 8
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 7 -->
+  <div class="section-card">
+    <h2>7. Mini Project: Reverse a String Using Pointers</h2>
+    <p>Write a function that reverses a string in place using pointers.</p>
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+void reverse(char *str)
+{
+    char *start = str;
+    char *end = str + strlen(str) - 1;
+
+    while(start &lt; end)
+    {
+        char temp = *start;
+        *start = *end;
+        *end = temp;
+
+        start++;
+        end--;
+    }
+}
+
+int main()
+{
+    char text[] = "Hello";
+    reverse(text);
+    printf("%s\n", text); // Outputs: olleH
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Key Concepts Table -->
+  <div class="section-card">
+    <h2>8. Key Concepts Reference</h2>
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Concept / Syntax</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>void func(int *num)</code></td>
+          <td>Pass-by-reference parameter allowing modification of original variable</td>
+        </tr>
+        <tr>
+          <td><code>int* func()</code> returning heap memory</td>
+          <td>Safe pattern using <code>malloc()</code> for returning pointers</td>
+        </tr>
+        <tr>
+          <td><code>const int *ptr</code></td>
+          <td>Pointer to constant data (value is read-only)</td>
+        </tr>
+        <tr>
+          <td><code>int *const ptr</code></td>
+          <td>Constant pointer (destination address is locked)</td>
+        </tr>
+        <tr>
+          <td><code>returnType (*ptr)(params)</code></td>
+          <td>Function pointer syntax for storing and invoking functions dynamically</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-card">
+    <h2>Summary</h2>
+    <p>Pointers and functions work together to make C programs efficient, flexible, and modular. In this lesson, you learned the difference between pass-by-value and pass-by-reference, how pointers allow functions to modify original variables, how to safely return pointers from functions, why returning the address of a local variable is dangerous, the differences between const pointers and pointers to const, and the basics of function pointers. You also practiced writing pointer-based utility functions and built a mini project to reverse a string using pointers. You are ready for the next challenge!</p>
+  </div>
+</div>
+
+</body>
+</html>

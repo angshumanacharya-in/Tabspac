@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 10: Advanced Pointer Concepts & Final Project</title>
+  <style>
+    /* Ensure full width expansion */
+    .topic-content-wrapper {
+      width: 100%;
+    }
+
+    .topic-content-wrapper h1 {
+      font-size: 2rem;
+      color: var(--text-main);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border-color);
+      text-align: center;
+      width: 100%;
+    }
+
+    .topic-content-wrapper h2 {
+      font-size: 1.3rem;
+      color: var(--accent-color);
+      margin: 0 0 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .topic-content-wrapper h3 {
+      font-size: 1.05rem;
+      color: var(--glow-color);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .topic-content-wrapper p {
+      color: #d1d5db;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper li {
+      color: #d1d5db;
+      margin-bottom: 0.4rem;
+      line-height: 1.6;
+    }
+
+    /* Section Cards - Expanding Full Width */
+    .section-card {
+      width: 100%;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .section-card:hover {
+      border-color: rgba(255, 109, 0, 0.4);
+      box-shadow: 0 0 12px -2px rgba(255, 109, 0, 0.15);
+    }
+
+    /* Learning Objectives Box */
+    .learning-card {
+      width: 100%;
+      background-color: rgba(34, 197, 94, 0.05);
+      border: 1px solid var(--accent-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .learning-card h2 {
+      color: var(--accent-color);
+    }
+
+    .learning-card ul {
+      margin-bottom: 0;
+    }
+
+    /* Table Design */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0 0.5rem 0;
+      background-color: var(--bg-main);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .custom-table th {
+      background-color: #282828;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .custom-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      color: #d1d5db;
+    }
+
+    .custom-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Code Block */
+    .code-block {
+      width: 100%;
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+
+    .code-block pre {
+      margin: 0;
+    }
+
+    .code-block code {
+      font-family: 'Consolas', 'Fira Code', 'Courier New', monospace !important;
+      color: var(--accent-color);
+      font-size: 0.95rem;
+    }
+
+    /* Inline Code Tags */
+    code {
+      background: #282828;
+      color: var(--glow-color);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: monospace !important;
+    }
+
+    /* Vertical Execution Flow Diagram */
+    .flow-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 1rem;
+      background-color: var(--bg-main);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .flow-step {
+      background-color: var(--bg-card);
+      border: 1px solid var(--accent-color);
+      color: var(--text-main);
+      padding: 0.65rem 1.5rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .flow-step:hover {
+      transform: translateY(-2px);
+      border-color: var(--glow-color);
+    }
+
+    .flow-arrow {
+      color: var(--glow-color);
+      font-size: 1rem;
+      line-height: 1;
+      font-family: monospace !important;
+    }
+
+    /* Summary Card */
+    .summary-card {
+      width: 100%;
+      background-color: rgba(255, 109, 0, 0.05);
+      border: 1px solid var(--glow-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 0;
+    }
+
+    .summary-card h2 {
+      color: var(--glow-color);
+    }
+
+    .summary-card p {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="topic-content-wrapper">
+  <h1>Day 10: Advanced Pointer Concepts & Final Project</h1>
+
+  <!-- Learning Objectives -->
+  <div class="learning-card">
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Understand generic pointers (<code>void *</code>).</li>
+      <li>Use pointer qualifiers (<code>const</code>, <code>volatile</code>, <code>restrict</code>).</li>
+      <li>Understand pointer casting.</li>
+      <li>Learn memory alignment and padding.</li>
+      <li>Debug common pointer-related errors.</li>
+      <li>Apply best practices for safe pointer usage.</li>
+      <li>Build a dynamic contact management system using pointers.</li>
+    </ul>
+  </div>
+
+  <!-- Section 1 -->
+  <div class="section-card">
+    <h2>1. Introduction</h2>
+    <p>Congratulations! You've reached the final day of the C Pointers Masterclass. Throughout this course, you've learned how pointers work, how they interact with arrays, functions, strings, structures, dynamic memory, and function pointers. In this final lesson, you'll explore advanced pointer concepts that are commonly used in professional software development, including void pointers, pointer qualifiers, memory alignment, common debugging techniques, and best practices. You'll also build a comprehensive final project that combines everything you've learned.</p>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="section-card">
+    <h2>2. Void Pointers (<code>void *</code>) & Pointer Casting</h2>
+    <p>A void pointer is a generic pointer that can hold the address of any data type. Unlike typed pointers, a <code>void *</code> has no associated data type, meaning it cannot be dereferenced directly without casting it to the appropriate pointer type first.</p>
+    
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int num = 100;
+    float value = 45.5f;
+    void *ptr;
+
+    ptr = &amp;num;
+    printf("%d\n", *(int *)ptr);
+
+    ptr = &amp;value;
+    printf("%.2f\n", *(float *)ptr);
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 3 -->
+  <div class="section-card">
+    <h2>3. Pointer Qualifiers: const, volatile, & restrict</h2>
+    <p>Qualifiers add control over how variables and pointers interact during compiler optimizations and runtime:</p>
+    <ul>
+      <li><strong>Pointer to Constant (<code>const int *ptr</code>):</strong> The pointer can point to different locations, but data cannot be modified through it.</li>
+      <li><strong>Constant Pointer (<code>int *const ptr</code>):</strong> The pointer address is fixed, but the underlying data can be modified.</li>
+      <li><strong>Volatile Pointer:</strong> Tells the compiler that a variable's value may change unexpectedly (crucial for hardware registers or multithreading).</li>
+      <li><strong>Restrict Pointer (C99):</strong> Guarantees that a pointer is the sole reference to the memory block, enabling aggressive compiler optimizations.</li>
+    </ul>
+  </div>
+
+  <!-- Section 4 -->
+  <div class="section-card">
+    <h2>4. Memory Alignment, Structure Padding & Null Pointers</h2>
+    <p>Processors access aligned memory more efficiently. Compilers insert invisible padding bytes inside structures to ensure members align with architecture word boundaries (which can be observed using <code>sizeof()</code>).</p>
+    <p>Additionally, always initialize unassigned pointers to <code>NULL</code> and validate them before dereferencing to prevent undefined behavior.</p>
+  </div>
+
+  <!-- Section 5 -->
+  <div class="section-card">
+    <h2>5. Hands-On Exercise: Generic Swap Using `void *`</h2>
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+void swap(void *a, void *b, size_t size)
+{
+    char temp[size];
+    memcpy(temp, a, size);
+    memcpy(a, b, size);
+    memcpy(b, temp, size);
+}
+
+int main()
+{
+    int x = 10;
+    int y = 20;
+
+    swap(&amp;x, &amp;y, sizeof(int));
+    printf("x = %d\n", x);
+    printf("y = %d\n", y);
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 6 -->
+  <div class="section-card">
+    <h2>6. Final Project: Dynamic Contact Management System</h2>
+    <p>Develop a menu-driven Contact Management System utilizing structures, pointers, dynamic memory allocation via <code>realloc()</code>, search capabilities, and safe resource cleanup.</p>
+    <div class="code-block">
+      <pre><code>struct Contact {
+    char name[50];
+    char phone[20];
+    char email[100];
+};
+
+// Suggested core implementation features:
+// - Dynamic array management for contacts
+// - Add, search, update, and delete functions
+// - Complete memory deallocation before exit</code></pre>
+    </div>
+  </div>
+
+  <!-- Key Concepts Table -->
+  <div class="section-card">
+    <h2>7. Key Concepts Reference</h2>
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Concept / Qualifier</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>void *ptr</code></td>
+          <td>Generic pointer requiring explicit cast before dereferencing</td>
+        </tr>
+        <tr>
+          <td><code>const int *ptr</code></td>
+          <td>Pointer to constant data (data is read-only)</td>
+        </tr>
+        <tr>
+          <td><code>int *const ptr</code></td>
+          <td>Constant pointer (address destination is locked)</td>
+        </tr>
+        <tr>
+          <td><code>restrict</code></td>
+          <td>Keyword promising exclusive access to target memory block</td>
+        </tr>
+        <tr>
+          <td>Structure Padding</td>
+          <td>Compiler byte insertion to optimize CPU memory alignment access</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-card">
+    <h2>Summary</h2>
+    <p>Over the past ten lessons, you've progressed from the fundamentals of pointers to advanced concepts used in professional C development. You learned how pointers store memory addresses, perform pointer arithmetic, work seamlessly with arrays, strings, functions, and structures, allocate and manage dynamic memory, manipulate multiple levels of indirection with double pointers, implement callback mechanisms through function pointers, and build dynamic data structures. Finally, you explored advanced topics such as generic pointers, pointer qualifiers, memory alignment, debugging techniques, and safe programming practices. Congratulations on completing the 10-Day C Pointers Masterclass!</p>
+  </div>
+</div>
+
+</body>
+</html>

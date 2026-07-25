@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pointers and Arrays in C</title>
+  <style>
+    /* Ensure full width expansion */
+    .topic-content-wrapper {
+      width: 100%;
+    }
+
+    .topic-content-wrapper h1 {
+      font-size: 2rem;
+      color: var(--text-main);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border-color);
+      text-align: center;
+      width: 100%;
+    }
+
+    .topic-content-wrapper h2 {
+      font-size: 1.3rem;
+      color: var(--accent-color);
+      margin: 0 0 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .topic-content-wrapper h3 {
+      font-size: 1.05rem;
+      color: var(--glow-color);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .topic-content-wrapper p {
+      color: #d1d5db;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper li {
+      color: #d1d5db;
+      margin-bottom: 0.4rem;
+      line-height: 1.6;
+    }
+
+    /* Section Cards - Expanding Full Width */
+    .section-card {
+      width: 100%;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .section-card:hover {
+      border-color: rgba(255, 109, 0, 0.4);
+      box-shadow: 0 0 12px -2px rgba(255, 109, 0, 0.15);
+    }
+
+    /* Learning Objectives Box */
+    .learning-card {
+      width: 100%;
+      background-color: rgba(34, 197, 94, 0.05);
+      border: 1px solid var(--accent-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .learning-card h2 {
+      color: var(--accent-color);
+    }
+
+    .learning-card ul {
+      margin-bottom: 0;
+    }
+
+    /* Table Design */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0 0.5rem 0;
+      background-color: var(--bg-main);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .custom-table th {
+      background-color: #282828;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .custom-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      color: #d1d5db;
+    }
+
+    .custom-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Code Block */
+    .code-block {
+      width: 100%;
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+
+    .code-block pre {
+      margin: 0;
+    }
+
+    .code-block code {
+      font-family: 'Consolas', 'Fira Code', 'Courier New', monospace !important;
+      color: var(--accent-color);
+      font-size: 0.95rem;
+    }
+
+    /* Inline Code Tags */
+    code {
+      background: #282828;
+      color: var(--glow-color);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: monospace !important;
+    }
+
+    /* Vertical Execution Flow Diagram */
+    .flow-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 1rem;
+      background-color: var(--bg-main);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .flow-step {
+      background-color: var(--bg-card);
+      border: 1px solid var(--accent-color);
+      color: var(--text-main);
+      padding: 0.65rem 1.5rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .flow-step:hover {
+      transform: translateY(-2px);
+      border-color: var(--glow-color);
+    }
+
+    .flow-arrow {
+      color: var(--glow-color);
+      font-size: 1rem;
+      line-height: 1;
+      font-family: monospace !important;
+    }
+
+    /* Summary Card */
+    .summary-card {
+      width: 100%;
+      background-color: rgba(255, 109, 0, 0.05);
+      border: 1px solid var(--glow-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 0;
+    }
+
+    .summary-card h2 {
+      color: var(--glow-color);
+    }
+
+    .summary-card p {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="topic-content-wrapper">
+  <h1>Pointers and Arrays in C</h1>
+
+  <!-- Learning Objectives -->
+  <div class="learning-card">
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Understand the relationship between arrays and pointers.</li>
+      <li>Explain why an array name acts like a pointer.</li>
+      <li>Access array elements using pointer notation.</li>
+      <li>Traverse arrays using pointers.</li>
+      <li>Pass arrays to functions using pointers.</li>
+      <li>Work with two-dimensional arrays using pointers.</li>
+      <li>Traverse matrices using pointer notation.</li>
+      <li>Implement matrix addition using pointers.</li>
+    </ul>
+  </div>
+
+  <!-- Section 1 -->
+  <div class="section-card">
+    <h2>1. Introduction</h2>
+    <p>Pointers and arrays are among the most closely related concepts in C. In fact, much of the power of pointers comes from their relationship with arrays. Understanding this connection enables you to write efficient programs, process large amounts of data, work with multidimensional arrays, and pass arrays to functions without unnecessary copying.</p>
+    <p>In this lesson, you'll learn how arrays are stored in memory, how array names behave like pointers, how to access array elements using pointers, how arrays are passed to functions, and how to work with multidimensional arrays using pointers.</p>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="section-card">
+    <h2>2. Arrays and Memory & The Array Name</h2>
+    <p>An array stores elements in contiguous memory locations. The name of an array represents the address of its first element (i.e., <code>arr == &arr[0]</code>).</p>
+    
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int arr[5] = {10, 20, 30, 40, 50};
+
+    printf("%p\n", (void *)arr);
+    printf("%p\n", (void *)&arr[0]);
+
+    return 0;
+}</code></pre>
+    </div>
+
+    <h3>Array Name vs Pointer Variable</h3>
+    <p>Although an array name behaves like a pointer, it is a <strong>constant pointer</strong> to the first element. You can do <code>int *ptr = arr;</code> and increment <code>ptr++</code>, but doing <code>arr++</code> is invalid because the array base address cannot be changed.</p>
+  </div>
+
+  <!-- Section 3 -->
+  <div class="section-card">
+    <h2>3. Accessing and Modifying Array Elements Using Pointers</h2>
+    <p>Array indexing and pointer notation are directly interchangeable using the rule <code>arr[i] == *(arr + i)</code>:</p>
+    
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Array Notation</th>
+          <th>Pointer Notation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>arr[0]</code></td>
+          <td><code>*(arr)</code></td>
+        </tr>
+        <tr>
+          <td><code>arr[1]</code></td>
+          <td><code>*(arr + 1)</code></td>
+        </tr>
+        <tr>
+          <td><code>arr[2]</code></td>
+          <td><code>*(arr + 2)</code></td>
+        </tr>
+        <tr>
+          <td><code>arr[i]</code></td>
+          <td><code>*(arr + i)</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top: 1rem;">As a quirky C fact, <code>2[arr]</code> is also valid because addition is commutative, though it should never be used in production code!</p>
+
+    <h3>Example: Traversing and Modifying</h3>
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int arr[] = {10, 20, 30, 40, 50};
+    int *ptr = arr;
+
+    while(ptr &lt; arr + 5)
+    {
+        printf("%d ", *ptr);
+        ptr++;
+    }
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 4 -->
+  <div class="section-card">
+    <h2>4. Passing Arrays to Functions</h2>
+    <p>Arrays are passed to functions as pointers, meaning only the base memory address is passed instead of copying the entire array. This saves massive amounts of memory and CPU cycles.</p>
+
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+void doubleElements(int *arr, int n)
+{
+    for(int i = 0; i &lt; n; i++)
+        arr[i] *= 2;
+}
+
+int main()
+{
+    int arr[] = {1, 2, 3, 4};
+    doubleElements(arr, 4);
+
+    for(int i = 0; i &lt; 4; i++)
+        printf("%d ", arr[i]); // Outputs: 2 4 6 8
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 5 -->
+  <div class="section-card">
+    <h2>5. Multidimensional Arrays & Pointers</h2>
+    <p>Multidimensional arrays like 2D matrices are also stored sequentially in contiguous memory. To point to an entire row of a 2D array, we use a pointer to an array:</p>
+    
+    <div class="code-block">
+      <pre><code>int (*ptr)[3]; // Pointer to an array of 3 integers
+// Note: int *ptr[3] is an array of 3 integer pointers (different!)</code></pre>
+    </div>
+
+    <h3>Accessing 2D Elements Using Pointers</h3>
+    <p>To access an element like <code>matrix[i][j]</code> using pointer notation, we use:</p>
+    <div class="code-block">
+      <pre><code>*(*(matrix + i) + j)</code></pre>
+    </div>
+
+    <h3>Example: Traversing a Matrix</h3>
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int matrix[2][3] = {
+        {1, 2, 3},
+        {4, 5, 6}
+    };
+
+    for(int i = 0; i &lt; 2; i++)
+    {
+        for(int j = 0; j &lt; 3; j++)
+        {
+            printf("%d ", *(*(matrix + i) + j));
+        }
+        printf("\n");
+    }
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 6 -->
+  <div class="section-card">
+    <h2>6. Common Beginner Mistakes</h2>
+    <ul>
+      <li><strong>Modifying Array Names:</strong> Trying to write expressions like <code>arr++</code>. Array names are constant base pointers.</li>
+      <li><strong>Operator Precedence Errors:</strong> Writing <code>*arr + 2</code> instead of parenthesizing it properly as <code>*(arr + 2)</code>.</li>
+      <li><strong>Incorrect Matrix Pointers:</strong> Declaring <code>int *ptr = matrix;</code> instead of the correct row-pointer syntax <code>int (*ptr)[3] = matrix;</code>.</li>
+      <li><strong>Assuming Array Copying:</strong> Forgetting that arrays passed to functions decay into pointers and modify the original dataset.</li>
+    </ul>
+  </div>
+
+  <!-- Section 7 -->
+  <div class="section-card">
+    <h2>7. Assignment: Matrix Addition Using Pointer Notation</h2>
+    <p>Write a C program that adds two matrices using only pointer notation.</p>
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int a[2][2] = {{1, 2}, {3, 4}};
+    int b[2][2] = {{5, 6}, {7, 8}};
+    int result[2][2];
+
+    for(int i = 0; i &lt; 2; i++)
+    {
+        for(int j = 0; j &lt; 2; j++)
+        {
+            *(*(result + i) + j) = *(*(a + i) + j) + *(*(b + i) + j);
+        }
+    }
+
+    printf("Result Matrix:\n");
+    for(int i = 0; i &lt; 2; i++)
+    {
+        for(int j = 0; j &lt; 2; j++)
+        {
+            printf("%d ", result[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Key Concepts Table -->
+  <div class="section-card">
+    <h2>8. Key Concepts Reference</h2>
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Expression / Concept</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>arr</code> vs <code>&arr[0]</code></td>
+          <td>Both represent the constant memory address of the first array element</td>
+        </tr>
+        <tr>
+          <td><code>*(arr + i)</code></td>
+          <td>Equivalent pointer notation for array subscript indexing <code>arr[i]</code></td>
+        </tr>
+        <tr>
+          <td><code>int *arr</code> (in function)</td>
+          <td>Function parameter syntax receiving a decayed array reference</td>
+        </tr>
+        <tr>
+          <td><code>int (*ptr)[3]</code></td>
+          <td>Pointer to a 1D array of 3 integers (used for 2D matrices)</td>
+        </tr>
+        <tr>
+          <td><code>*(*(matrix + i) + j)</code></td>
+          <td>Pointer access for 2D matrix element <code>matrix[i][j]</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-card">
+    <h2>Summary</h2>
+    <p>Pointers and arrays are tightly connected in C. An array name represents the address of its first element, allowing arrays to be accessed and traversed using pointer arithmetic. In this lesson, you learned how to access and modify array elements with pointers, pass arrays to functions efficiently, understand why arrays decay to pointers in function calls, and work with multidimensional arrays using pointer notation. You also practiced traversing matrices and implemented matrix addition using pointers.</p>
+  </div>
+</div>
+
+</body>
+</html>

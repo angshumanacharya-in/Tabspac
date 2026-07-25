@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 1: Introduction to Pointers in C</title>
+  <style>
+    /* Ensure full width expansion */
+    .topic-content-wrapper {
+      width: 100%;
+    }
+
+    .topic-content-wrapper h1 {
+      font-size: 2rem;
+      color: var(--text-main);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border-color);
+      text-align: center;
+      width: 100%;
+    }
+
+    .topic-content-wrapper h2 {
+      font-size: 1.3rem;
+      color: var(--accent-color);
+      margin: 0 0 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .topic-content-wrapper h3 {
+      font-size: 1.05rem;
+      color: var(--glow-color);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .topic-content-wrapper p {
+      color: #d1d5db;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper li {
+      color: #d1d5db;
+      margin-bottom: 0.4rem;
+      line-height: 1.6;
+    }
+
+    /* Section Cards - Expanding Full Width */
+    .section-card {
+      width: 100%;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      box-sizing: border-box;
+    }
+
+    .section-card:hover {
+      border-color: rgba(255, 109, 0, 0.4);
+      box-shadow: 0 0 12px -2px rgba(255, 109, 0, 0.15);
+    }
+
+    /* Learning Objectives Box */
+    .learning-card {
+      width: 100%;
+      background-color: rgba(34, 197, 94, 0.05);
+      border: 1px solid var(--accent-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.75rem;
+      box-sizing: border-box;
+    }
+
+    .learning-card h2 {
+      color: var(--accent-color);
+    }
+
+    .learning-card ul {
+      margin-bottom: 0;
+    }
+
+    /* Table Design */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0 0.5rem 0;
+      background-color: var(--bg-main);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .custom-table th {
+      background-color: #282828;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .custom-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      color: #d1d5db;
+    }
+
+    .custom-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Code Block */
+    .code-block {
+      width: 100%;
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+      box-sizing: border-box;
+    }
+
+    .code-block pre {
+      margin: 0;
+    }
+
+    .code-block code {
+      font-family: 'Consolas', 'Fira Code', 'Courier New', monospace !important;
+      color: var(--accent-color);
+      font-size: 0.95rem;
+    }
+
+    /* Inline Code Tags */
+    code {
+      background: #282828;
+      color: var(--glow-color);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: monospace !important;
+    }
+
+    /* Vertical Execution Flow Diagram */
+    .flow-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 1rem;
+      background-color: var(--bg-main);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      box-sizing: border-box;
+    }
+
+    .flow-step {
+      background-color: var(--bg-card);
+      border: 1px solid var(--accent-color);
+      color: var(--text-main);
+      padding: 0.65rem 1.5rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      box-sizing: border-box;
+    }
+
+    .flow-step:hover {
+      transform: translateY(-2px);
+      border-color: var(--glow-color);
+    }
+
+    .flow-arrow {
+      color: var(--glow-color);
+      font-size: 1rem;
+      line-height: 1;
+      font-family: monospace !important;
+    }
+
+    /* Summary Card */
+    .summary-card {
+      width: 100%;
+      background-color: rgba(255, 109, 0, 0.05);
+      border: 1px solid var(--glow-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 0;
+      box-sizing: border-box;
+    }
+
+    .summary-card h2 {
+      color: var(--glow-color);
+    }
+
+    .summary-card p {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="topic-content-wrapper">
+  <h1>Day 1: Introduction to Pointers in C</h1>
+
+  <!-- Learning Objectives -->
+  <div class="learning-card">
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Understand what a pointer is.</li>
+      <li>Explain why pointers are useful.</li>
+      <li>Declare and initialize pointers.</li>
+      <li>Use different pointer types.</li>
+      <li>Use the address-of (&amp;) operator.</li>
+      <li>Use the dereference (*) operator.</li>
+      <li>Understand how pointers are stored in memory.</li>
+      <li>Print variable addresses and values using pointers.</li>
+      <li>Swap two numbers using pointers.</li>
+    </ul>
+  </div>
+
+  <!-- Section 1 -->
+  <div class="section-card">
+    <h2>1. Introduction</h2>
+    <p>Pointers are one of the most powerful and unique features of the C programming language. They provide direct access to memory, making programs more efficient, flexible, and capable of performing advanced tasks such as dynamic memory allocation, data structure implementation, and low-level system programming. Although pointers are often considered difficult for beginners, understanding the fundamentals makes them much easier to work with.</p>
+    <p>In this lesson, we'll explore what pointers are, how they work, how to declare and initialize them, and how to use the address-of (<code>&amp;</code>) and dereference (<code>*</code>) operators. By the end of this chapter, you'll be able to access variables through pointers and understand why pointers are essential in C.</p>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="section-card">
+    <h2>2. What is a Pointer?</h2>
+    <p>A pointer is a variable that stores the memory address of another variable. Unlike normal variables that store actual values, pointers store locations in memory where those values are kept.</p>
+    <p>For example, suppose variable <code>x = 25</code> is stored at memory location <code>1000</code>. If <code>int *ptr;</code> stores the address of <code>x</code>, then:</p>
+
+    <div class="flow-container">
+      <div class="flow-step">ptr (Stores Address 1000)</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">x (Value: 25 at Address 1000)</div>
+    </div>
+
+    <p style="margin-top: 1rem;">The pointer doesn't store 25. It stores the address where 25 exists.</p>
+  </div>
+
+  <!-- Section 3 -->
+  <div class="section-card">
+    <h2>3. Why Do We Need Pointers?</h2>
+    <p>Pointers provide several important advantages:</p>
+    <ul>
+      <li><strong>1. Efficient Memory Usage:</strong> Instead of copying large amounts of data, programs can simply pass memory addresses. This saves both time and memory.</li>
+      <li><strong>2. Dynamic Memory Allocation:</strong> Pointers allow memory to be allocated during program execution using functions like <code>malloc()</code>, <code>calloc()</code>, and <code>realloc()</code>. Without pointers, dynamic memory management is impossible.</li>
+      <li><strong>3. Function Communication:</strong> Pointers allow functions to modify original variables instead of copies (e.g., swapping values using <code>swap(&amp;a, &amp;b)</code>).</li>
+      <li><strong>4. Data Structures:</strong> Pointers are the foundation of linked lists, trees, graphs, queues, stacks, and hash tables.</li>
+      <li><strong>5. System Programming:</strong> Operating systems, device drivers, and embedded systems rely heavily on pointers for efficient memory access.</li>
+    </ul>
+  </div>
+
+  <!-- Section 4 -->
+  <div class="section-card">
+    <h2>4. Pointer Declaration & Initialization</h2>
+    <p>General syntax for declaring a pointer:</p>
+    <div class="code-block">
+      <pre><code>datatype *pointerName;</code></pre>
+    </div>
+    <p>Examples: <code>int *ptr;</code>, <code>char *ch;</code>, <code>float *fptr;</code>, <code>double *dptr;</code>. The <code>*</code> indicates that the variable is a pointer.</p>
+
+    <h3>Pointer Initialization</h3>
+    <p>A pointer should always point to a valid memory location.</p>
+    <div class="code-block">
+      <pre><code>int num = 50;
+int *ptr = &amp;num;</code></pre>
+    </div>
+    <p>Here, <code>ptr</code> stores the address of <code>num</code>, meaning <code>ptr == &amp;num</code> (both contain the same memory address).</p>
+
+    <h3>Complete Example</h3>
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int num = 50;
+    int *ptr = &amp;num;
+
+    printf("Value of num = %d\n", num);
+    printf("Address of num = %p\n", (void *)&amp;num);
+    printf("Pointer value = %p\n", (void *)ptr);
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 5 -->
+  <div class="section-card">
+    <h2>5. Pointer Types & Size</h2>
+    <p>Pointers are typed because different data types occupy different amounts of memory.</p>
+    <ul>
+      <li><strong>Integer Pointer:</strong> <code>int x = 5; int *ptr = &amp;x;</code></li>
+      <li><strong>Character Pointer:</strong> <code>char ch = 'A'; char *ptr = &amp;ch;</code></li>
+      <li><strong>Float Pointer:</strong> <code>float price = 99.5; float *ptr = &amp;price;</code></li>
+      <li><strong>Double Pointer:</strong> <code>double pi = 3.14159; double *ptr = &amp;pi;</code></li>
+    </ul>
+
+    <h3>Pointer Size</h3>
+    <p>Regardless of the data type, pointer size depends on the system architecture (32-bit systems use 4 bytes; 64-bit systems use 8 bytes).</p>
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int *p;
+    char *c;
+    float *f;
+
+    printf("%zu\n", sizeof(p));
+    printf("%zu\n", sizeof(c));
+    printf("%zu\n", sizeof(f));
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 6 -->
+  <div class="section-card">
+    <h2>6. The Address-of (&amp;) and Dereference (*) Operators</h2>
+    <ul>
+      <li><strong>Address-of (&amp;) Operator:</strong> Returns the memory address of a variable (e.g., <code>&amp;num</code>). Think of it as <em>finding an address</em>.</li>
+      <li><strong>Dereference (*) Operator:</strong> Accesses the value stored at the memory location held by a pointer (e.g., <code>*ptr</code>). Think of it as <em>going to that address</em>.</li>
+    </ul>
+
+    <h3>Modifying Variables Through Pointers</h3>
+    <p>Pointers can change the original variable directly:</p>
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int num = 10;
+    int *ptr = &amp;num;
+
+    *ptr = 100;
+    printf("%d", num);
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 7 -->
+  <div class="section-card">
+    <h2>7. Common Beginner Mistakes</h2>
+    <ul>
+      <li><strong>Using Uninitialized Pointers:</strong> Attempting to assign values to uninitialized pointers (e.g., <code>int *ptr; *ptr = 5;</code>) causes undefined behavior.</li>
+      <li><strong>Forgetting the &amp;:</strong> Assigning a variable directly to a pointer instead of its address (<code>int *ptr = x;</code> instead of <code>int *ptr = &amp;x;</code>).</li>
+      <li><strong>Confusing * and &amp;:</strong> Mixing up the address operator and the dereference operator.</li>
+      <li><strong>Printing Addresses Incorrectly:</strong> Always use <code>%p</code> and cast to <code>(void *)&amp;x</code> for standard compliance.</li>
+    </ul>
+  </div>
+
+  <!-- Section 8 -->
+  <div class="section-card">
+    <h2>8. Assignment: Swap Two Numbers Using Pointers</h2>
+    <p>Write a C program that swaps two integer variables using pointers.</p>
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+void swap(int *a, int *b)
+{
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int main()
+{
+    int x = 10;
+    int y = 20;
+
+    printf("Before Swap:\nx = %d\ny = %d\n", x, y);
+
+    swap(&amp;x, &amp;y);
+
+    printf("\nAfter Swap:\nx = %d\ny = %d\n", x, y);
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Key Concepts Table -->
+  <div class="section-card">
+    <h2>9. Key Concepts Reference</h2>
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Expression / Syntax</th>
+          <th>Meaning / Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>datatype *ptr;</code></td>
+          <td>Declare a pointer variable</td>
+        </tr>
+        <tr>
+          <td><code>ptr = &amp;num;</code></td>
+          <td>Initialize pointer with the address of <code>num</code></td>
+        </tr>
+        <tr>
+          <td><code>&amp;num</code></td>
+          <td>Address-of operator (gets memory location)</td>
+        </tr>
+        <tr>
+          <td><code>*ptr</code></td>
+          <td>Dereference operator (gets or sets value at address)</td>
+        </tr>
+        <tr>
+          <td><code>%p</code></td>
+          <td>Format specifier for printing memory addresses safely</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-card">
+    <h2>Summary</h2>
+    <p>Pointers are variables that store memory addresses, enabling direct access to data in memory. They form the foundation of many advanced concepts in C, including dynamic memory allocation, efficient function parameter passing, and complex data structures like linked lists and trees. In this lesson, you learned how to declare and initialize pointers, use the address-of and dereference operators, handle pointer types, and complete assignments like swapping numbers. You are now ready to move on to Day 2, where you'll explore Pointer Arithmetic!</p>
+  </div>
+</div>
+
+</body>
+</html>

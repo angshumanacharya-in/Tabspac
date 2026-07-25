@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 2: Pointer Arithmetic in C</title>
+  <style>
+    /* Ensure full width expansion */
+    .topic-content-wrapper {
+      width: 100%;
+    }
+
+    .topic-content-wrapper h1 {
+      font-size: 2rem;
+      color: var(--text-main);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border-color);
+      text-align: center;
+      width: 100%;
+    }
+
+    .topic-content-wrapper h2 {
+      font-size: 1.3rem;
+      color: var(--accent-color);
+      margin: 0 0 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .topic-content-wrapper h3 {
+      font-size: 1.05rem;
+      color: var(--glow-color);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .topic-content-wrapper p {
+      color: #d1d5db;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper li {
+      color: #d1d5db;
+      margin-bottom: 0.4rem;
+      line-height: 1.6;
+    }
+
+    /* Section Cards - Expanding Full Width */
+    .section-card {
+      width: 100%;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .section-card:hover {
+      border-color: rgba(255, 109, 0, 0.4);
+      box-shadow: 0 0 12px -2px rgba(255, 109, 0, 0.15);
+    }
+
+    /* Learning Objectives Box */
+    .learning-card {
+      width: 100%;
+      background-color: rgba(34, 197, 94, 0.05);
+      border: 1px solid var(--accent-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .learning-card h2 {
+      color: var(--accent-color);
+    }
+
+    .learning-card ul {
+      margin-bottom: 0;
+    }
+
+    /* Table Design */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0 0.5rem 0;
+      background-color: var(--bg-main);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .custom-table th {
+      background-color: #282828;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .custom-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      color: #d1d5db;
+    }
+
+    .custom-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Code Block */
+    .code-block {
+      width: 100%;
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+
+    .code-block pre {
+      margin: 0;
+    }
+
+    .code-block code {
+      font-family: 'Consolas', 'Fira Code', 'Courier New', monospace !important;
+      color: var(--accent-color);
+      font-size: 0.95rem;
+    }
+
+    /* Inline Code Tags */
+    code {
+      background: #282828;
+      color: var(--glow-color);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: monospace !important;
+    }
+
+    /* Vertical Execution Flow Diagram */
+    .flow-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 1rem;
+      background-color: var(--bg-main);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .flow-step {
+      background-color: var(--bg-card);
+      border: 1px solid var(--accent-color);
+      color: var(--text-main);
+      padding: 0.65rem 1.5rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .flow-step:hover {
+      transform: translateY(-2px);
+      border-color: var(--glow-color);
+    }
+
+    .flow-arrow {
+      color: var(--glow-color);
+      font-size: 1rem;
+      line-height: 1;
+      font-family: monospace !important;
+    }
+
+    /* Summary Card */
+    .summary-card {
+      width: 100%;
+      background-color: rgba(255, 109, 0, 0.05);
+      border: 1px solid var(--glow-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 0;
+    }
+
+    .summary-card h2 {
+      color: var(--glow-color);
+    }
+
+    .summary-card p {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="topic-content-wrapper">
+  <h1>Day 2: Pointer Arithmetic in C</h1>
+
+  <!-- Learning Objectives -->
+  <div class="learning-card">
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Understand pointer arithmetic.</li>
+      <li>Increment and decrement pointers.</li>
+      <li>Perform pointer addition and subtraction.</li>
+      <li>Calculate the difference between two pointers.</li>
+      <li>Compare pointers.</li>
+      <li>Understand the relationship between pointer arithmetic and arrays.</li>
+      <li>Typecast pointers.</li>
+      <li>Traverse arrays using pointers.</li>
+      <li>Reverse an array using only pointers.</li>
+    </ul>
+  </div>
+
+  <!-- Section 1 -->
+  <div class="section-card">
+    <h2>1. Introduction</h2>
+    <p>Pointers become truly powerful when combined with pointer arithmetic. Unlike ordinary variables, pointers can be incremented, decremented, compared, and subtracted to navigate through memory efficiently. Pointer arithmetic is widely used for array traversal, string manipulation, dynamic memory management, and implementing complex data structures.</p>
+    <p>In this lesson, you'll learn how pointer arithmetic works, why pointer increments depend on data types, how arrays and pointers interact, and how to safely perform arithmetic operations on pointers.</p>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="section-card">
+    <h2>2. What is Pointer Arithmetic?</h2>
+    <p>Pointer arithmetic means performing mathematical operations on pointers to move between memory locations. Unlike ordinary integers, adding 1 to a pointer does not increase its address by 1 byte. Instead, it moves to the next object of the pointer's data type.</p>
+    <p>For example, given <code>int arr[5]; int *ptr = arr;</code> where an integer occupies 4 bytes:</p>
+    
+    <div class="flow-container">
+      <div class="flow-step">ptr = 1000 (Value: 10)</div>
+      <div class="flow-arrow">↓ (after ptr++)</div>
+      <div class="flow-step">ptr = 1004 (Value: 20)</div>
+    </div>
+
+    <p style="margin-top: 1rem;">It moved to the next integer automatically based on the data type size.</p>
+  </div>
+
+  <!-- Section 3 -->
+  <div class="section-card">
+    <h2>3. Why Does Pointer Arithmetic Work This Way?</h2>
+    <p>Every data type occupies a certain number of bytes. When a pointer moves, the new address equals the current address plus the size of the data type.</p>
+    
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Data Type</th>
+          <th>Typical Size</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>char</code></td>
+          <td>1 byte</td>
+        </tr>
+        <tr>
+          <td><code>short</code></td>
+          <td>2 bytes</td>
+        </tr>
+        <tr>
+          <td><code>int</code></td>
+          <td>4 bytes</td>
+        </tr>
+        <tr>
+          <td><code>float</code></td>
+          <td>4 bytes</td>
+        </tr>
+        <tr>
+          <td><code>double</code></td>
+          <td>8 bytes</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top: 1rem;">Therefore, a <code>char *ptr</code> moves by 1 byte, whereas a <code>double *ptr</code> moves by 8 bytes on most systems.</p>
+  </div>
+
+  <!-- Section 4 -->
+  <div class="section-card">
+    <h2>4. Basic Operations: Increment, Decrement, Addition & Subtraction</h2>
+    <ul>
+      <li><strong>Incrementing (++):</strong> Moves the pointer to the next memory location of its data type.</li>
+      <li><strong>Decrementing (--):</strong> Moves a pointer to the previous memory location.</li>
+      <li><strong>Addition:</strong> You can add an integer to a pointer (e.g., <code>ptr = ptr + 3;</code>) to jump forward by multiple elements.</li>
+      <li><strong>Subtraction:</strong> Subtracting an integer moves backwards through memory (e.g., <code>ptr = ptr - 2;</code>).</li>
+    </ul>
+
+    <h3>Example: Incrementing Pointers</h3>
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int arr[] = {10, 20, 30};
+    int *ptr = arr;
+
+    printf("%d\n", *ptr); // Outputs 10
+    ptr++;
+    printf("%d\n", *ptr); // Outputs 20
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 5 -->
+  <div class="section-card">
+    <h2>5. Difference and Comparison Between Pointers</h2>
+    <h3>Difference Between Two Pointers</h3>
+    <p>Two pointers pointing to elements of the same array can be subtracted (e.g., <code>p2 - p1</code>). It returns the number of elements between them, not the number of bytes.</p>
+    
+    <h3>Pointer Comparisons</h3>
+    <p>Pointers can be compared using <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, and <code>&gt;=</code>. Comparisons should generally be used only when both pointers belong to the same array or contiguous memory block.</p>
+    
+    <h3>Invalid Arithmetic</h3>
+    <p>Operations like multiplication (<code>ptr * 2</code>), division (<code>ptr / 3</code>), or modulus (<code>ptr % 2</code>) are strictly invalid on pointers.</p>
+  </div>
+
+  <!-- Section 6 -->
+  <div class="section-card">
+    <h2>6. Pointer Arithmetic vs Array Arithmetic</h2>
+    <p>There is a fundamental equivalence in C between array notation and pointer notation:</p>
+    <div class="code-block">
+      <pre><code>arr[i] == *(arr + i)</code></pre>
+    </div>
+    <p>This relationship allows seamless traversal of arrays using pointers instead of index variables.</p>
+
+    <h3>Example: Traversing an Array Using Pointers</h3>
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int arr[] = {10, 20, 30, 40, 50};
+    int *ptr = arr;
+
+    for(int i = 0; i &lt; 5; i++)
+    {
+        printf("%d ", *ptr);
+        ptr++;
+    }
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 7 -->
+  <div class="section-card">
+    <h2>7. Typecasting Pointers & Common Mistakes</h2>
+    <p>Sometimes we convert one pointer type into another (e.g., viewing an integer's bytes via <code>char *ptr = (char *)&amp;x;</code>) to inspect memory differently or work with generic pointers (`void *`).</p>
+
+    <h3>Common Beginner Mistakes</h3>
+    <ul>
+      <li><strong>Assuming <code>ptr++</code> Increases by One Byte:</strong> Forgetting that pointer increments scale by the size of the data type (e.g., +4 for `int`).</li>
+      <li><strong>Going Beyond Array Bounds:</strong> Pointing past the end of an array (e.g., <code>&amp;arr[5]</code>) and dereferencing it leads to undefined behavior.</li>
+      <li><strong>Comparing Unrelated Pointers:</strong> Comparing pointers that do not point to the same array or block of memory.</li>
+      <li><strong>Mixing Pointer Types:</strong> Assigning mismatched pointer types without explicit typecasting.</li>
+    </ul>
+  </div>
+
+  <!-- Section 8 -->
+  <div class="section-card">
+    <h2>8. Mini Project: Reverse an Array Using Pointers</h2>
+    <p>Write a C program to reverse an integer array in place using only pointer arithmetic.</p>
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+void reverse(int *start, int *end)
+{
+    while(start &lt; end)
+    {
+        int temp = *start;
+        *start = *end;
+        *end = temp;
+
+        start++;
+        end--;
+    }
+}
+
+int main()
+{
+    int arr[] = {1, 2, 3, 4, 5};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    reverse(arr, arr + n - 1);
+
+    printf("Reversed Array:\n");
+    for(int i = 0; i &lt; n; i++)
+    {
+        printf("%d ", arr[i]);
+    }
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Key Concepts Table -->
+  <div class="section-card">
+    <h2>9. Key Concepts Reference</h2>
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Operation / Expression</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>ptr++</code> / <code>ptr--</code></td>
+          <td>Move pointer forward or backward by one element size</td>
+        </tr>
+        <tr>
+          <td><code>ptr + n</code> / <code>ptr - n</code></td>
+          <td>Jump forward or backward by <code>n</code> elements</td>
+        </tr>
+        <tr>
+          <td><code>p2 - p1</code></td>
+          <td>Calculate the number of elements between two pointers</td>
+        </tr>
+        <tr>
+          <td><code>*(arr + i)</code></td>
+          <td>Pointer equivalent of array indexing <code>arr[i]</code></td>
+        </tr>
+        <tr>
+          <td><code>void *ptr</code></td>
+          <td>Generic pointer type used before typecasting</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-card">
+    <h2>Summary</h2>
+    <p>Pointer arithmetic enables efficient navigation through memory by moving pointers between elements rather than manipulating array indices. In this lesson, you learned how pointer increment and decrement operations work, how pointer addition and subtraction move through memory, how to calculate the difference between two pointers, compare pointers safely, traverse arrays using pointers, and perform basic pointer typecasting. You also built a pointer-based array traversal program and an in-place array reversal mini project. With a solid understanding of pointer arithmetic, you're now ready for Day 3!</p>
+  </div>
+</div>
+
+</body>
+</html>

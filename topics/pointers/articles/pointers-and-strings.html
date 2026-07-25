@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pointers and Strings in C</title>
+  <style>
+    /* Ensure full width expansion */
+    .topic-content-wrapper {
+      width: 100%;
+    }
+
+    .topic-content-wrapper h1 {
+      font-size: 2rem;
+      color: var(--text-main);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border-color);
+      text-align: center;
+      width: 100%;
+    }
+
+    .topic-content-wrapper h2 {
+      font-size: 1.3rem;
+      color: var(--accent-color);
+      margin: 0 0 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .topic-content-wrapper h3 {
+      font-size: 1.05rem;
+      color: var(--glow-color);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .topic-content-wrapper p {
+      color: #d1d5db;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper li {
+      color: #d1d5db;
+      margin-bottom: 0.4rem;
+      line-height: 1.6;
+    }
+
+    /* Section Cards - Expanding Full Width */
+    .section-card {
+      width: 100%;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .section-card:hover {
+      border-color: rgba(255, 109, 0, 0.4);
+      box-shadow: 0 0 12px -2px rgba(255, 109, 0, 0.15);
+    }
+
+    /* Learning Objectives Box */
+    .learning-card {
+      width: 100%;
+      background-color: rgba(34, 197, 94, 0.05);
+      border: 1px solid var(--accent-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .learning-card h2 {
+      color: var(--accent-color);
+    }
+
+    .learning-card ul {
+      margin-bottom: 0;
+    }
+
+    /* Table Design */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0 0.5rem 0;
+      background-color: var(--bg-main);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .custom-table th {
+      background-color: #282828;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .custom-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      color: #d1d5db;
+    }
+
+    .custom-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Code Block */
+    .code-block {
+      width: 100%;
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+
+    .code-block pre {
+      margin: 0;
+    }
+
+    .code-block code {
+      font-family: 'Consolas', 'Fira Code', 'Courier New', monospace !important;
+      color: var(--accent-color);
+      font-size: 0.95rem;
+    }
+
+    /* Inline Code Tags */
+    code {
+      background: #282828;
+      color: var(--glow-color);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: monospace !important;
+    }
+
+    /* Vertical Execution Flow Diagram */
+    .flow-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 1rem;
+      background-color: var(--bg-main);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .flow-step {
+      background-color: var(--bg-card);
+      border: 1px solid var(--accent-color);
+      color: var(--text-main);
+      padding: 0.65rem 1.5rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .flow-step:hover {
+      transform: translateY(-2px);
+      border-color: var(--glow-color);
+    }
+
+    .flow-arrow {
+      color: var(--glow-color);
+      font-size: 1rem;
+      line-height: 1;
+      font-family: monospace !important;
+    }
+
+    /* Summary Card */
+    .summary-card {
+      width: 100%;
+      background-color: rgba(255, 109, 0, 0.05);
+      border: 1px solid var(--glow-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 0;
+    }
+
+    .summary-card h2 {
+      color: var(--glow-color);
+    }
+
+    .summary-card p {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="topic-content-wrapper">
+  <h1>Pointers and Strings in C</h1>
+
+  <!-- Learning Objectives -->
+  <div class="learning-card">
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Understand the relationship between pointers and strings.</li>
+      <li>Differentiate between character arrays and string literals.</li>
+      <li>Traverse strings using pointers.</li>
+      <li>Modify strings using pointers.</li>
+      <li>Implement common string functions using pointers.</li>
+      <li>Work with arrays of strings.</li>
+      <li>Understand string memory representation.</li>
+      <li>Build a word counter using pointer traversal.</li>
+    </ul>
+  </div>
+
+  <!-- Section 1 -->
+  <div class="section-card">
+    <h2>1. Introduction</h2>
+    <p>Strings are one of the most frequently used data types in C programming. Unlike many modern programming languages that provide a built-in String data type, C represents strings as arrays of characters terminated by a null character (<code>\0</code>). Since array names behave like pointers, strings and pointers are naturally connected.</p>
+    <p>Using pointers to manipulate strings is more efficient than using array indexing in many situations. Most standard library string functions such as <code>strlen()</code>, <code>strcpy()</code>, <code>strcmp()</code>, and <code>strcat()</code> internally use pointer arithmetic. Understanding string manipulation through pointers is therefore an essential skill for every C programmer.</p>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="section-card">
+    <h2>2. Strings, Memory Representation & Character Arrays</h2>
+    <p>A string is a sequence of characters terminated by a null character (<code>\0</code>). The array name represents the address of its first character (i.e., <code>str == &str[0]</code>), allowing us to assign it directly to a character pointer like <code>char *ptr = str;</code>.</p>
+    
+    <h3>Character Arrays vs. String Literals</h3>
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Character Array (`char str[] = "Hello";`)</th>
+          <th>String Literal (`char *str = "Hello";`)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Stored in writable memory (Stack)</td>
+          <td>Stored in read-only memory</td>
+        </tr>
+        <tr>
+          <td>Can be modified freely</td>
+          <td>Should not be modified (causes undefined behavior)</td>
+        </tr>
+        <tr>
+          <td>Owns the underlying character data</td>
+          <td>Points to a read-only constant data location</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Section 3 -->
+  <div class="section-card">
+    <h2>3. Traversing and Modifying Strings Using Pointers</h2>
+    <p>Instead of relying on array indices, pointers can traverse character arrays until encountering the null terminator.</p>
+
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    char str[] = "Hello";
+    char *ptr = str;
+
+    while(*ptr != '\0')
+    {
+        printf("%c ", *ptr);
+        ptr++;
+    }
+
+    return 0;
+}</code></pre>
+    </div>
+
+    <h3>Modifying Mutable Strings</h3>
+    <p>Because character arrays are writable, modifying elements via pointers is straightforward:</p>
+    <div class="code-block">
+      <pre><code>char str[] = "Hello";
+char *ptr = str;
+*ptr = 'Y'; // Changes "Hello" to "Yello"</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 4 -->
+  <div class="section-card">
+    <h2>4. Implementing Standard String Functions Using Pointers</h2>
+    <p>Standard operations can be implemented efficiently via pointer arithmetic:</p>
+
+    <h3>String Length (`strlen`)</h3>
+    <div class="code-block">
+      <pre><code>int stringLength(char *str)
+{
+    int count = 0;
+    while(*str != '\0')
+    {
+        count++;
+        str++;
+    }
+    return count;
+}</code></pre>
+    </div>
+
+    <h3>String Copy (`strcpy`)</h3>
+    <div class="code-block">
+      <pre><code>void stringCopy(char *dest, char *src)
+{
+    while(*src != '\0')
+    {
+        *dest = *src;
+        dest++;
+        src++;
+    }
+    *dest = '\0';
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 5 -->
+  <div class="section-card">
+    <h2>5. Arrays of Strings & Double Pointers</h2>
+    <p>Multiple strings are typically represented as an array of character pointers (`char *colors[]`), which act as a <code>char **</code> double pointer structure.</p>
+    
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    char *colors[] = { "Red", "Green", "Blue", "Yellow" };
+    char **ptr = colors;
+
+    for(int i = 0; i &lt; 4; i++)
+    {
+        printf("%s\n", ptr[i]);
+    }
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 6 -->
+  <div class="section-card">
+    <h2>6. Common Beginner Mistakes</h2>
+    <ul>
+      <li><strong>Forgetting the Null Character:</strong> Declaring fixed-size character arrays without accounting for the mandatory <code>\0</code> terminator.</li>
+      <li><strong>Modifying String Literals:</strong> Attempting to change contents of pointer-assigned string literals (e.g., <code>char *str = "Hello"; str[0] = 'Y';</code>), causing segmentation faults.</li>
+      <li><strong>Buffer Overflows:</strong> Copying strings into destination arrays that are too small to hold them.</li>
+      <li><strong>Unbounded Loops:</strong> Traversing pointers past the null character without a proper termination check.</li>
+    </ul>
+  </div>
+
+  <!-- Section 7 -->
+  <div class="section-card">
+    <h2>7. Mini Project: Word Counter Using Pointer Traversal</h2>
+    <p>Write a C program that counts the number of words in a sentence using pointer traversal only.</p>
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+int countWords(char *str)
+{
+    int words = 0;
+    int inWord = 0;
+
+    while(*str)
+    {
+        if(*str != ' ' &amp;&amp; *str != '\t' &amp;&amp; *str != '\n')
+        {
+            if(!inWord)
+            {
+                words++;
+                inWord = 1;
+            }
+        }
+        else
+        {
+            inWord = 0;
+        }
+        str++;
+    }
+
+    return words;
+}
+
+int main()
+{
+    char text[100];
+    printf("Enter a sentence: ");
+    fgets(text, sizeof(text), stdin);
+
+    printf("Number of words = %d\n", countWords(text));
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Key Concepts Table -->
+  <div class="section-card">
+    <h2>8. Key Concepts Reference</h2>
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Concept / Syntax</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>\0</code></td>
+          <td>Null terminator character marking the end of every C string</td>
+        </tr>
+        <tr>
+          <td><code>char str[]</code> vs <code>char *str</code></td>
+          <td>Mutable stack array versus read-only string literal pointer</td>
+        </tr>
+        <tr>
+          <td><code>*str++</code> idiom</td>
+          <td>Common pattern to read current character and advance pointer simultaneously</td>
+        </tr>
+        <tr>
+          <td><code>char *colors[]</code></td>
+          <td>Array of string pointers handled via double pointer indirection</td>
+        </tr>
+        <tr>
+          <td><code>fgets()</code></td>
+          <td>Safe input function for reading text strings into buffers</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-card">
+    <h2>Summary</h2>
+    <p>Strings in C are simply arrays of characters terminated by a null character, making them naturally compatible with pointers. In this lesson, you learned how to traverse and manipulate strings using pointers, differentiate between character arrays and string literals, implement common string functions such as <code>strlen()</code>, <code>strcpy()</code>, <code>strcmp()</code>, and <code>strcat()</code> using pointer arithmetic, and work with arrays of strings through double pointers. You also built a word counter that processes text entirely through pointer traversal.</p>
+  </div>
+</div>
+
+</body>
+</html>

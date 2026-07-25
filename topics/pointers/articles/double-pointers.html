@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Double Pointers (Pointers to Pointers) in C</title>
+  <style>
+    /* Ensure full width expansion */
+    .topic-content-wrapper {
+      width: 100%;
+    }
+
+    .topic-content-wrapper h1 {
+      font-size: 2rem;
+      color: var(--text-main);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border-color);
+      text-align: center;
+      width: 100%;
+    }
+
+    .topic-content-wrapper h2 {
+      font-size: 1.3rem;
+      color: var(--accent-color);
+      margin: 0 0 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .topic-content-wrapper h3 {
+      font-size: 1.05rem;
+      color: var(--glow-color);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .topic-content-wrapper p {
+      color: #d1d5db;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .topic-content-wrapper li {
+      color: #d1d5db;
+      margin-bottom: 0.4rem;
+      line-height: 1.6;
+    }
+
+    /* Section Cards - Expanding Full Width */
+    .section-card {
+      width: 100%;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .section-card:hover {
+      border-color: rgba(255, 109, 0, 0.4);
+      box-shadow: 0 0 12px -2px rgba(255, 109, 0, 0.15);
+    }
+
+    /* Learning Objectives Box */
+    .learning-card {
+      width: 100%;
+      background-color: rgba(34, 197, 94, 0.05);
+      border: 1px solid var(--accent-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .learning-card h2 {
+      color: var(--accent-color);
+    }
+
+    .learning-card ul {
+      margin-bottom: 0;
+    }
+
+    /* Table Design */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0 0.5rem 0;
+      background-color: var(--bg-main);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .custom-table th {
+      background-color: #282828;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .custom-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      color: #d1d5db;
+    }
+
+    .custom-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Code Block */
+    .code-block {
+      width: 100%;
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+
+    .code-block pre {
+      margin: 0;
+    }
+
+    .code-block code {
+      font-family: 'Consolas', 'Fira Code', 'Courier New', monospace !important;
+      color: var(--accent-color);
+      font-size: 0.95rem;
+    }
+
+    /* Inline Code Tags */
+    code {
+      background: #282828;
+      color: var(--glow-color);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: monospace !important;
+    }
+
+    /* Vertical Execution Flow Diagram */
+    .flow-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 1rem;
+      background-color: var(--bg-main);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .flow-step {
+      background-color: var(--bg-card);
+      border: 1px solid var(--accent-color);
+      color: var(--text-main);
+      padding: 0.65rem 1.5rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .flow-step:hover {
+      transform: translateY(-2px);
+      border-color: var(--glow-color);
+    }
+
+    .flow-arrow {
+      color: var(--glow-color);
+      font-size: 1rem;
+      line-height: 1;
+      font-family: monospace !important;
+    }
+
+    /* Summary Card */
+    .summary-card {
+      width: 100%;
+      background-color: rgba(255, 109, 0, 0.05);
+      border: 1px solid var(--glow-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 0;
+    }
+
+    .summary-card h2 {
+      color: var(--glow-color);
+    }
+
+    .summary-card p {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="topic-content-wrapper">
+  <h1>Double Pointers (Pointers to Pointers) in C</h1>
+
+  <!-- Learning Objectives -->
+  <div class="learning-card">
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Understand what a double pointer is.</li>
+      <li>Visualize memory with multiple levels of pointers.</li>
+      <li>Explain when and why double pointers are used.</li>
+      <li>Access values using multiple levels of dereferencing.</li>
+      <li>Modify pointers inside functions.</li>
+      <li>Dynamically allocate two-dimensional arrays using double pointers.</li>
+      <li>Traverse dynamically allocated matrices.</li>
+      <li>Implement matrix multiplication using dynamic memory.</li>
+    </ul>
+  </div>
+
+  <!-- Section 1 -->
+  <div class="section-card">
+    <h2>1. Introduction</h2>
+    <p>As your C programs become more advanced, you'll often encounter situations where a single pointer is not enough. You may need to modify a pointer inside a function, dynamically allocate two-dimensional arrays, or implement complex data structures such as linked lists, trees, and graphs. These tasks require double pointers, also known as pointers to pointers.</p>
+    <p>A double pointer stores the address of another pointer, adding an extra level of indirection. While this concept may initially seem confusing, understanding the memory layout and practicing with examples makes it much easier. Double pointers are an essential part of professional C programming and are widely used in operating systems, compilers, memory management libraries, and large-scale software.</p>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="section-card">
+    <h2>2. What is a Double Pointer?</h2>
+    <p>A double pointer is a pointer that stores the address of another pointer. It is declared using two asterisks: <code>int **ptr;</code>, meaning it stores the address of an <code>int *</code>.</p>
+    
+    <h3>Multiple Levels of Indirection</h3>
+    <div class="code-block">
+      <pre><code>int num = 100;
+int *ptr = &num;
+int **dptr = &ptr;</code></pre>
+    </div>
+
+    <div class="flow-container">
+      <div class="flow-step">dptr (Stores address of ptr)</div>
+      <div class="flow-arrow">↓ (*dptr)</div>
+      <div class="flow-step">ptr (Stores address of num)</div>
+      <div class="flow-arrow">↓ (*ptr or **dptr)</div>
+      <div class="flow-step">num (Value: 100)</div>
+    </div>
+  </div>
+
+  <!-- Section 3 -->
+  <div class="section-card">
+    <h2>3. Modifying Pointers Inside Functions</h2>
+    <p>When you pass a normal pointer to a function, a copy of the pointer is created, so changing it inside the function does not affect the original pointer. By passing a double pointer (address of the pointer), the function can modify the original pointer directly.</p>
+
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+void allocate(int **ptr)
+{
+    *ptr = (int *)malloc(sizeof(int));
+    if(*ptr != NULL)
+    {
+        **ptr = 100;
+    }
+}
+
+int main()
+{
+    int *num = NULL;
+    allocate(&num);
+    printf("%d\n", *num); // Outputs 100
+    free(num);
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 4 -->
+  <div class="section-card">
+    <h2>4. Dynamic Two-Dimensional Arrays Using Double Pointers</h2>
+    <p>Double pointers are frequently used to create dynamic 2D matrices where rows are allocated independently on the heap.</p>
+    
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main()
+{
+    int rows = 3, cols = 4;
+    int **matrix = (int **)malloc(rows * sizeof(int *));
+
+    for(int i = 0; i &lt; rows; i++)
+    {
+        matrix[i] = (int *)malloc(cols * sizeof(int));
+    }
+
+    // Usage and assignment
+    matrix[1][2] = 42;
+    printf("%d\n", matrix[1][2]);
+
+    // Proper cleanup (freeing rows then matrix)
+    for(int i = 0; i &lt; rows; i++)
+    {
+        free(matrix[i]);
+    }
+    free(matrix);
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 5 -->
+  <div class="section-card">
+    <h2>5. Arrays of Strings</h2>
+    <p>Multiple strings can be efficiently organized and manipulated using an array of character pointers, which behaves as a <code>char **</code>.</p>
+    
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    char *names[] = { "Alice", "Bob", "Charlie" };
+    char **ptr = names;
+
+    for(int i = 0; i &lt; 3; i++)
+    {
+        printf("%s\n", ptr[i]);
+    }
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Section 6 -->
+  <div class="section-card">
+    <h2>6. Common Beginner Mistakes</h2>
+    <ul>
+      <li><strong>Forgetting Levels of Dereferencing:</strong> Trying to access a value with <code>*dptr</code> instead of the correct double dereference <code>**dptr</code>.</li>
+      <li><strong>Not Allocating Rows for Matrices:</strong> Attempting to use <code>matrix[i][j]</code> before allocating memory for individual rows.</li>
+      <li><strong>Improper Deallocation Order:</strong> Freeing the base pointer array before freeing each individual row pointer, causing memory leaks or segmentation faults.</li>
+      <li><strong>Confusing Declarations:</strong> Mixing up <code>int **ptr</code> (pointer to pointer) with <code>int (*ptr)[5]</code> (pointer to an array of 5 integers).</li>
+    </ul>
+  </div>
+
+  <!-- Section 7 -->
+  <div class="section-card">
+    <h2>7. Mini Project: Matrix Multiplication Using Dynamic Memory</h2>
+    <p>Write a C program that dynamically allocates two matrices using double pointers, multiplies them, displays the result, and releases all allocated memory.</p>
+    <div class="code-block">
+      <pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main()
+{
+    int rows1 = 2, cols1 = 2;
+    int rows2 = 2, cols2 = 2;
+
+    int **A = (int **)malloc(rows1 * sizeof(int *));
+    int **B = (int **)malloc(rows2 * sizeof(int *));
+    int **C = (int **)malloc(rows1 * sizeof(int *));
+
+    for(int i = 0; i &lt; rows1; i++)
+    {
+        A[i] = (int *)malloc(cols1 * sizeof(int));
+        C[i] = (int *)malloc(cols2 * sizeof(int));
+    }
+
+    for(int i = 0; i &lt; rows2; i++)
+    {
+        B[i] = (int *)malloc(cols2 * sizeof(int));
+    }
+
+    int valuesA[2][2] = {{1, 2}, {3, 4}};
+    int valuesB[2][2] = {{5, 6}, {7, 8}};
+
+    for(int i = 0; i &lt; rows1; i++)
+    {
+        for(int j = 0; j &lt; cols1; j++)
+        {
+            A[i][j] = valuesA[i][j];
+            B[i][j] = valuesB[i][j];
+        }
+    }
+
+    for(int i = 0; i &lt; rows1; i++)
+    {
+        for(int j = 0; j &lt; cols2; j++)
+        {
+            C[i][j] = 0;
+            for(int k = 0; k &lt; cols1; k++)
+            {
+                C[i][j] += A[i][k] * B[k][j];
+            }
+        }
+    }
+
+    printf("Result Matrix:\n");
+    for(int i = 0; i &lt; rows1; i++)
+    {
+        for(int j = 0; j &lt; cols2; j++)
+        {
+            printf("%d ", C[i][j]);
+        }
+        printf("\n");
+    }
+
+    for(int i = 0; i &lt; rows1; i++)
+    {
+        free(A[i]);
+        free(C[i]);
+    }
+    for(int i = 0; i &lt; rows2; i++)
+    {
+        free(B[i]);
+    }
+
+    free(A);
+    free(B);
+    free(C);
+
+    return 0;
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Key Concepts Table -->
+  <div class="section-card">
+    <h2>8. Key Concepts Reference</h2>
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Syntax / Concept</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>int **dptr;</code></td>
+          <td>Double pointer declaration storing the address of an `int *`</td>
+        </tr>
+        <tr>
+          <td><code>**dptr</code></td>
+          <td>Double dereferencing to access the underlying value</td>
+        </tr>
+        <tr>
+          <td><code>allocate(&amp;ptr)</code></td>
+          <td>Passing pointer address to modify the pointer inside a function</td>
+        </tr>
+        <tr>
+          <td><code>int **matrix</code></td>
+          <td>Foundation for dynamic 2D array allocations via row pointers</td>
+        </tr>
+        <tr>
+          <td><code>char **argv</code></td>
+          <td>Standard usage for handling command-line string arguments</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-card">
+    <h2>Summary</h2>
+    <p>Double pointers add an extra level of indirection by storing the address of another pointer. They are essential for modifying pointers inside functions, creating dynamic two-dimensional arrays, managing arrays of strings, and implementing advanced data structures. In this lesson, you learned how double pointers work, how to access values using multiple levels of dereferencing, how to allocate and free dynamic matrices, and how to build a matrix multiplication program using dynamic memory.</p>
+  </div>
+</div>
+
+</body>
+</html>
